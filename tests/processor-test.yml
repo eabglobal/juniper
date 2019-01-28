@@ -1,0 +1,18 @@
+functions:
+  processor:
+    requirements: ./src/processor/requirements.txt
+    include:
+      - ./src/eablib/eab
+      - ./src/processor/
+
+  sequential-worker:
+    requirements: ./src/worker/requirements.txt
+    include:
+      - ./src/eablib/eab
+      - ./src/worker/sequential_worker
+
+  parallel-worker:
+    requirements: ./src/worker/requirements.txt
+    include:
+      - ./src/eablib/eab
+      - ./src/worker/parallel_worker

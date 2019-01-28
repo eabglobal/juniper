@@ -1,0 +1,13 @@
+
+functions:
+  peoplesoft:
+    requirements: ./src/peoplesoft_adapter/requirements.txt
+    include:
+      - ./src/eablib/eab
+      - ./src/peoplesoft_adapter/peoplesoft
+
+  banner:
+    requirements: ./src/banner_adapter/requirements.txt
+    include:
+      - ./src/eablib/eab
+      - ./src/banner_adapter/banner

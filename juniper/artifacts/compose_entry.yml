@@ -1,0 +1,7 @@
+  {name}-lambda:
+    image: lambci/lambda:build-python3.6
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+{volumes}
+    command: sh /var/task/bin/package.sh {name}

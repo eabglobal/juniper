@@ -1,0 +1,18 @@
+
+functions:
+  split_step:
+    requirements: ./requirements.txt
+    include:
+      - ./commonlib
+      - ./split_lambda/splitter
+
+  map_step:
+    requirements: ./requirements.txt
+    include:
+      - ./commonlib
+      - ./map_lambda/mapper
+
+  reduce_step:
+    requirements: ./reduce_lambda/requirements.txt
+    include:
+      - ./reduce_lambda/reducer
