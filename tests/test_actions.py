@@ -15,7 +15,6 @@
 """
 
 
-import yaml
 import json
 from juniper import actions
 from juniper.io import (reader, get_artifact_path)
@@ -72,8 +71,8 @@ def test_build_artifacts_invokes_docker_commands(mocker):
 
     # Mocking the dependencies of this action. These three high level packages are
     # needed to invoke docker-compose in the right context!
-    mock_os = mocker.patch('juniper.actions.os')
-    mock_shutils = mocker.patch('juniper.actions.shutil')
+    mocker.patch('juniper.actions.os')
+    mocker.patch('juniper.actions.shutil')
     mock_subprocess_run = mocker.patch('juniper.actions.subprocess.run')
 
     compose_cmd_calls = [
@@ -85,6 +84,7 @@ def test_build_artifacts_invokes_docker_commands(mocker):
     actions.build_artifacts('logger', processor_ctx)
 
     mock_subprocess_run.assert_has_calls(compose_cmd_calls)
+    mock_builder.assert_called_once()
 
 
 def test_build_artifacts_copies_scriopts(mocker):
@@ -104,7 +104,7 @@ def test_build_artifacts_copies_scriopts(mocker):
     # needed to invoke docker-compose in the right context!
     mock_os = mocker.patch('juniper.actions.os')
     mock_shutil = mocker.patch('juniper.actions.shutil')
-    mock_subprocess_run = mocker.patch('juniper.actions.subprocess.run')
+    mocker.patch('juniper.actions.subprocess.run')
 
     processor_ctx = reader('./tests/processor-test.yml')
     actions.build_artifacts('logger', processor_ctx)
@@ -113,6 +113,7 @@ def test_build_artifacts_copies_scriopts(mocker):
     mock_os.makedirs.assert_called_with('./.motto/bin', exist_ok=True)
     mock_shutil.copy.assert_called_with(get_artifact_path('package.sh'), './.motto/bin/')
     mock_shutil.rmtree.assert_called_with('./.motto', ignore_errors=True)
+    mock_builder.assert_called_once()
 
 
 def test_build_compose_section_custom_output():
