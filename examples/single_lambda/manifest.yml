@@ -1,0 +1,9 @@
+
+package:
+  output: ./build
+
+functions:
+  sample:
+    requirements: ./requirements.txt
+    include:
+      - ./
