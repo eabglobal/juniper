@@ -24,7 +24,7 @@ from juniper.io import (get_artifact, write_tmp_file, get_artifact_path)
 def build_artifacts(logger, ctx):
     """
     Creates a .zip file for each one of the serverless functions defined in the given
-    motto definitions file. Each function must include a name, and the set of directories
+    manifest definitions file. Each function must include a name, and the set of directories
     to be included in the artifact. As part of the packaging, if the given function
     has a definition of a requirements file, all the dependencies in that file will be
     included in the artifact.
@@ -38,15 +38,15 @@ def build_artifacts(logger, ctx):
     try:
         # Must copy the bin directory to the client's folder structure. This directory
         # will be promtly cleaned up after the artifacts are built.
-        os.makedirs('./.motto/bin', exist_ok=True)
-        shutil.copy(get_artifact_path('package.sh'), './.motto/bin/')
+        os.makedirs('./.juni/bin', exist_ok=True)
+        shutil.copy(get_artifact_path('package.sh'), './.juni/bin/')
 
         # Use docker as a way to pip install dependencies, and copy the business logic
         # specified in the function definitions.
         subprocess.run(["docker-compose", "-f", compose_fn, '--project-directory', '.', 'down'])
         subprocess.run(["docker-compose", "-f", compose_fn, '--project-directory', '.', 'up'])
     finally:
-        shutil.rmtree('./.motto', ignore_errors=True)
+        shutil.rmtree('./.juni', ignore_errors=True)
 
 
 def build_compose(logger, ctx):
@@ -109,7 +109,7 @@ def _build_compose_section(ctx, template, name, sls_function):
     output_dir = ctx.get('package', {}).get('output', DEFAULT_OUT_DIR)
     volumes = [
         f'      - {output_dir}:/var/task/dist',
-        '      - ./.motto/bin:/var/task/bin',
+        '      - ./.juni/bin:/var/task/bin',
     ] + [
         get_vol(include)
         for include in sls_function.get('include', [])

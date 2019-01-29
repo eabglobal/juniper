@@ -4,7 +4,7 @@
       - AWS_DEFAULT_REGION=us-east-1
     volumes:
       - ./dist:/var/task/dist
-      - ./.motto/bin:/var/task/bin
+      - ./.juni/bin:/var/task/bin
       - ./src/eablib/eab:/var/task/common/eab
       - ./src/processor/:/var/task/common/
       - ./src/processor/requirements.txt:/var/task/common/requirements.txt
@@ -16,7 +16,7 @@
       - AWS_DEFAULT_REGION=us-east-1
     volumes:
       - ./dist:/var/task/dist
-      - ./.motto/bin:/var/task/bin
+      - ./.juni/bin:/var/task/bin
       - ./src/eablib/eab:/var/task/common/eab
       - ./src/worker/sequential_worker:/var/task/common/sequential_worker
       - ./src/worker/requirements.txt:/var/task/common/requirements.txt
@@ -28,7 +28,7 @@
       - AWS_DEFAULT_REGION=us-east-1
     volumes:
       - ./dist:/var/task/dist
-      - ./.motto/bin:/var/task/bin
+      - ./.juni/bin:/var/task/bin
       - ./src/eablib/eab:/var/task/common/eab
       - ./src/worker/parallel_worker:/var/task/common/parallel_worker
       - ./src/worker/requirements.txt:/var/task/common/requirements.txt

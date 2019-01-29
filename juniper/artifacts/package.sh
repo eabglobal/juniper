@@ -12,7 +12,7 @@ find lambda -type f -name "manifest.yml"       -delete
 find lambda -type f -name "setup.cfg"          -delete
 find lambda -type f -name "*.py[co]"           -delete
 find lambda -type d -name "__pycache__"        -delete
-find lambda -type d -name ".motto"             -exec rm -rf {} +
+find lambda -type d -name ".juni"             -exec rm -rf {} +
 find lambda -type d -name "tests"              -exec rm -rf {} +
 find lambda -type d -name "features"           -exec rm -rf {} +
 find lambda -type d -name "*.dist-info*"       -exec rm -rf {} +

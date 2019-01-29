@@ -110,9 +110,9 @@ def test_build_artifacts_copies_scriopts(mocker):
     actions.build_artifacts('logger', processor_ctx)
 
     # Validate that this three step process is correctly executed.
-    mock_os.makedirs.assert_called_with('./.motto/bin', exist_ok=True)
-    mock_shutil.copy.assert_called_with(get_artifact_path('package.sh'), './.motto/bin/')
-    mock_shutil.rmtree.assert_called_with('./.motto', ignore_errors=True)
+    mock_os.makedirs.assert_called_with('./.juni/bin', exist_ok=True)
+    mock_shutil.copy.assert_called_with(get_artifact_path('package.sh'), './.juni/bin/')
+    mock_shutil.rmtree.assert_called_with('./.juni', ignore_errors=True)
     mock_builder.assert_called_once()
 
 
