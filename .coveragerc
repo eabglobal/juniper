@@ -1,0 +1,15 @@
+[paths]
+source = juniper
+
+[report]
+show_missing = true
+precision = 2
+omit =
+    *tests*
+    *steps*
+    *venv*
+    *examples*
+    */constants.py
+    */command_line.py
+    */setup.py
+    */__init__.py

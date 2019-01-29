@@ -1,0 +1,17 @@
+# The packager will create two .zip artifacts, one for the first lambda
+# and one for the second.
+# Note: The requirements to the first lambda are different than the ones of the second
+# The first lambda also includes a common lib package. This must be a relative path!
+
+functions:
+  first_lambda:
+    requirements: ./src/first_lambda/requirements.txt
+    include:
+      - ./src/commonlib           # Include everything under this folder.
+      - ./src/first_lambda/first  # Include everything in this module.
+
+  second_lambda:
+    requirements: ./src/requirements.txt
+    include:
+      # This lambda does not include the commonlib
+      - ./src/second_lambda/second  # Package everything in this folder

@@ -3,7 +3,12 @@
 echo "Starting to package $1"
 
 mkdir lambda
-pip install -q -t lambda -r $(find common -type f -name requirements.txt)
+requirements="$(find common -type f -name requirements.txt)"
+
+if [ $requirements ]; then
+    # Only pip install requirements if we can find the file.
+    pip install -q -t lambda -r ${requirements}
+fi
 cp -r common/* lambda/
 
 # Exclude non essential files and folders from the deployment package.
@@ -12,7 +17,7 @@ find lambda -type f -name "manifest.yml"       -delete
 find lambda -type f -name "setup.cfg"          -delete
 find lambda -type f -name "*.py[co]"           -delete
 find lambda -type d -name "__pycache__"        -delete
-find lambda -type d -name ".motto"             -exec rm -rf {} +
+find lambda -type d -name ".juni"             -exec rm -rf {} +
 find lambda -type d -name "tests"              -exec rm -rf {} +
 find lambda -type d -name "features"           -exec rm -rf {} +
 find lambda -type d -name "*.dist-info*"       -exec rm -rf {} +

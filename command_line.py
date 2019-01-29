@@ -32,13 +32,13 @@ def package():
 def build(manifest):
 
     try:
-        motto_definition = reader(manifest)
+        manifest_definition = reader(manifest)
         # Make sure to start the building process with a clean slate. This wil
         # ensures that the output folder is not included in the packaging.
-        output_dir = motto_definition.get('package', {}).get('output', DEFAULT_OUT_DIR)
+        output_dir = manifest_definition.get('package', {}).get('output', DEFAULT_OUT_DIR)
         shutil.rmtree(output_dir, ignore_errors=True)
 
-        build_artifacts(logger, motto_definition)
+        build_artifacts(logger, manifest_definition)
     except FileNotFoundError as fe:
         logger.error(f'Unable to find {manifest}.')
 
