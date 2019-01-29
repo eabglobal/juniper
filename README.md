@@ -15,11 +15,9 @@ shared libraries, which you can upload yourself.
 
 With Python==3.6 and Docker installed, install juniper:
 
-```
->>> git clone git@gitlab.devops.eab.com:Connect-Service/juniper.git
->>> cd juniper
->>> pip install -e .
-```
+    >>> git clone git@github.com:eabglobal/juniper.git
+    >>> cd juniper
+    >>> pip install -e .
 
 Go to the code you are packaging and define a configuration for your
 functions, ex in `manifest.yml`:
@@ -35,9 +33,8 @@ functions:
 
 Build it!
 
-```
->>> juni build
-```
+    >>> juni build
+
 
 Your .zip is now in the `dist/` directory.  🎉
 
@@ -67,24 +64,27 @@ features that set this tool apart from other tools are:
 * Minimal structure in the infrastructure file
 * Ability to use well known docker image as a way to install dependencies
 * Ability to include a set of local shared libraries
-* Ability to package multiple lambda functions
+* Ability to package multiple lambda functions and generate separate artifacts
+* Ability to specify the requirements of each lambda individually
 
 ## Microservices
 
 When building microservices as lambda functions, having a set of functions in the
-same repo is a desirable architectural proposition. This tool was born out of the need to build each function separately from one another.
+same repo is a desirable architectural proposition. This tool was born out of the
+need to build each function separately from one another.
 
 ![](assets/folder_structure.png)
 
-With a folder structure like the above, creating a .zip per lambda
-function is fundamental. The requirements of the router are different from the
-requirements of the mapping functions, the artifact generated for each lambda
-should reflect this.
+With a folder structure like the one above, creating a .zip per lambda
+function is fundamental. The requirements of the router might be completely different
+from the requirements of the mapping functions. The artifact generated for each lambda
+should reflect that difference.
 
-Along this line of thought, the shared_lib could be used by the `mapping_lambda`,
-the `processor` and the `reducer`. Being able to keep the shared lib in an independent
+In a similar fashion, we need to have the ability to include shared libraries that are
+relative to our microservice stack. The shared lib could be used by the `mapping_lambda`,
+the `processor` lambda only. Being able to keep the shared lib in an independent
 module is standard practice. For our packaging purposes, we only need to include the source
-code of the shared lib only for the lambdas that depend on this common functionality.
+code of the shared lib only for the lambdas that depend on this functionality.
 
 The tools currently available in the serverless space do not acomodate these needs in a standard,
 straight forward way.
@@ -118,7 +118,7 @@ functions:
   router:
     requirements: ./src/router/requirements.txt
     include:
-      - ./src/eablib/eab
+      - ./src/commonlib/common
       - ./src/router_function/router
 ```
 
@@ -129,7 +129,7 @@ will be added in your `./dist` folder.
 # Usage
 First of all clone this project and pip install it into your virtual environment.
 
-    >>> git clone git@gitlab.devops.eab.com:Connect-Service/juniper.git
+    >>> git clone git@github.com:eabglobal/juniper.git
     >>> cd juniper
     >>> pip install -e .
 
