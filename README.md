@@ -21,7 +21,8 @@ With Python==3.6 and Docker installed, install juniper:
 >>> pip install -e .
 ```
 
-Go to the code you are packaging and define a configuration for your functions, ex in `sample.yml`:
+Go to the code you are packaging and define a configuration for your
+functions, ex in `manifest.yml`:
 
 ```yaml
 functions:
@@ -35,7 +36,7 @@ functions:
 Build it!
 
 ```
->>> motto build -c sample.yml
+>>> juni build
 ```
 
 Your .zip is now in the `dist/` directory.  🎉
@@ -133,18 +134,24 @@ First of all clone this project and pip install it into your virtual environment
     >>> pip install -e .
 
 Once you have the tool installed, go to the project you're currently working on and create
-a motto definition file. Call the file something like `sls.yml`. Use the `sample.yml`
-as a starting point on how to define your functions.
+a manifest definition file. Call the file something like `manifest.yml`. Use the
+`sample_manifest.yml` as a starting point on how to define your functions.
 
 Once you have the definitions file as part of your project. You can build your
 lambda functions using the following command:
 
-    >>> motto build -c sls.yml
+    >>> juni build
 
 After executing the command, you will see output similar to the one on this
 screenshot:
 
 ![](assets/build_cmd.png)
+
+If you name your serverless definition file `manifest.yml`, juni will read the file
+by default and generate the artifacts for you. If you would like to call the file
+something else, you can specify the name of the manifest as follows:
+
+    >>> juni build -m sls.yml
 
 # Value proposition
 When working with lambda functions in python, there are multiple ways to generate
