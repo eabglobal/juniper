@@ -61,8 +61,8 @@ artifacts.
 The main advantage of this tool is its minimal implementation and flexibility. The
 features that set this tool apart from other tools are:
 
-* Minimal structure in the infrastructure file
-* Ability to use well known docker image as a way to install dependencies
+* Minimal manifest file to define packaging
+* Using docker containers as a way to install dependencies and generate the artifacts
 * Ability to include a set of local shared libraries
 * Ability to package multiple lambda functions and generate separate artifacts
 * Ability to specify the requirements of each lambda individually
