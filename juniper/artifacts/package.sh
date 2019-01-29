@@ -3,12 +3,16 @@
 echo "Starting to package $1"
 
 mkdir lambda
-requirements="$(find common -type f -name requirements.txt)"
+# Requirements file specified in the manifest will ALWAYS be in this path!
+requirements="common/requirements.txt"
 
-if [ $requirements ]; then
-    # Only pip install requirements if we can find the file.
+if [ ! -f $requirements ]; then
+    : # Do nothing! The use does not need to specify a requirements.txt file.
+else
+    echo "pip install -r requirements.txt"
     pip install -q -t lambda -r ${requirements}
 fi
+
 cp -r common/* lambda/
 
 # Exclude non essential files and folders from the deployment package.

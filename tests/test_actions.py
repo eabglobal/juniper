@@ -17,7 +17,10 @@
 
 import json
 from juniper import actions
+from unittest.mock import MagicMock
 from juniper.io import (reader, get_artifact_path)
+
+logger = MagicMock()
 
 
 def test_build_compose_sections():
@@ -50,7 +53,7 @@ def test_build_compose_writes_compose_definition_to_tmp_file(mocker):
     mock_writer = mocker.patch('juniper.actions.write_tmp_file', return_value=tmp_filename)
 
     processor_ctx = reader('./tests/processor-test.yml')
-    actual_filename = actions.build_compose('logger', processor_ctx)
+    actual_filename = actions.build_compose(logger, processor_ctx)
 
     expected = read_expectation('./tests/expectations/processor-compose.yml')
 
@@ -81,7 +84,7 @@ def test_build_artifacts_invokes_docker_commands(mocker):
     ]
 
     processor_ctx = reader('./tests/processor-test.yml')
-    actions.build_artifacts('logger', processor_ctx)
+    actions.build_artifacts(logger, processor_ctx)
 
     mock_subprocess_run.assert_has_calls(compose_cmd_calls)
     mock_builder.assert_called_once()
@@ -107,7 +110,7 @@ def test_build_artifacts_copies_scriopts(mocker):
     mocker.patch('juniper.actions.subprocess.run')
 
     processor_ctx = reader('./tests/processor-test.yml')
-    actions.build_artifacts('logger', processor_ctx)
+    actions.build_artifacts(logger, processor_ctx)
 
     # Validate that this three step process is correctly executed.
     mock_os.makedirs.assert_called_with('./.juni/bin', exist_ok=True)
