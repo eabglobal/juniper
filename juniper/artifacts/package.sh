@@ -3,7 +3,12 @@
 echo "Starting to package $1"
 
 mkdir lambda
-pip install -q -t lambda -r $(find common -type f -name requirements.txt)
+requirements="$(find common -type f -name requirements.txt)"
+
+if [ $requirements ]; then
+    # Only pip install requirements if we can find the file.
+    pip install -q -t lambda -r ${requirements}
+fi
 cp -r common/* lambda/
 
 # Exclude non essential files and folders from the deployment package.
