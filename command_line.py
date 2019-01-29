@@ -28,8 +28,12 @@ def package():
 
 @main.command(help="""""")
 @click.option('--manifest', '-m', default='manifest.yml', help='The configuration file to use.')
+@click.option('--debug', '-d', is_flag=True, help='Run the build in debug mode.')
 @click_log.simple_verbosity_option(logger)
-def build(manifest):
+def build(manifest, debug):
+
+    if debug:
+        logger.setLevel(logging.DEBUG)
 
     try:
         manifest_definition = reader(manifest)

@@ -34,7 +34,7 @@ def build_artifacts(logger, ctx):
     """
 
     compose_fn = build_compose(logger, ctx)
-    # logger.info(f'docker-compose.yml - {compose_fn}')
+    logger.debug(f'docker-compose.yml - {compose_fn}')
     try:
         # Must copy the bin directory to the client's folder structure. This directory
         # will be promtly cleaned up after the artifacts are built.
