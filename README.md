@@ -61,7 +61,7 @@ a framework like chalice or zappa is overkill when trying to generate .zip
 artifacts.
 
 The main advantage of this tool is its minimal implementation and flexibility. The
-features that set this tool apart from the competition are:
+features that set this tool apart from other tools are:
 
 * Minimal structure in the infrastructure file
 * Ability to use well known docker image as a way to install dependencies
@@ -98,7 +98,7 @@ of a lambda function consists of the following steps:
 3. include additional local shared libraries
 4. generate a `.zip` artifact with these files
 
-For the tool to know what it needs to package, the functions as well as it's
+For the tool to know what it needs to package, the functions as well as its
 dependent components must be defined in a `.yml` file. The file must include
 these pieces of information:
 
@@ -132,7 +132,7 @@ First of all clone this project and pip install it into your virtual environment
     >>> cd juniper
     >>> pip install -e .
 
-Once you have the tool installed, go to the project you're currently working and create
+Once you have the tool installed, go to the project you're currently working on and create
 a motto definition file. Call the file something like `sls.yml`. Use the `sample.yml`
 as a starting point on how to define your functions.
 
@@ -141,24 +141,24 @@ lambda functions using the following command:
 
     >>> motto build -c sls.yml
 
-After executing the command, you will see an output similar to the one on this
+After executing the command, you will see output similar to the one on this
 screenshot:
 
 ![](assets/build_cmd.png)
 
 # Value proposition
 When working with lambda functions in python, there are multiple ways to generate
-the .zip artifact. As previously stated, there three main players in the serverless
+the .zip artifact. As previously stated, there are three main players in the serverless
 framework space: Chalice, Zappa and the Serverless Framework. These solutions are
 very comprehensive and offer a wide range of features including building, deploying,
 spinning up local development servers, etc.
 
 Keep in mind that these offerings are either web frameworks or framework wrappers and their
 value proposition is completely different from juniper's. A framework is a
-comprehensive offering with 100s of features on top of packaging.
+comprehensive offering with hundreds of features on top of packaging.
 
 >>>
-juniper is only used for generating the artifacts required to deploy a python
+Juniper is only used for generating the artifacts required to deploy a python
 lambda function. This tool can be used in conjunction with pretty much any framework
 in the serverless space.
 >>>
@@ -174,11 +174,11 @@ However, the drawbacks of this tool as it stands today are:
 
 * Inability to create a single .zip artifact per function
 * No standard way to include shared logic among multiple lambdas
-* Heavy reliance on the sam.yml template (not a bad thing in it's own way)
+* Heavy reliance on the sam.yml template (not a bad thing in its own way)
 
 >>>
-If SAM was to support these three features, there would be absolutely no need for
-juniper to exist. For the use cases in which these features are **NOT** a necesity,
+If SAM were to support these three features, there would be absolutely no need for
+juniper to exist. For the use cases in which these features are **NOT** a necessity,
 it is recommended to use SAM for building the .zip artifact.
 >>>
 
@@ -186,13 +186,13 @@ it is recommended to use SAM for building the .zip artifact.
 [Chalice](https://github.com/aws/chalice) is a microframework built by an AWS team
 with two goals in mind: to have a very small footprint, and to streamline the
 development of serverless APIs. For several use cases, the offerings and features
-of Chalice are sufficient.  However, as a serverless project evolves, it's requirements
+of Chalice are sufficient.  However, as a serverless project evolves, its requirements
 and expectations evolve with the project and Chalice starts falling short.
 
 * Inability to create a single .zip artifact per function
 * Packaging of multiple lambda functions accomplished by creating a single .zip artifact
 * Very strict project structure, to fit packaging requirements (files **must** go here or there)
-* Complicated to include lambdas of other runtimes (python along nodejs)
+* It's rather complicated to include lambdas of other runtimes (e.g. python and nodejs)
 * Issue with third party dependencies that sometimes require the developer to include the third party library in the source code (`vendor` folder).
 
 >>>
@@ -201,14 +201,14 @@ little concern on infrastructure, Chalice is a fantastic offering.
 >>>
 
 ## Serverless Framework
-[Serverless](https://serverless.com/) is a really comprehensive offering, it's
-lightweight, it streamlines the build, configuration and deployment process of
+[Serverless](https://serverless.com/) is a really comprehensive offering. It's
+lightweight and it streamlines the build, configuration and deployment process of
 lambda functions. It has the support of a large community, it rapidly evolves given its
 plug-in architecture, and it offers a large set of features to get a developer up and running quickly and effectively.
 
 The tool is mainly targeted towards the development of NodeJS based lambda functions.
 It can be used to package lambda functions and it is flexible enough to support some
-of the drawbacks outlined on the previous tools.
+of the drawbacks of the previous tools. We think its drawbacks are:
 
 * Not ideal to have a nodejs based tool to build lambda functions
 * If used only for packaging, a large number of dependencies are need to orchestrate the build process (again, not ideal)
@@ -217,13 +217,15 @@ of the drawbacks outlined on the previous tools.
 
 ## Zappa
 [Zappa](https://github.com/Miserlou/Zappa) was built as a way to port WSGI based
-web frameworks to the serverless space. If you want to use `Django` or `Flask` or
-any other web framework that you're familiar with, Zappa will make it happen!
-If you don't need a large web framework in an AWS lambda, then using Zappa for the
-building of lambda functions and generation of the .zip artifact could be overkill.
+web frameworks in the serverless space. If you want to use `Django` or `Flask` or
+any other web framework that you're familiar with. Write your django app, and let
+zappa take care of creating lambda functions and API gateway endpoints for you.
 
-The feature set of Zappa is really comprehensive. Packaging is flexible
-enough, but using Zappa as a packaging tool only is a counter productive offering.
+When using zappa, the main question is: do I need an entire web framework in an AWS lambda?
+If the answer is no, then using Zappa for the building purposes is overkill.
+
+The feature set of Zappa is really comprehensive and the packaging is flexible enough
+to support plugins, custom callbacks and everything in between.
 
 * Configuration is complex (given its flexibility and large feature offering)
 * Zappa is great if you want django in a lambda. Most of the time, you don't.
