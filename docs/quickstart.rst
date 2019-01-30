@@ -51,7 +51,7 @@ most basic form a `manifest.yml` looks like:
         requirements: ./router/requirements.txt.
         include:
             - ./commonlib/common          # Include this module
-            - ./router_function/router.   # Include this module
+            - ./router_function/router    # Include this module
 
 After you run:
 
