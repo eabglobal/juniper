@@ -48,7 +48,7 @@ What is Juniper?
 ****************
 
 Juniper is a packaging tool with a with a single purpose in mind: stream and standardize
-the creation of a zip artifact for a set of lambda functions.
+the creation of a zip artifact for a set of AWS Lambda functions.
 
 As a developer working with AWS Lambda functions, the only thing you need to do
 is create a manifest file like this one:
