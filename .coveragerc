@@ -10,6 +10,6 @@ omit =
     *venv*
     *examples*
     */constants.py
-    */command_line.py
+    */cli.py
     */setup.py
     */__init__.py
