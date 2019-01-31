@@ -11,9 +11,10 @@ setup(
     entry_points={
         'console_scripts': ['juni=juniper.cli:main'],
     },
+    python_requires='>=3.4',
     test_suite="tests",
     install_requires=[
-        'click', 'click-log'
+        'click', 'click-log', 'PyYAML'
     ],
     setup_requires=["pytest-runner"],
     tests_require=["pytest"])
