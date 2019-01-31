@@ -1,5 +1,5 @@
-Juniper: Tool to package lambda functions
-=========================================
+Juniper: Package lambda functions
+=================================
 
 Juniper is a packaging tool with a with a single purpose in mind: stream and standardize
 the creation of a zip artifact for a set of AWS Lambda functions.
@@ -8,11 +8,9 @@ Packaging of python lambda functions is a problem a web developer faces when
 building web APIs using AWS services. The main issue is that the dependencies
 of the function must be included along with the business logic of the function.
 
-::
-
-    This tool does not deploy or update a lambda function in AWS. This
-    tool is used to generate a set of .zip files contaning dependencies and
-    shared libraries, which you can use to deploy a lambda function.
+This tool does **not** deploy or update a lambda function in AWS. This
+tool is used to generate a set of .zip files contaning dependencies and
+shared libraries, which you can use to deploy a lambda function.
 
 Quickstart
 **********
@@ -45,6 +43,18 @@ Build it!
     > juni build
 
 Your .zip is now in the `dist/` directory.  🎉
+
+Features
+********
+
+This list defines the entire scope of Juniper. Nothing more, nothing else.
+
+* Minimal manifest file to define packaging
+* Using docker containers as a way to install dependencies and generate the artifacts
+* Ability to tailor the requirements.txt per lambda
+* Create an individual zip artifact for multiple lambda functions
+* Ability to include shared dependencies (python modules relative to the function
+  being packaged)
 
 Contributing
 ************
