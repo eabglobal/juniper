@@ -9,7 +9,7 @@ setup(
     author_email='eabtech@eab.com',
     packages=find_packages(),
     entry_points={
-        'console_scripts': ['juni=command_line:main'],
+        'console_scripts': ['juni=juniper.cli:main'],
     },
     test_suite="tests",
     install_requires=[
