@@ -8,6 +8,7 @@ setup(
     author='EAB Tech',
     author_email='eabtech@eab.com',
     packages=find_packages(),
+    include_package_data=True,
     entry_points={
         'console_scripts': ['juni=juniper.cli:main'],
     },
