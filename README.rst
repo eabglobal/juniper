@@ -9,6 +9,7 @@ building web APIs using AWS services. The main issue is that the dependencies
 of the function must be included along with the business logic of the function.
 
 ::
+
     This tool does not deploy or update a lambda function in AWS. This
     tool is used to generate a set of .zip files contaning dependencies and
     shared libraries, which you can use to deploy a lambda function.
@@ -18,14 +19,16 @@ Quickstart
 
 With Python==3.6 and Docker installed, install juniper:
 
-    >>> git clone git@github.com:eabglobal/juniper.git
-    >>> cd juniper
-    >>> pip install -e .
+.. code-block:: text
+
+    > git clone git@github.com:eabglobal/juniper.git
+    > cd juniper
+    > pip install -e .
 
 Go to the code you are packaging and define a configuration for your
 functions, ex in `manifest.yml`:
 
-.. code:: yaml
+.. code-block:: yaml
 
     functions:
     router:                                         # Name of the lambda function (result in router.zip artifact)
@@ -37,7 +40,9 @@ functions, ex in `manifest.yml`:
 
 Build it!
 
-    >>> juni build
+.. code-block:: text
+
+    > juni build
 
 Your .zip is now in the `dist/` directory.  🎉
 
