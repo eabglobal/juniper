@@ -3,6 +3,8 @@
 Quickstart
 ==========
 
+.. image:: https://farm5.staticflickr.com/4259/35163667010_8bfcaef274_k_d.jpg
+
 Eager to get started? This page gives a good introduction on how to start
 packaging your lambda functions with juniper.
 
