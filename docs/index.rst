@@ -6,11 +6,10 @@
 Welcome to juniper's documentation!
 ===================================
 
-Welcome to Juniper's documentation. Get started with :doc:`quickstart`
-and then get an overview with the :doc:`quickstart`. There is also a
-more detailed :doc:`tutorial` that shows how to create a small but
-complete application serverless application packaged using juniper.
-Common patterns are described in the :doc:`concepts` section.
+Welcome to Juniper's documentation. Get started with :doc:`quickstart`. There is also a
+more detailed :doc:`tutorial` that shows how to package a set of lambda
+functions using juniper. Common patterns are described in the :doc:`concepts`
+section.
 
 Packaging Lambda
 ****************
