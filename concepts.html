@@ -1,0 +1,314 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3. Concepts &#8212; juniper  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="2. Tutorial" href="tutorial.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="concepts">
+<h1>3. Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h1>
+<p>Juniper is essential when generating a set of artifacts referenced by a SAM
+template and used in conjunction with cloudformation package/deploy cli commands.
+When using SAM to define the AWS resources, a developer must specify a local
+reference for the zip file containing the source code of the function.</p>
+<p>With this tool, a developer can easily generate the artifacts locally as a way to deploy
+his changes (using cloudformation commands). Additionally, the tool needs to play
+a role as a step in the CI/CD pipeline.</p>
+<p>In this page we discuss the main reasons for creating Juniper. We also provide
+a very basic survey of the tools available in the serverless space.</p>
+<div class="section" id="packaging">
+<h2>3.1. Packaging<a class="headerlink" href="#packaging" title="Permalink to this headline">¶</a></h2>
+<p>In this document, when talking about packaging a lambda function, what we’re
+referring to is the creation of a zip file as defined by the following steps:</p>
+<ol class="arabic simple">
+<li>pip install dependencies</li>
+<li>combine lambda’s code with it’s dependencies</li>
+<li>include additional local shared libraries</li>
+<li>generate a <cite>.zip</cite> artifact with these files</li>
+</ol>
+</div>
+<div class="section" id="manifest-yml">
+<h2>3.2. manifest.yml<a class="headerlink" href="#manifest-yml" title="Permalink to this headline">¶</a></h2>
+<p>For juniper to know what it needs to package, the functions as well as its
+dependent components must be defined in a <cite>.yml</cite> file. The file must include
+these pieces of information:</p>
+<ul class="simple">
+<li>name of the lambda function</li>
+<li>local path to the requirements.txt file.</li>
+<li>local path to shared code</li>
+</ul>
+<p>The manifest file definition must include the above information. The definition
+of a manifest for a single function looks like:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">functions</span><span class="p">:</span>
+
+  <span class="n">router</span><span class="p">:</span>
+    <span class="n">requirements</span><span class="p">:</span> <span class="o">./</span><span class="n">src</span><span class="o">/</span><span class="n">router</span><span class="o">/</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+    <span class="n">include</span><span class="p">:</span>
+    <span class="o">-</span> <span class="o">./</span><span class="n">src</span><span class="o">/</span><span class="n">commonlib</span><span class="o">/</span><span class="n">common</span>
+    <span class="o">-</span> <span class="o">./</span><span class="n">src</span><span class="o">/</span><span class="n">router_function</span><span class="o">/</span><span class="n">router</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="juni-build">
+<h2>3.3. juni build<a class="headerlink" href="#juni-build" title="Permalink to this headline">¶</a></h2>
+<p>The core command of Juniper. This command by default will look for a file called
+<cite>manifest.yml</cite> and it will generate a zip artifact for every function under the
+functions block.</p>
+<p>The build command uses docker compose as a way to provide a dependable and deterministic
+artifact. Using docker and docker-compose validate that the artifact generated
+in a local machine will be identical to the one generated as part of a CI/CD
+pipeline.</p>
+<p>To build a set of lambda functions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">juni</span> <span class="n">build</span>
+</pre></div>
+</div>
+<p>After executing the command, you will see an output similar to:</p>
+<img alt="_images/build_cmd.png" src="_images/build_cmd.png" />
+<p>If you would like to call the manifest file something else, you can specify the
+name of the file as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">juni</span> <span class="n">build</span> <span class="o">-</span><span class="n">m</span> <span class="n">sls</span><span class="o">.</span><span class="n">yml</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="yet-another-tool-yat">
+<h1>4. Yet Another Tool (YAT)<a class="headerlink" href="#yet-another-tool-yat" title="Permalink to this headline">¶</a></h1>
+<p>Juniper is a tool with a very well defined scope. Yes, it is another tool that
+offers a developer the flexibility to easily define what goes into the zip files
+he needs in order to deploy a lambda function. Nothing available would do, so we
+built it!</p>
+<p>Having full control of the tools a web developer uses is fundamental. While working
+in the serverless domain, a developer must choose among the multiple turn-key
+services offered by the frameworks in this domain. However, if the developer decides
+to take full control of his own stack, resources, and definitions, installing
+a framework like chalice or zappa for packaging purposes is an overkill.</p>
+<p>Also, as you will see later on in this document, these offerings fall short of
+providing a clear and straightforward answer to these business needs:</p>
+<ol class="arabic simple">
+<li>Package lambda independently</li>
+<li>Include lambdas that are not python and generate a zip for them</li>
+<li>Specify the requirements file for each lambda individually</li>
+<li>Ability to include shared libs (local imports, packages not in pypi)</li>
+</ol>
+</div>
+<div class="section" id="microservices">
+<h1>5. Microservices<a class="headerlink" href="#microservices" title="Permalink to this headline">¶</a></h1>
+<p>When building microservices as lambda functions, having a set of functions in the
+same repo is a desirable architectural proposition. This tool was born out of the
+need to build each function separately from one another.</p>
+<p>Juniper shines, when the folder structure of your microservices is as follow:</p>
+<img alt="_images/folder_structure.png" src="_images/folder_structure.png" />
+<p>As seen in the image above, each lambda function has its own module. With a folder
+structure like the one above, creating a .zip per lambda function is fundamental.
+Equally important is the ability of a tool to include shared libraries that are
+relative to the your lambdas.</p>
+<p>The shared lib could be used by the <cite>mapping_lambda</cite>, the <cite>processor</cite> lambda only.
+Being able to keep the shared lib in an independent module is standard practice.
+For our packaging purposes, we only need to include the source code of the shared
+lib only for the lambdas that depend on this functionality.</p>
+<p>The tools currently available in the serverless space do not acomodate these
+needs in a standard, straight forward way. Hence the need to use a tool like Juniper.</p>
+</div>
+<div class="section" id="tool-survey">
+<h1>6. Tool Survey<a class="headerlink" href="#tool-survey" title="Permalink to this headline">¶</a></h1>
+<p>When working with lambda functions in python, there are multiple ways to generate
+the zip artifact. As previously stated, there are four main players in the serverless
+framework space: SAM, Chalice, Zappa and the Serverless Framework. These solutions are
+very comprehensive and offer a wide range of features including building, deploying,
+spinning up local development servers, etc.</p>
+<p>Keep in mind that these offerings are either web frameworks or framework wrappers and their
+value proposition is completely different from juniper’s. A framework is a
+comprehensive offering with hundreds of features on top of packaging.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Juniper is only used for generating the artifacts required to deploy a python
+lambda function. This tool can be used in conjunction with pretty much any framework
+in the serverless space.</p>
+</div>
+<p>In the following sections, we take a look at the advantages and disadvantages of using this
+solution as compared to existing tools; as related to building <cite>.zip</cite> artifacts. Keep in
+mind that this is not a comprehensive review of each offering, however, these sections
+are meant to show the capabilities and downsides of each tool as it relates to packaging
+lambda functions.</p>
+<div class="section" id="serverless-application-model-sam">
+<h2>6.1. Serverless Application Model (SAM)<a class="headerlink" href="#serverless-application-model-sam" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://aws.amazon.com/serverless/sam/">SAM</a> is the standard used to define serverless applications in the AWS ecosystem.
+SAM can also be used to build package and deploy lambda functions. Using this
+standard to define your application is best practice.</p>
+<p>However, the drawbacks of this tool as it stands today are:</p>
+<ul class="simple">
+<li>Inability to create a single .zip artifact per function</li>
+<li>No standard way to include shared logic among multiple lambdas</li>
+<li>Heavy reliance on the sam.yml template (not a bad thing in its own way)</li>
+</ul>
+<p>If SAM were to support these three features, there would be absolutely no need for
+juniper to exist. For the use cases in which these features are <strong>NOT</strong> a necessity,
+it is recommended to use SAM for building the .zip artifact.</p>
+</div>
+<div class="section" id="chalice">
+<h2>6.2. Chalice<a class="headerlink" href="#chalice" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://github.com/aws/chalice">Chalice</a> is a microframework built by an AWS team with two goals in mind:
+to have a very small footprint, and to streamline the development of serverless
+APIs. For several use cases, the offerings and features of Chalice are
+sufficient.  However, as a serverless project evolves, its requirements
+and expectations evolve with the project and Chalice starts falling short.</p>
+<ul class="simple">
+<li>Inability to create a single .zip artifact per function</li>
+<li>Packaging of multiple lambda functions accomplished by creating a single .zip artifact</li>
+<li>Very strict project structure, to fit packaging requirements (files <strong>must</strong> go here or there)</li>
+<li>It’s rather complicated to include lambdas of other runtimes (e.g. python and nodejs)</li>
+<li>Issue with third party dependencies that sometimes require the developer to include the third party library in the source code (<cite>vendor</cite> folder).</li>
+</ul>
+<p>For POC projects and as a way to get an API up and running in no time with very
+little concern on infrastructure, Chalice is a fantastic offering. However, as
+your project evolves, and the need to have more flexibility in terms of packaging,
+chalice will fall short.</p>
+</div>
+<div class="section" id="serverless-framework">
+<h2>6.3. Serverless Framework<a class="headerlink" href="#serverless-framework" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://serverless.com/">Serverless</a> is a really comprehensive offering. It’s lightweight and it
+streamlines the build, configuration and deployment process of lambda functions.
+It has the support of a large community, it rapidly evolves given its
+plug-in architecture, and it offers a large set of features to get a developer
+up and running quickly and effectively.</p>
+<p>The tool is mainly targeted towards the development of <strong>NodeJS</strong> based lambda functions.
+It can be used to package lambda functions and it is flexible enough to support some
+of the drawbacks of the previous tools. We think its drawbacks are:</p>
+<ul class="simple">
+<li>Not ideal to have a nodejs based tool to build lambda functions</li>
+<li>If used only for packaging, a large number of dependencies are need to orchestrate
+the build process (again, not ideal)</li>
+<li>Inability to include local shared libraries in the package of individual functions</li>
+</ul>
+</div>
+<div class="section" id="zappa">
+<h2>6.4. Zappa<a class="headerlink" href="#zappa" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://github.com/Miserlou/Zappa">Zappa</a> was built as a way to port WSGI based web frameworks in the serverless
+space. If you want to use <cite>Django</cite> or <cite>Flask</cite> or any other web framework that
+you’re familiar with. Write your django app, and let zappa take care of creating
+lambda functions and API gateway endpoints for you.</p>
+<p>When using zappa, the main question is: do I need an entire web framework in an AWS lambda?
+If the answer is no, then using Zappa might not be appropriate for your use case.</p>
+<p>The feature set of Zappa is really comprehensive and the packaging is flexible enough
+to support plugins, custom callbacks and everything in between.</p>
+<ul class="simple">
+<li>Configuration is complex (given its flexibility and large feature offering)</li>
+<li>Zappa is great if you want django in a lambda. Most of the time, you don’t.</li>
+<li>Not trivial to create a .zip per lambda including shared code</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">juniper</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">1. Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">2. Tutorial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#packaging">3.1. Packaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manifest-yml">3.2. manifest.yml</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#juni-build">3.3. juni build</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#yet-another-tool-yat">4. Yet Another Tool (YAT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#microservices">5. Microservices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#tool-survey">6. Tool Survey</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#serverless-application-model-sam">6.1. Serverless Application Model (SAM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#chalice">6.2. Chalice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#serverless-framework">6.3. Serverless Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#zappa">6.4. Zappa</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="tutorial.html" title="previous chapter">2. Tutorial</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, EAB Tech Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/concepts.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
