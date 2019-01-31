@@ -27,7 +27,7 @@ functions:
   router:                                         # Name of the lambda function (result in router.zip artifact)
     requirements: ./src/router/requirements.txt.  # Path to reqs file
     include:
-      - ./src/eablib/eab                          # Path for inclusion in code
+      - ./src/commonlib/mylib                     # Path for inclusion in code
       - ./src/router_function/router.             # Path for inclusion in code
 ```
 
@@ -36,3 +36,22 @@ Build it!
     >>> juni build
 
 Your .zip is now in the `dist/` directory.  🎉
+
+Contributing
+------------
+
+For guidance on setting up a development environment and how to make a
+contribution to Juniper, see the `contributing guidelines`_.
+
+.. _contributing guidelines: https://github.com/eabglobal/juniper/blob/master/CONTRIBUTING.rst
+
+Links
+-----
+
+* Documentation: https://eabglobal.github.io/juniper/
+* License: `BSD <https://github.com/eabglobal/juniper/blob/master/LICENSE>`_
+* Code: https://github.com/eabglobal/juniper
+* Issue tracker: https://github.com/eabglobal/juniper/issues
+* Test status:
+
+  * Linux, Mac: https://circleci.com/gh/eabglobal/juniper
