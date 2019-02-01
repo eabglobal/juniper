@@ -68,7 +68,7 @@ Links
 *****
 
 * Documentation: https://eabglobal.github.io/juniper/
-* License: `BSD`_
+* License: `Apache Software License`_
 
 * Code: https://github.com/eabglobal/juniper
 * Issue tracker: https://github.com/eabglobal/juniper/issues
@@ -76,4 +76,4 @@ Links
 
   * Linux, Mac: https://circleci.com/gh/eabglobal/juniper
 
-.. _BSD: https://github.com/eabglobal/juniper/blob/master/LICENSE
+.. _Apache Software License: https://github.com/eabglobal/juniper/blob/master/LICENSE
