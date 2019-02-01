@@ -140,3 +140,40 @@ all dependencies are installed.
 - ``make test`` runs the basic test suite with ``pytest``
 - ``make cov`` runs the basic test suite with ``coverage``
 - ``make docs`` builds the HTML documentation
+
+
+Deploying
+=========
+
+For project owners!
+
+To deploy juniper to pypi, make sure you first update the changes.rst file with
+a set of release notes as well as the date in which the project is to be deployed.
+After the file is updated:
+
+    >>> make release
+
+The make release will update the version of the project, it will tag the branch
+in git and it will run the `python setup sdist`. Then to upload juniper to the
+index:
+
+    >>> python setup.py sdist upload
+
+Also note that to deploy juniper to pypi you need to have a `.pypirc` file defined.
+The file should look like:
+
+.. code-block: text
+    [distutils]
+    index-servers =
+        pypi
+
+    [pypi]
+    repository: https://pypi.python.org/pypi
+    username: <username>
+    password: <password>
+
+The above command will requires username and password credentials to the package.
+However, if you want to deploy your own version of it, you can always use the
+`testing index`_.
+
+.. _testing index: https://packaging.python.org/tutorials/packaging-projects/
