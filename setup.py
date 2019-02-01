@@ -8,7 +8,6 @@ with open("README.rst", "r") as fh:
 setup(
     name="juniper",
     version='0.1.0',
-    description='',
     author='EAB Tech',
     author_email='eabtech@eab.com',
     description="Tool to streamline the build of python lambda functions.",
