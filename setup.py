@@ -11,7 +11,7 @@ setup(
     description='',
     author='EAB Tech',
     author_email='eabtech@eab.com',
-    description="Tool to streamline the build of python lambda functions."
+    description="Tool to streamline the build of python lambda functions.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
