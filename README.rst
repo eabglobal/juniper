@@ -19,9 +19,7 @@ With Python==3.6 and Docker installed, install juniper:
 
 .. code-block:: text
 
-    > git clone git@github.com:eabglobal/juniper.git
-    > cd juniper
-    > pip install -e .
+    > pip install juniper
 
 Go to the code you are packaging and define a configuration for your
 functions, ex in `manifest.yml`:
