@@ -1,6 +1,21 @@
 Juniper: Package lambda functions
 =================================
 
+Generic
+-------
+
+|Generic badge|
+
+.. code:: rst
+
+    |Generic badge|
+
+    .. |Generic badge| image:: https://img.shields.io/badge/<SUBJECT>-<STATUS>-<COLOR>.svg
+       :target:
+
+
+
+
 .. code:: rst
 
     |Circle badge|
