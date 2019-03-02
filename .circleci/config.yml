@@ -40,7 +40,6 @@ jobs:
             . venv/bin/activate
             python -m pytest --cov .
             coverage report --fail-under=90
-            coverage-badge -o coverage.svg
 
       - run:
           name: run linting
