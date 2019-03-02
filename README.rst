@@ -3,13 +3,10 @@ Juniper: Package lambda functions
 
 .. code:: rst
 
+    |Circle badge|
+
     .. |Circle| image:: https://circleci.com/gh/eabglobal/juniper/tree/master.svg?style=svg
         :target: https://circleci.com/gh/eabglobal/juniper/tree/master
-
-    .. |PyPI version juniper| image:: https://img.shields.io/pypi/v/juniper.svg
-        :target: https://pypi.org/project/juniper/
-
-    .. |Apache License| image:: https://img.shields.io/github/license/eabglobal/juniper.svg
 
 
 Juniper is a packaging tool with a with a single purpose in mind: stream and standardize
