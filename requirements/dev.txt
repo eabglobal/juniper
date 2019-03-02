@@ -2,6 +2,7 @@ Click==7.0
 click-log==0.3.2
 ipdb==0.11
 coverage==4.5.1
+coverage-badge==0.2.0
 pytest==3.5.1
 pytest-mock==1.10.0
 pytest-pythonpath==0.7.2
