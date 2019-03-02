@@ -1,9 +1,6 @@
 Juniper: Package lambda functions
 =================================
 
-Generic
--------
-
 |circle| |apache license| |pypi version|
 
 Juniper is a packaging tool with a with a single purpose in mind: stream and standardize
