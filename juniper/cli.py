@@ -46,11 +46,11 @@ def build(manifest, debug):
 
     try:
         manifest_definition = reader(manifest)
-    except FileNotFoundError:
-        logger.error(f'Unable to find {manifest}.')
-    else:
         validate_manifest_definition(manifest_definition)
-        # Make sure to start the building process with a clean slate. This wil
+    except FileNotFoundError as fnf:
+        logger.error(str(fnf))
+    else:
+        # Make sure to start the building process with a clean slate. This will
         # ensures that the output folder is not included in the packaging.
         output_dir = manifest_definition.get('package', {}).get('output', DEFAULT_OUT_DIR)
         shutil.rmtree(output_dir, ignore_errors=True)
