@@ -4,20 +4,23 @@ from itertools import chain
 
 def validate_manifest_definition(manifest_definition):
     """
-    Raise errors if problems are found in the manifest file. It currently
-    checks all the include paths exist.
-    :param manifest_definition: Dict of the manifest
+    Raise errors if problems are found in the manifest file. It checks if
+    requirements and include paths exist.
+    :param manifest_definition: Dictionary of the manifest
     """
-    if missing_includes(manifest_definition):
-        raise FileNotFoundError(f'You have empty include paths: {missing_includes(manifest_definition)}')
+    if missing('requirements', manifest_definition):
+        raise FileNotFoundError('You have missing requirements files: '
+                                f'{missing("requirements", manifest_definition)}')
+    if missing('include', manifest_definition):
+        raise FileNotFoundError('You have empty include paths: '
+                                f'{missing("include", manifest_definition)}')
 
 
-def missing_includes(manifest_definition):
-    return [path for path in all_includes(manifest_definition)
-            if not Path(path).exists()]
+def missing(key, manifest_definition):
+    return [f for f in all_keys(manifest_definition, key)
+            if not Path(f).exists()]
 
 
-def all_includes(manifest_definition):
-    return chain.from_iterable(
-            function['include']
-            for function in manifest_definition['functions'].values())
+def all_keys(manifest_definition, key):
+    result = [function[key] for function in manifest_definition['functions'].values()]
+    return result if isinstance(result[0], str) else chain.from_iterable(result)

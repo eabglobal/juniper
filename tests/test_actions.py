@@ -16,12 +16,9 @@
 
 import json
 
-import pytest
-
 from juniper import actions
 from unittest.mock import MagicMock
 from juniper.io import (reader, get_artifact_path)
-from juniper.manifest import validate_manifest_definition
 
 
 logger = MagicMock()
@@ -142,19 +139,6 @@ def test_build_compose_section_custom_output():
         for volume in as_json['volumes'].split('\n')
         if custom_output_dir in volume
     ])
-
-
-def test_source_in_manifest_does_not_exist_notifies_dev():
-    manifest_definition = {'package': {'output': './build'},
-                           'functions': {'sample': {'requirements': './requirements.txt',
-                                                    'include': ['./']},
-                                         'another': {'requirements': './requirements.txt',
-                                                     'include': ['./idontexist']}}}
-
-    with pytest.raises(FileNotFoundError) as e:
-        validate_manifest_definition(manifest_definition)
-
-    assert str(e.value) == "You have empty include paths: ['./idontexist']"
 
 
 def read_expectation(file_name):
