@@ -1,7 +1,7 @@
 Juniper: Package lambda functions
 =================================
 
-|circle| |coverage| |pypi version| |apache license|
+|circle| |pypi version| |apache license|
 
 Juniper is a packaging tool with a with a single purpose in mind: stream and standardize
 the creation of a zip artifact for a set of AWS Lambda functions.
