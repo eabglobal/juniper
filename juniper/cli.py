@@ -6,6 +6,8 @@ import logging
 from juniper.io import reader
 from juniper.constants import DEFAULT_OUT_DIR
 from juniper.actions import build_artifacts
+from juniper.manifest import validate_manifest_definition
+
 
 logger = logging.getLogger(__name__)
 click_log.basic_config(logger)
@@ -44,9 +46,10 @@ def build(manifest, debug):
 
     try:
         manifest_definition = reader(manifest)
-    except FileNotFoundError as fe:
+    except FileNotFoundError:
         logger.error(f'Unable to find {manifest}.')
     else:
+        validate_manifest_definition(manifest_definition)
         # Make sure to start the building process with a clean slate. This wil
         # ensures that the output folder is not included in the packaging.
         output_dir = manifest_definition.get('package', {}).get('output', DEFAULT_OUT_DIR)
