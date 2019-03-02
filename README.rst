@@ -4,24 +4,11 @@ Juniper: Package lambda functions
 Generic
 -------
 
-|Generic badge|
-
-.. code:: rst
-
-    |Generic badge|
-
-    .. |Generic badge| image:: https://img.shields.io/badge/<SUBJECT>-<STATUS>-<COLOR>.svg
-       :target:
+|circle| |apache| |pypi|
 
 
-
-
-.. code:: rst
-
-    |Circle badge|
-
-    .. |Circle| image:: https://circleci.com/gh/eabglobal/juniper/tree/master.svg?style=svg
-        :target: https://circleci.com/gh/eabglobal/juniper/tree/master
+.. |circle| image:: https://circleci.com/gh/eabglobal/juniper/tree/master.svg?style=svg
+    :target: https://circleci.com/gh/eabglobal/juniper/tree/master
 
 
 Juniper is a packaging tool with a with a single purpose in mind: stream and standardize
