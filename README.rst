@@ -1,9 +1,14 @@
 Juniper: Package lambda functions
 =================================
 
-[![CircleCI](https://circleci.com/gh/eabglobal/juniper/tree/master.svg?style=svg)](https://circleci.com/gh/eabglobal/juniper/tree/master)
-![Apache-2.0](https://img.shields.io/github/license/eabglobal/juniper.svg)
-![PyPI version](https://img.shields.io/pypi/v/juniper.svg)
+.. |Circle| image:: https://circleci.com/gh/eabglobal/juniper/tree/master.svg?style=svg
+   :target: https://circleci.com/gh/eabglobal/juniper/tree/master
+
+.. |PyPI version juniper| image:: https://img.shields.io/pypi/v/juniper.svg
+   :target: https://pypi.org/project/juniper/
+
+.. |Apache License| image:: https://img.shields.io/github/license/eabglobal/juniper.svg
+
 
 Juniper is a packaging tool with a with a single purpose in mind: stream and standardize
 the creation of a zip artifact for a set of AWS Lambda functions.
