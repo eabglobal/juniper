@@ -14,11 +14,12 @@
     limitations under the License.
 """
 
-
 import json
+
 from juniper import actions
 from unittest.mock import MagicMock
 from juniper.io import (reader, get_artifact_path)
+
 
 logger = MagicMock()
 
@@ -141,6 +142,5 @@ def test_build_compose_section_custom_output():
 
 
 def read_expectation(file_name):
-
     with open(file_name, 'r') as f:
         return f.read()
