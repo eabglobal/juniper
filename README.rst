@@ -79,7 +79,7 @@ Links
 .. _Apache Software License: https://github.com/eabglobal/juniper/blob/master/LICENSE
 
 
-.. |circle| image:: https://circleci.com/gh/eabglobal/juniper/tree/master.svg?style=svg
+.. |circle| image:: https://circleci.com/gh/eabglobal/juniper/tree/master.svg?style=shield
     :target: https://circleci.com/gh/eabglobal/juniper/tree/master
 
 .. |pypi version| image:: https://img.shields.io/pypi/v/juniper.svg
