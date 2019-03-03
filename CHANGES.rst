@@ -3,8 +3,8 @@
 Juniper Changelog
 ===============
 
-Version 0.1
------------
+Version 0.2.1
+-------------
 
 Released on March 2nd 2019, codename Izzi
 
