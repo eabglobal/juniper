@@ -36,8 +36,19 @@ gh-pages:
 
 
 
+# release:
+# 	python scripts/make-release.py
+
 release:
-	python scripts/make-release.py
+	python3 setup.py sdist bdist_wheel
+	twine check dist/*
+	twine upload dist/*
+
+test-release:
+	python3 setup.py sdist bdist_wheel
+	twine check dist/*
+	python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
 
 clean-pyc:
 	find . -name '*.pyc' -exec rm -f {} +

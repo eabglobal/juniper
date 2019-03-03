@@ -87,6 +87,3 @@ Links
 
 .. |apache license| image:: https://img.shields.io/github/license/eabglobal/juniper.svg
     :target: https://github.com/eabglobal/juniper/blob/master/LICENSE
-
-.. |coverage| image: https://raw.githubusercontent.com/eabglobal/juniper/feature/badges/coverage.svg
-    :target: https://circleci.com/gh/eabglobal/juniper/tree/master
