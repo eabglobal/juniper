@@ -20,6 +20,7 @@ from juniper.manifest import validate_manifest_definition
 
 
 def test_source_in_manifest_does_not_exist_notifies_dev():
+
     manifest_definition = {'package': {'output': './build'},
                            'functions': {'sample': {'requirements': './requirements/dev.txt',
                                                     'include': ['./']},
@@ -33,6 +34,10 @@ def test_source_in_manifest_does_not_exist_notifies_dev():
 
 
 def test_requirements_in_manifest_does_not_exist_notifies_dev():
+    """
+    If the requirements field has a value, the files it points to, must be valid.
+    """
+
     manifest_definition = {'package': {'output': './build'},
                            'functions': {'sample': {'requirements': './idontexist.txt',
                                                     'include': ['./']},
@@ -43,3 +48,33 @@ def test_requirements_in_manifest_does_not_exist_notifies_dev():
         validate_manifest_definition(manifest_definition)
 
     assert str(e.value) == "You have missing requirements files: ['./idontexist.txt']"
+
+
+def test_requirements_not_a_required_field():
+    """
+    A requirements file is NOT required! If it is ommited from the manifest file,
+    do nothing.
+    """
+
+    manifest_definition = {'package': {'output': './build'},
+                           'functions': {'sample': {'include': ['./']},
+                                         'another': {'requirements': './requirements/dev.txt',
+                                                     'include': ['./']}}}
+
+    validate_manifest_definition(manifest_definition)
+    assert True
+
+
+def test_include_section_is_required():
+    """
+    Test with missing requirements section (valid) and a misspell on the includes.
+    """
+
+    manifest_definition = {'package': {'output': './build'},
+                           'functions': {'sample': {'includes': ['./']},
+                                         'another': {'requirements': './requirements/dev.txt',
+                                                     'include': ['./']}}}
+    with pytest.raises(FileNotFoundError) as e:
+        validate_manifest_definition(manifest_definition)
+
+    assert len(str(e))
