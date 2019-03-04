@@ -25,7 +25,7 @@ def validate_manifest_definition(manifest_definition):
     requirements and include paths exist.
     :param manifest_definition: Dictionary of the manifest
     """
-    if missing('requirements', manifest_definition):
+    if missing('requirements', manifest_definition, optional=True):
         raise FileNotFoundError('You have missing requirements files: '
                                 f'{missing("requirements", manifest_definition)}')
     if missing('include', manifest_definition):
@@ -33,15 +33,19 @@ def validate_manifest_definition(manifest_definition):
                                 f'{missing("include", manifest_definition)}')
 
 
-def missing(key, manifest_definition):
+def missing(key, manifest_definition, optional=False):
     """
     Return all file paths from the key of the manifest that don't exist.
     :param key: A key in the manifest_definitions functions dictionary
     :param manifest_definition: Dictionary of the manifest
     :return: Dictionary of all paths or files that don't exist
     """
-    return [f for f in all_keys(manifest_definition, key)
-            if not Path(f).exists()]
+
+    try:
+        return [f for f in all_keys(manifest_definition, key)
+                if not Path(f).exists()]
+    except KeyError as ke:
+        return [] if optional else [key]
 
 
 def all_keys(manifest_definition, key):
@@ -51,5 +55,6 @@ def all_keys(manifest_definition, key):
     :param key: A key in the manifest_definitions functions dictionary
     :return: All paths specified for that key in the manifest file
     """
+
     result = [function[key] for function in manifest_definition['functions'].values()]
     return result if isinstance(result[0], str) else chain.from_iterable(result)
