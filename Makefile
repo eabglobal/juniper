@@ -40,11 +40,13 @@ gh-pages:
 # 	python scripts/make-release.py
 
 release:
+	rm -rf ./dist
 	python3 setup.py sdist bdist_wheel
 	twine check dist/*
 	twine upload dist/*
 
 test-release:
+	rm -rf ./dist
 	python3 setup.py sdist bdist_wheel
 	twine check dist/*
 	python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
