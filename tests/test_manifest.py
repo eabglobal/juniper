@@ -65,10 +65,9 @@ def test_requirements_not_a_required_field():
     assert True
 
 
-def test_includes_section_is_a_required():
+def test_include_section_is_required():
     """
-    A requirements file is NOT required! If it is ommited from the manifest file,
-    do nothing.
+    Test with missing requirements section (valid) and a misspell on the includes.
     """
 
     manifest_definition = {'package': {'output': './build'},
