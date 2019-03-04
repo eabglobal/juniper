@@ -35,9 +35,12 @@ def validate_manifest_definition(manifest_definition):
 
 def missing(key, manifest_definition, optional=False):
     """
-    Return all file paths from the key of the manifest that don't exist.
+    Return all file paths from the key of the manifest that don't exist. Optional
+    parameter still does validation when defined.
     :param key: A key in the manifest_definitions functions dictionary
     :param manifest_definition: Dictionary of the manifest
+    :param optional: Identifies the key as being required or not. A required key
+      will return a missing value array.
     :return: Dictionary of all paths or files that don't exist
     """
 
