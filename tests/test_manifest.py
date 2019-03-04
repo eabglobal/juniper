@@ -78,4 +78,4 @@ def test_includes_section_is_a_required():
     with pytest.raises(FileNotFoundError) as e:
         validate_manifest_definition(manifest_definition)
 
-    assert True
+    assert len(str(e))
