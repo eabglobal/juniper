@@ -15,10 +15,11 @@
 """
 
 import json
+import yaml
 
-from juniper import actions
+from juniper import actions, constants
 from unittest.mock import MagicMock
-from juniper.io import (reader, get_artifact_path)
+from juniper.io import (reader, get_artifact_path, get_artifact)
 
 
 logger = MagicMock()
@@ -34,14 +35,32 @@ def test_build_compose_sections():
     as well as well as the command to invoke when docker-compose is invoked.
     """
 
-    processor_ctx = reader('./tests/processor-test.yml')
+    processor_ctx = reader('./tests/manifests/processor-test.yml')
     result = actions._get_compose_sections(processor_ctx)
 
     # The fully converted docker-compose.yml file as created by the action.
-    expected = read_expectation('./tests/expectations/processor-sections.yml')
+    expected = read_file('./tests/expectations/processor-sections.yml')
 
     assert result == expected
 
+
+def test_build_compose_image_override():
+    """
+    Using the processor-test as a sample definition of the lambda functions to
+    be packaged. Make sure that the resources portion of the file is correctly
+    generated.
+
+    The sections portion of the file, takes into account the volume mappings
+    as well as well as the command to invoke when docker-compose is invoked.
+    """
+
+    processor_ctx = reader('./tests/manifests/processor-test.yml')
+    result = actions._get_compose_sections(processor_ctx)
+
+    # The fully converted docker-compose.yml file as created by the action.
+    expected = read_file('./tests/expectations/processor-sections.yml')
+
+    assert result == expected
 
 def test_build_compose_writes_compose_definition_to_tmp_file(mocker):
     """
@@ -53,10 +72,10 @@ def test_build_compose_writes_compose_definition_to_tmp_file(mocker):
     tmp_filename = '/var/folders/xw/yk2rrhks1w72y0zr_7t7b851qlt8b3/T/tmp52bd77s3'
     mock_writer = mocker.patch('juniper.actions.write_tmp_file', return_value=tmp_filename)
 
-    processor_ctx = reader('./tests/processor-test.yml')
+    processor_ctx = reader('./tests/manifests/processor-test.yml')
     actual_filename = actions.build_compose(logger, processor_ctx)
 
-    expected = read_expectation('./tests/expectations/processor-compose.yml')
+    expected = read_file('./tests/expectations/processor-compose.yml')
 
     assert tmp_filename == actual_filename
     assert mock_writer.call_args[0][0] == expected
@@ -84,7 +103,7 @@ def test_build_artifacts_invokes_docker_commands(mocker):
         mocker.call(["docker-compose", "-f", tmp_filename, '--project-directory', '.', 'up'])
     ]
 
-    processor_ctx = reader('./tests/processor-test.yml')
+    processor_ctx = reader('./tests/manifests/processor-test.yml')
     actions.build_artifacts(logger, processor_ctx)
 
     mock_subprocess_run.assert_has_calls(compose_cmd_calls)
@@ -110,7 +129,7 @@ def test_build_artifacts_copies_scriopts(mocker):
     mock_shutil = mocker.patch('juniper.actions.shutil')
     mocker.patch('juniper.actions.subprocess.run')
 
-    processor_ctx = reader('./tests/processor-test.yml')
+    processor_ctx = reader('./tests/manifests/processor-test.yml')
     actions.build_artifacts(logger, processor_ctx)
 
     # Validate that this three step process is correctly executed.
@@ -128,19 +147,19 @@ def test_build_compose_section_custom_output():
 
     sls_function = {}
     custom_output_dir = './build_not_dist'
-    template = '"function_name": "{name}", "volumes": "{volumes}"'
+    template = get_artifact('compose_entry.yml')
     context = {'package': {'output': custom_output_dir}}
 
     result = actions._build_compose_section(context, template, 'test_func', sls_function)
-    as_json = json.loads('{' + result.replace('\n', '\\n') + '}')
+    yaml_result = yaml.load(result)
 
     assert len([
         volume.strip()
-        for volume in as_json['volumes'].split('\n')
+        for volume in yaml_result['test_func-lambda']['volumes']
         if custom_output_dir in volume
     ])
 
 
-def read_expectation(file_name):
+def read_file(file_name):
     with open(file_name, 'r') as f:
         return f.read()

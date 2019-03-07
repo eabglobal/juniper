@@ -17,7 +17,7 @@
 import os
 import shutil
 import subprocess
-from juniper.constants import DEFAULT_OUT_DIR
+from juniper.constants import DEFAULT_OUT_DIR, DEFAULT_DOCKER_IMAGE
 from juniper.io import (get_artifact, write_tmp_file, get_artifact_path)
 
 
@@ -119,4 +119,7 @@ def _build_compose_section(ctx, template, name, sls_function):
     if reqs_path:
         volumes.append(f'      - {reqs_path}:/var/task/common/requirements.txt')
 
-    return template.format(name=name, volumes='\n'.join(volumes))
+    return template.format(
+        name=name,
+        docker_image=DEFAULT_DOCKER_IMAGE,
+        volumes='\n'.join(volumes))

@@ -1,0 +1,16 @@
+global:
+  image: python:3.6-alpine
+  include:
+    - ./src/common/constants.py
+  requirements: ./src/requirements.txt
+
+functions:
+  edge:
+    image: python:3.8-alpine
+    requirements: ./src/edge/requirements.txt
+    include:
+      - ./src/edge/
+
+  sequential-worker:
+    include:
+      - ./src/worker/sequential_worker

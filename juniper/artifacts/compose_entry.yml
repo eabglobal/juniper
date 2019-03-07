@@ -1,5 +1,5 @@
   {name}-lambda:
-    image: lambci/lambda:build-python3.6
+    image: {docker_image}
     environment:
       - AWS_DEFAULT_REGION=us-east-1
     volumes:
