@@ -30,8 +30,7 @@ Juniper is a packaging tool with a with a single purpose in mind: standardize
 the creation of a zip artifact for a set of AWS Lambda functions.
 
 To package a lambda function you must create a manifest file. This file tells juniper
-what it needs to include in the artifact. The definition of a single function looks
-like this:
+what to include in the artifact. The definition of a single function looks like this:
 
 .. code:: yaml
 
@@ -60,8 +59,8 @@ With SAM
 ********
 
 If you are working with lambda functions, chances are that you are using a `SAM`_
-template as a way to define your serverless application. A SAM templates is used
-to define a set of AWS resources. This is the definition of a lambda function:
+template as a way to define your AWS serverless resources. The definition of
+a SAM template for a python lambda function looks like this:
 
 .. code:: yaml
 
