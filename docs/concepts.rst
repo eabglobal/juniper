@@ -1,5 +1,3 @@
-.. _concepts
-
 Concepts
 ========
 
@@ -75,8 +73,8 @@ name of the file as follows:
 
     >>> juni build -m sls.yml
 
-Yet Another Tool (YAT)
-======================
+Lambda Build Tool
+=================
 
 Juniper is a tool with a very well defined scope. Yes, it is another tool that
 offers a developer the flexibility to easily define what goes into the zip files
