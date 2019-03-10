@@ -5,7 +5,7 @@ import logging
 
 from juniper.io import reader
 from juniper.constants import DEFAULT_OUT_DIR
-from juniper.actions import build_artifacts
+from juniper.actions import build_artifacts, local_build
 from juniper.manifest import validate_manifest_definition
 
 
@@ -55,7 +55,8 @@ def build(manifest, debug):
         output_dir = manifest_definition.get('package', {}).get('output', DEFAULT_OUT_DIR)
         shutil.rmtree(output_dir, ignore_errors=True)
 
-        build_artifacts(logger, manifest_definition)
+        # build_artifacts(logger, manifest_definition)
+        local_build(logger, manifest_definition)
 
 
 if __name__ == '__main__':

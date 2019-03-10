@@ -17,8 +17,24 @@
 import os
 import shutil
 import subprocess
-from juniper.constants import DEFAULT_OUT_DIR
+import tempfile
+from juniper.constants import DEFAULT_OUT_DIR, DEFAULT_DOCKER_IMAGE
 from juniper.io import (get_artifact, write_tmp_file, get_artifact_path)
+
+
+def local_build(logger, ctx):
+
+    for name, sls_function in ctx.get('functions', {}).items():
+        logger.debug(f'Packaging {name}')
+
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            logger.debug(f'Created temporary directory: {tmpdirname}')
+            shutil.copy(get_artifact_path('package.sh'), tmpdirname)
+
+            os.mkdir(os.path.join(tmpdirname, 'common'))
+            # Copy requirements
+            if sls_function.get('requirements'):
+                shutil.copy(sls_function.get('requirements'), tmpdirname)
 
 
 def build_artifacts(logger, ctx):
