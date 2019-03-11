@@ -15,26 +15,42 @@
 """
 
 import os
+import stat
+
 import shutil
 import subprocess
 import tempfile
-from juniper.constants import DEFAULT_OUT_DIR, DEFAULT_DOCKER_IMAGE
+from juniper.constants import DEFAULT_OUT_DIR
 from juniper.io import (get_artifact, write_tmp_file, get_artifact_path)
 
 
 def local_build(logger, ctx):
 
-    for name, sls_function in ctx.get('functions', {}).items():
-        logger.debug(f'Packaging {name}')
+    cwd = os.getcwd()
+    for function_name, sls_function in ctx.get('functions', {}).items():
+        logger.debug(f'Packaging {function_name}')
 
         with tempfile.TemporaryDirectory() as tmpdirname:
             logger.debug(f'Created temporary directory: {tmpdirname}')
             shutil.copy(get_artifact_path('package.sh'), tmpdirname)
+            st = os.stat(os.path.join(tmpdirname, 'package.sh'))
+            os.chmod(os.path.join(tmpdirname, 'package.sh'), st.st_mode | stat.S_IEXEC)
 
-            os.mkdir(os.path.join(tmpdirname, 'common'))
+            common_path = os.path.join(tmpdirname, 'common')
+            os.mkdir(os.path.join(tmpdirname, 'dist'))
+            # os.mkdir(common_path)
             # Copy requirements
             if sls_function.get('requirements'):
                 shutil.copy(sls_function.get('requirements'), tmpdirname)
+
+            for include_section in sls_function.get('include', []):
+                logger.debug(f'about to copy: {include_section}')
+                name = include_section[include_section.rindex('/') + 1:]
+                shutil.copytree(os.path.join(cwd, include_section), os.path.join(common_path, name))
+
+            subprocess.run(['./package.sh', function_name], cwd=tmpdirname)
+            shutil.copy(os.path.join(tmpdirname, 'dist', f'{function_name}.zip'), cwd)
+            logger.debug('complete')
 
 
 def build_artifacts(logger, ctx):
