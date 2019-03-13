@@ -14,10 +14,9 @@
     limitations under the License.
 """
 
-import json
 import yaml
 
-from juniper import actions, constants
+from juniper import actions
 from unittest.mock import MagicMock
 from juniper.io import (reader, get_artifact_path, get_artifact)
 
@@ -61,6 +60,7 @@ def test_build_compose_image_override():
     expected = read_file('./tests/expectations/processor-sections.yml')
 
     assert result == expected
+
 
 def test_build_compose_writes_compose_definition_to_tmp_file(mocker):
     """
