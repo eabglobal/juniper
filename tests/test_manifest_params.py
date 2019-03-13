@@ -14,12 +14,11 @@
     limitations under the License.
 """
 
-import json
 import yaml
 
 from juniper import actions, constants
 from unittest.mock import MagicMock
-from juniper.io import (reader, get_artifact_path, get_artifact)
+from juniper.io import (reader, get_artifact)
 
 
 logger = MagicMock()
@@ -27,18 +26,16 @@ logger = MagicMock()
 
 def test_build_compose_sections_custom_docker_images():
     """
-    Given a sample manifest file with a set of docker-image transformations,
-    validate that the building of the docker compose template produces a valid
-    template.
+    Given a sample manifest file with a set of docker-image overrides,
+    validate that when building the docker compose template, the result
+    produces a valid template.
     """
 
     docker_ctx = reader('./tests/manifests/custom-docker-images.yml')
     result = actions._get_compose_sections(docker_ctx)
 
-    # TODO: Create the expected docker compose template to validate that the entire
-    # manifest correctly created a valid docker-compose file.
-    # expected = read_file('./tests/expectations/custom-docker-images.yml')
-    # assert result == expected
+    expected = read_file('./tests/expectations/custom-docker-images.yml')
+    assert result == expected
 
 
 def test_get_docker_image_default():

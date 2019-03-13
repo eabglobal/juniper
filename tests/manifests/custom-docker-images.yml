@@ -6,7 +6,7 @@ global:
 
 functions:
   edge:
-    image: python:3.8-alpine
+    image: python:3.8
     requirements: ./src/edge/requirements.txt
     include:
       - ./src/edge/
