@@ -1,7 +1,8 @@
 global:
   image: python:3.6-alpine
   include:
-    - ./src/common/constants.py
+    - ./src/libs/
+    - ./src/common/
   requirements: ./src/requirements.txt
 
 functions:

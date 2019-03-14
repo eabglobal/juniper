@@ -80,11 +80,30 @@ def test_get_docker_image_funcion_level_override():
     assert yaml_result['test_func-lambda']['image'] == 'python:3.8-alpine'
 
 
-def test_get_docker_image_funcion_precedence():
+def test_get_docker_image_function_precedence():
 
     sls_function = {'image': 'python:3.8-alpine'}
     template = get_artifact('compose_entry.yml')
     context = {'global': {'image': 'python:ignore_me'}}
+
+    result = actions._build_compose_section(context, template, 'test_func', sls_function)
+    yaml_result = yaml.load(result)
+
+    assert yaml_result['test_func-lambda']['image'] == 'python:3.8-alpine'
+
+
+# Global include
+
+def test_build_with_global_include():
+
+    sls_function = {}
+    context = {'global': {
+        'image': 'python:3.6-alpine',
+        'include': ['./src/libs/', './src/common/'],
+        'requirements': './src/requirements.txt'}
+    }
+
+    template = get_artifact('compose_entry.yml')
 
     result = actions._build_compose_section(context, template, 'test_func', sls_function)
     yaml_result = yaml.load(result)
