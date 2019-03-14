@@ -1,3 +1,7 @@
+version: '3.6'
+
+services:
+
   edge-lambda:
     image: python:3.8
     environment:

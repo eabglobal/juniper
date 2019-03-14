@@ -34,13 +34,13 @@ def test_build_compose_sections():
     as well as well as the command to invoke when docker-compose is invoked.
     """
 
-    processor_ctx = reader('./tests/manifests/processor-test.yml')
-    result = actions._get_compose_sections(processor_ctx)
+    manifest = reader('./tests/manifests/processor-test.yml')
+    result = actions._get_compose_template(manifest)
 
     # The fully converted docker-compose.yml file as created by the action.
     expected = read_file('./tests/expectations/processor-sections.yml')
 
-    assert result == expected
+    assert yaml.load(result) == yaml.load(expected)
 
 
 def test_build_compose_image_override():
@@ -54,12 +54,11 @@ def test_build_compose_image_override():
     """
 
     processor_ctx = reader('./tests/manifests/processor-test.yml')
-    result = actions._get_compose_sections(processor_ctx)
+    result = actions._get_compose_template(processor_ctx)
 
     # The fully converted docker-compose.yml file as created by the action.
     expected = read_file('./tests/expectations/processor-sections.yml')
-
-    assert result == expected
+    assert yaml.load(result) == yaml.load(expected)
 
 
 def test_build_compose_writes_compose_definition_to_tmp_file(mocker):
@@ -78,7 +77,7 @@ def test_build_compose_writes_compose_definition_to_tmp_file(mocker):
     expected = read_file('./tests/expectations/processor-compose.yml')
 
     assert tmp_filename == actual_filename
-    assert mock_writer.call_args[0][0] == expected
+    assert yaml.load(mock_writer.call_args[0][0]) == yaml.load(expected)
 
 
 def test_build_artifacts_invokes_docker_commands(mocker):
@@ -147,15 +146,17 @@ def test_build_compose_section_custom_output():
 
     sls_function = {}
     custom_output_dir = './build_not_dist'
-    template = get_artifact('compose_entry.yml')
-    context = {'package': {'output': custom_output_dir}}
+    manifest = {
+        'package': {'output': custom_output_dir},
+        'functions': {'test_func': {}}
+    }
 
-    result = actions._build_compose_section(context, template, 'test_func', sls_function)
+    result = actions._get_compose_template(manifest)
     yaml_result = yaml.load(result)
 
     assert len([
         volume.strip()
-        for volume in yaml_result['test_func-lambda']['volumes']
+        for volume in yaml_result['services']['test_func-lambda']['volumes']
         if custom_output_dir in volume
     ])
 

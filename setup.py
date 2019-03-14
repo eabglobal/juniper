@@ -33,7 +33,7 @@ setup(
     python_requires='>=3.4',
     test_suite="tests",
     install_requires=[
-        'click', 'click-log', 'PyYAML'
+        'click', 'click-log', 'PyYAML', 'Jinja2'
     ],
     setup_requires=["pytest-runner"],
     tests_require=["pytest"],

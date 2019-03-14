@@ -1,7 +1,0 @@
-  {name}-lambda:
-    image: {docker_image}
-    environment:
-      - AWS_DEFAULT_REGION=us-east-1
-    volumes:
-{volumes}
-    command: sh /var/task/bin/package.sh {name}
