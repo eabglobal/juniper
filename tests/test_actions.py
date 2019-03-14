@@ -18,7 +18,7 @@ import yaml
 
 from juniper import actions
 from unittest.mock import MagicMock
-from juniper.io import (reader, get_artifact_path, get_artifact)
+from juniper.io import reader, get_artifact_path
 
 
 logger = MagicMock()
@@ -144,7 +144,6 @@ def test_build_compose_section_custom_output():
     the custom value instead of the default dist.
     """
 
-    sls_function = {}
     custom_output_dir = './build_not_dist'
     manifest = {
         'package': {'output': custom_output_dir},

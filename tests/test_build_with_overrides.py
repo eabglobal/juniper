@@ -18,7 +18,7 @@ import yaml
 
 from juniper import actions, constants
 from unittest.mock import MagicMock
-from juniper.io import (reader, get_artifact)
+from juniper.io import reader
 
 
 logger = MagicMock()
