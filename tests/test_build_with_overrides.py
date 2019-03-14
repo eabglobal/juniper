@@ -98,7 +98,7 @@ def test_build_with_global_include():
 
     sls_function = {}
     context = {'global': {
-        'image': 'python:3.6-alpine',
+        'image': 'python:3.8-alpine',
         'include': ['./src/libs/', './src/common/'],
         'requirements': './src/requirements.txt'}
     }
