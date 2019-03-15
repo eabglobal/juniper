@@ -43,24 +43,6 @@ def test_build_compose_sections():
     assert yaml.load(result) == yaml.load(expected)
 
 
-def test_build_compose_image_override():
-    """
-    Using the processor-test as a sample definition of the lambda functions to
-    be packaged. Make sure that the resources portion of the file is correctly
-    generated.
-
-    The sections portion of the file, takes into account the volume mappings
-    as well as well as the command to invoke when docker-compose is invoked.
-    """
-
-    processor_ctx = reader('./tests/manifests/processor-test.yml')
-    result = actions._get_compose_template(processor_ctx)
-
-    # The fully converted docker-compose.yml file as created by the action.
-    expected = read_file('./tests/expectations/processor-sections.yml')
-    assert yaml.load(result) == yaml.load(expected)
-
-
 def test_build_compose_writes_compose_definition_to_tmp_file(mocker):
     """
     The docker-compose file created, is written to a tmp file. Make sure that
