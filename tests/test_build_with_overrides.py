@@ -80,26 +80,6 @@ def test_get_docker_image_function_precedence():
     assert image == 'python:3.8-alpine'
 
 
-# Global include
-
-def test_build_with_global_include():
-
-    # sls_function = {}
-    # context = {'global': {
-    #     'image': 'python:3.8-alpine',
-    #     'include': ['./src/libs/', './src/common/'],
-    #     'requirements': './src/requirements.txt'}
-    # }
-
-    # template = get_artifact('compose_entry.yml')
-
-    # result = actions._build_compose_section(context, template, 'test_func', sls_function)
-    # yaml_result = yaml.load(result)
-
-    # assert yaml_result['test_func-lambda']['image'] == 'python:3.8-alpine'
-    pass
-
-
 def read_file(file_name):
     with open(file_name, 'r') as f:
         return f.read()
