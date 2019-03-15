@@ -5,6 +5,13 @@ echo "Starting to package $1"
 mkdir lambda
 # Requirements file specified in the manifest will ALWAYS be in this path!
 requirements="common/requirements.txt"
+zip_path="$(which zip)"
+
+if [ ! $zip_path ]; then
+    echo "Unable To Package - This docker image does not have the zip command."
+    echo "Try using a docker image from lambci/lambda:build-python<py_version>"
+    exit 1
+fi
 
 if [ ! -f $requirements ]; then
     : # Do nothing! The use does not need to specify a requirements.txt file.

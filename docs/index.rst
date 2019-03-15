@@ -50,7 +50,7 @@ the zip files for your functions:
 
 Out of the box juniper will look for a definitions file called **manifest.yml**
 and it will place the generated zip files in a **./dist** directory. These are
-configurable parameters, to learn more read the :doc:`advanced`.
+configurable parameters, to learn more read the :doc:`features` section.
 
 In this example, juni will create a `./dist/processor.zip` with the dependencies defined in the
 requirements file and the contents of the ./src/commonlib and the ./src/processor.
@@ -127,4 +127,4 @@ Contents:
     quickstart.rst
     tutorial.rst
     concepts.rst
-    advanced.rst
+    features.rst
