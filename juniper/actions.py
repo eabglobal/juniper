@@ -48,8 +48,7 @@ def build_artifacts(logger, manifest):
         subprocess.run(["docker-compose", "-f", compose_fn, '--project-directory', '.', 'down'])
         subprocess.run(["docker-compose", "-f", compose_fn, '--project-directory', '.', 'up'])
     finally:
-        # shutil.rmtree('./.juni', ignore_errors=True)
-        pass
+        shutil.rmtree('./.juni', ignore_errors=True)
 
 
 def build_compose(logger, manifest):
