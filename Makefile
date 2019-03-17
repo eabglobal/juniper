@@ -27,12 +27,12 @@ docs: clean-pyc
 gh-pages:
 	git checkout gh-pages
 	rm -rf _images _sources _static
-	git checkout feature/add-sphinx
+	git checkout master docs examples assets
 	$(MAKE) -C docs html
 	mv -fv docs/_build/html/* ./
-	rm -rf assets docs examples juniper requirements scripts tests
+	rm -rf docs examples assets
 	git add -A
-	git commit -m "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" && git push origin gh-pages; git checkout feature/add-sphinx
+	git commit -m "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" && git push origin gh-pages; git checkout master
 
 # release:
 # 	python scripts/make-release.py
