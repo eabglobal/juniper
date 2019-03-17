@@ -6,6 +6,8 @@
 Welcome to juniper's documentation!
 ===================================
 
+|circle| |pypi version| |apache license|
+
 Welcome to Juniper's documentation. Get started with :doc:`quickstart`. There is also a
 more detailed :doc:`tutorial` that shows how to package a set of lambda
 functions using juniper. Common patterns are described in the :doc:`concepts`
@@ -115,6 +117,15 @@ This list defines the entire scope of Juniper.
 .. _SAM: https://github.com/awslabs/serverless-application-model
 .. _AWS Documentation: https://docs.aws.amazon.com/lambda/latest/dg/lambda-python-how-to-create-deployment-package.html
 
+
+.. |circle| image:: https://circleci.com/gh/eabglobal/juniper/tree/master.svg?style=shield
+    :target: https://circleci.com/gh/eabglobal/juniper/tree/master
+
+.. |pypi version| image:: https://img.shields.io/pypi/v/juniper.svg
+    :target: https://pypi.org/project/juniper/
+
+.. |apache license| image:: https://img.shields.io/github/license/eabglobal/juniper.svg
+    :target: https://github.com/eabglobal/juniper/blob/master/LICENSE
 
 Contents:
 =========
