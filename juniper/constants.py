@@ -15,3 +15,4 @@
 """
 
 DEFAULT_OUT_DIR = './dist'
+DEFAULT_DOCKER_IMAGE = 'lambci/lambda:build-python3.6'

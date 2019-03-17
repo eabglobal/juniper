@@ -1,5 +1,3 @@
-.. _quickstart
-
 Quickstart
 ==========
 
@@ -39,6 +37,7 @@ After activating your virtual environment, install Juniper.
 That's it, with juniper installed, you're ready to start packaging your python
 lambda functions.
 
+
 Package Lambdas
 ***************
 
@@ -70,17 +69,17 @@ Let's break the manifest file line by line to understand how juniper uses it in
 order to make the zip file.
 
 1. functions: this block lets juniper know that you're about to define a set
-  of lambda functions that need to be packaged individually.
+   of lambda functions that need to be packaged individually.
 
 2. router: The name of the lambda function. This value will be used as the name
-  of the generated zip file.
+   of the generated zip file.
 
 3. requirements: The python dependencies of the given function. Juniper will include
-  all the dependencies specified in this file in the artifact.
+   all the dependencies specified in this file in the artifact.
 
 4. include: The line items in the following section define the contents of the zip
-  file. This block must list the business logic of the lambda function as well as
-  any local packages to include.
+   file. This block must list the business logic of the lambda function as well as
+   any local packages to include.
 
 Given a file definition like the one above, juniper creates a zip artifact
 for **every** single function under the functions block.

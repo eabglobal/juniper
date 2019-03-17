@@ -3,6 +3,17 @@
 Juniper Changelog
 ===============
 
+Version 0.2.4
+-------------
+
+Released on March 17th 2019, codename Izzi.3
+
+- Mayor refactoring of docker-compose building process. Using jinja2 (/issues/21)
+- Ability to specify a new docker image globaly and per function (/issue/21)
+- Simplified documentation to make the project more readable and accesible (/issue/21)
+- Added features section to documentation to keep track of ongoing dev (/issue/21)
+
+
 Version 0.2.2
 -------------
 

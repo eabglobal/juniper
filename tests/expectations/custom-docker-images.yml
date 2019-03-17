@@ -1,0 +1,24 @@
+version: '3.6'
+
+services:
+
+  edge-lambda:
+    image: python:3.8
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - ./dist:/var/task/dist
+      - ./.juni/bin:/var/task/bin
+      - ./src/edge/:/var/task/common/
+      - ./src/edge/requirements.txt:/var/task/common/requirements.txt
+    command: sh /var/task/bin/package.sh edge
+
+  sequential-worker-lambda:
+    image: python:3.6-alpine
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - ./dist:/var/task/dist
+      - ./.juni/bin:/var/task/bin
+      - ./src/worker/sequential_worker:/var/task/common/sequential_worker
+    command: sh /var/task/bin/package.sh sequential-worker
