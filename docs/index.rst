@@ -19,15 +19,15 @@ building web APIs using AWS services. The main issue is that the dependencies
 of the function must be included along with the business logic of the function.
 
 Creating the .zip artifacts manually is not a very complicated process, the steps
-are clearly defined in the `AWS Documentation`_. However, when building a real
+are clearly defined in the `AWS Documentation`_. However, when building real
 world serverless applications with lambda, this process is not very scalable.
 Instead of building custom bash scripts to automate the build process, use juniper!
 
 What is Juniper?
 ****************
 
-Juniper is a packaging tool with a with a single purpose in mind: standardize
-the creation of a zip artifact for a set of AWS Lambda functions.
+Juniper is a packaging tool with a single purpose in mind: standardize the creation
+of a zip artifact for a set of AWS Lambda functions.
 
 To package a lambda function you must create a manifest file. This file tells juniper
 what to include in the artifact. The definition of a single function looks like this:
@@ -76,16 +76,16 @@ a SAM template for a python lambda function looks like this:
           CodeUri: ./dist/processor.zip
 
 
-Juniper is responsible for building the artifact for you lambda function based on
+Juniper is responsible for building the artifact for your lambda function based on
 the parameters you specify in the manifest file. You can use the generated file
-however you wish to. If you choose to use SAM as to define your resources, a basic
+however you wish to. If you choose to use SAM to define your resources, a basic
 development/deployment workflow would be:
 
     >>> juni build
     >>> sam build
     >>> sam deploy
 
-Using juni along sam is highly recommended. Keep in mind that you can use the
+Using juni with sam is highly recommended. Keep in mind that you can use the
 generated artifact to manually update a lambda function from the AWS console.
 Or you can also use the AWS cli to update a lambda function:
 
@@ -99,8 +99,8 @@ capable of fulfilling all of these business needs:
 
 * Minimal manifest file to define packaging
 * Using docker containers as a way to install dependencies and generate the artifacts
-* Ability to specify a set of requirements.txt per lambda
-* Create an individual zip artifact for multiple lambda functions
+* Specify dependencies per lambda (one requirements.txt file per function)
+* Create a zip artifact per lambda
 * Ability to include shared dependencies (python modules relative to the function
   being packaged)
 
