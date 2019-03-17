@@ -1,0 +1,19 @@
+[
+  "examples/processing/split_lambda/tests/test_splitter.py::test_lambda_function",
+  "tests/test_actions.py::test_build_compose_sections",
+  "tests/test_actions.py::test_build_compose_image_override",
+  "tests/test_actions.py::test_build_compose_writes_compose_definition_to_tmp_file",
+  "tests/test_actions.py::test_build_artifacts_invokes_docker_commands",
+  "tests/test_actions.py::test_build_artifacts_copies_scriopts",
+  "tests/test_actions.py::test_build_compose_section_custom_output",
+  "tests/test_build_with_overrides.py::test_build_compose_sections_custom_docker_images",
+  "tests/test_build_with_overrides.py::test_get_docker_image_default",
+  "tests/test_build_with_overrides.py::test_get_docker_image_global_override",
+  "tests/test_build_with_overrides.py::test_get_docker_image_funcion_level_override",
+  "tests/test_build_with_overrides.py::test_get_docker_image_function_precedence",
+  "tests/test_build_with_overrides.py::test_build_with_global_include",
+  "tests/test_manifest.py::test_source_in_manifest_does_not_exist_notifies_dev",
+  "tests/test_manifest.py::test_requirements_in_manifest_does_not_exist_notifies_dev",
+  "tests/test_manifest.py::test_requirements_not_a_required_field",
+  "tests/test_manifest.py::test_include_section_is_required"
+]

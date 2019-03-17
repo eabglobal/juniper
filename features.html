@@ -1,0 +1,188 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>7. Features &#8212; juniper  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="3. Concepts" href="concepts.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="features">
+<h1>7. Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
+<p>By default juniper builds a docker-compose file from the manifest definition. This
+file will then be used to build the .zip artifacts. When using the vanilla version
+of the <cite>juni build</cite> command, you need to be aware of the following defaults:</p>
+<ul class="simple">
+<li>Docker will always be used as the default packaging medium</li>
+<li>DEFAULT_DOCKER_IMAGE = ‘lambci/lambda:build-python3.6’</li>
+<li>The output directory is <em>./dist</em></li>
+<li>The output directory will be recreated on every build every single time</li>
+</ul>
+<div class="section" id="custom-docker-image">
+<h2>7.1. Custom Docker Image<a class="headerlink" href="#custom-docker-image" title="Permalink to this headline">¶</a></h2>
+<p>To build the lambda artifacts, by default, juniper will use a python3.6 docker image.
+Given that AWS lambda supports multiple runtimes, juniper gives the developer the
+option to specify the docker image to use for build purposes.</p>
+<p>To build an artifact with a different version of the runtime, as a developer you
+need to add the image attribute to your manifest. Juniper supports the image definition
+at a global level and at a function level.</p>
+<p>The image override specified at a global level applies to every single function
+in the manifest.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">global</span><span class="p">:</span>
+    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lambci/lambda:build-python3.7</span>
+
+<span class="nt">functions</span><span class="p">:</span>
+
+  <span class="nt">router</span><span class="p">:</span>
+    <span class="nt">requirements</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./router/requirements.txt.</span>
+    <span class="nt">include</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./commonlib/common</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./router_function/router</span>
+</pre></div>
+</div>
+<p>If you have multiple function definitions in the manifest file, you can also
+specify the docker image at the function level. Keep in mind that the function
+level override has precedence over the global definition. Which means that you can
+specify a docker image at a global level, and also specify a particular version
+of python for a given function.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">global</span><span class="p">:</span>
+    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lambci/lambda:build-python3.7</span>
+
+<span class="nt">functions</span><span class="p">:</span>
+
+  <span class="nt">router</span><span class="p">:</span>
+    <span class="nt">requirements</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./router/requirements.txt.</span>
+    <span class="nt">include</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./commonlib/common</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./router_function/router</span>
+
+  <span class="nt">legacy</span><span class="p">:</span> <span class="c1"># Name of the lambda function</span>
+    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">lambci/lambda:build-python2.7</span>
+    <span class="nt">requirements</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">./legacy/requirements.txt.</span>
+    <span class="nt">include</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./commonlib/common</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./legacy_function/legacy</span>
+</pre></div>
+</div>
+<p>In this particular example the router function will be packaged using the python3.7
+docker image and the legacy function will be packaged using python 2.7.</p>
+</div>
+<div class="section" id="recommended-docker-images">
+<h2>7.2. Recommended docker images<a class="headerlink" href="#recommended-docker-images" title="Permalink to this headline">¶</a></h2>
+<p>We highly recommend using the <a class="reference external" href="https://github.com/lambci/docker-lambda">lambci</a> <strong>lambci/lambda:build-python</strong> images. These images
+are guaranteed to work for the runtimes supported by AWS lambda functions. The
+usage of these images is recommended, because they “include packages like gcc-c++,
+git, zip and the aws-cli for compiling and deploying.”</p>
+<ul class="simple">
+<li>lambci/lambda:build-python2.7</li>
+<li>lambci/lambda:build-python3.6</li>
+<li>lambci/lambda:build-python3.7</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">juniper</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">1. Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">2. Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">3. Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html#lambda-build-tool">4. Lambda Build Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html#microservices">5. Microservices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html#tool-survey">6. Tool Survey</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">7. Features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#custom-docker-image">7.1. Custom Docker Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#recommended-docker-images">7.2. Recommended docker images</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="concepts.html" title="previous chapter">3. Concepts</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, EAB Tech Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/features.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

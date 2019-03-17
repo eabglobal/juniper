@@ -38,77 +38,72 @@
 more detailed <a class="reference internal" href="tutorial.html"><span class="doc">Tutorial</span></a> that shows how to package a set of lambda
 functions using juniper. Common patterns are described in the <a class="reference internal" href="concepts.html"><span class="doc">Concepts</span></a>
 section.</p>
-<div class="section" id="packaging-lambda">
-<h2>Packaging Lambda<a class="headerlink" href="#packaging-lambda" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="packaging">
+<h2>Packaging λ<a class="headerlink" href="#packaging" title="Permalink to this headline">¶</a></h2>
 <p>Packaging of <strong>python</strong> lambda functions is a problem a web developer faces when
 building web APIs using AWS services. The main issue is that the dependencies
 of the function must be included along with the business logic of the function.</p>
-<p>The <a class="reference external" href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-python-how-to-create-deployment-package.html">AWS documentation</a> provides a clear set of steps that a developer must take
-in order to package a single lambda function that has a set of dependencies. The
-dependencies must be specified in a requirements.txt file. The steps as defined
-in the documentation are the following:</p>
-<ol class="arabic simple">
-<li>Create a virtual environment.</li>
-<li>Activate the environment</li>
-<li>Install libraries with pip</li>
-<li>Deactivate the virtual environment.</li>
-<li>Create a ZIP archive with the contents of the site-packages directory</li>
-<li>Add your function code to the archive.</li>
-</ol>
-<p>When working with a simple lambda function, taking these set of steps is not a
-complicated undertaking. It is inconvenient, but a process that can be easily
-scripted.</p>
-<p>With this particular approach, scalability becomes the bottleneck. In the real world
-a developer needs to package not only one, but 3 or 4 functions at a time. Also,
-using your local machine as a way to generate the zip artifact is not always desirable.
-A package that you can build and put in the zip using your own setup might not work
-once you deploy it to AWS.</p>
-<p>For these reasons, and for several other that will become clear, Juniper was born.</p>
+<p>Creating the .zip artifacts manually is not a very complicated process, the steps
+are clearly defined in the <a class="reference external" href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-python-how-to-create-deployment-package.html">AWS Documentation</a>. However, when building real
+world serverless applications with lambda, this process is not very scalable.
+Instead of building custom bash scripts to automate the build process, use juniper!</p>
 </div>
 <div class="section" id="what-is-juniper">
 <h2>What is Juniper?<a class="headerlink" href="#what-is-juniper" title="Permalink to this headline">¶</a></h2>
-<p>Juniper is a packaging tool with a with a single purpose in mind: stream and standardize
-the creation of a zip artifact for a set of lambda functions.</p>
-<p>As a developer working with AWS Lambda functions, the only thing you need to do
-is create a manifest file like this one:</p>
+<p>Juniper is a packaging tool with a single purpose in mind: standardize the creation
+of a zip artifact for a set of AWS Lambda functions.</p>
+<p>To package a lambda function you must create a manifest file. This file tells juniper
+what to include in the artifact. The definition of a single function looks like this:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">functions</span><span class="p">:</span>
-  <span class="n">processor</span><span class="p">:</span>    <span class="c1"># &lt;- Name of your function</span>
+  <span class="c1"># Name of your lambda function</span>
+  <span class="n">processor</span><span class="p">:</span>
     <span class="n">requirements</span><span class="p">:</span> <span class="o">./</span><span class="n">src</span><span class="o">/</span><span class="n">processor</span><span class="o">/</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
     <span class="n">include</span><span class="p">:</span>
-    <span class="o">-</span> <span class="o">./</span><span class="n">src</span><span class="o">/</span><span class="n">commonlib</span>           <span class="c1"># Include this module in the zip</span>
-    <span class="o">-</span> <span class="o">./</span><span class="n">src</span><span class="o">/</span><span class="n">processor</span><span class="o">/</span><span class="n">first</span>     <span class="c1"># Include this module in the zip</span>
+    <span class="c1"># List of modules to include in the zip file.</span>
+    <span class="o">-</span> <span class="o">./</span><span class="n">src</span><span class="o">/</span><span class="n">commonlib</span>
+    <span class="o">-</span> <span class="o">./</span><span class="n">src</span><span class="o">/</span><span class="n">processor</span>
 </pre></div>
 </div>
-<p>With the basic information about your lambda functions, use juniper to generate
+<p>With a manifest file like the one above, use the juniper cli to generate
 the zip files for your functions:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">juni</span> <span class="n">build</span>
 </pre></div>
 </div>
-<p>The command will create a <cite>processor.zip</cite> with the dependencies defined in the
-requirements file and the entire commonlib.</p>
+<p>Out of the box juniper will look for a definitions file called <strong>manifest.yml</strong>
+and it will place the generated zip files in a <strong>./dist</strong> directory. These are
+configurable parameters, to learn more read the <a class="reference internal" href="features.html"><span class="doc">Features</span></a> section.</p>
+<p>In this example, juni will create a <cite>./dist/processor.zip</cite> with the dependencies defined in the
+requirements file and the contents of the ./src/commonlib and the ./src/processor.</p>
 </div>
 <div class="section" id="with-sam">
 <h2>With SAM<a class="headerlink" href="#with-sam" title="Permalink to this headline">¶</a></h2>
 <p>If you are working with lambda functions, chances are that you are using a <a class="reference external" href="https://github.com/awslabs/serverless-application-model">SAM</a>
-template as a way to define your serverless application. The template in its most
-basic form looks like:</p>
+template as a way to define your AWS serverless resources. The definition of
+a SAM template for a python lambda function looks like this:</p>
 <div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Transform</span><span class="p">:</span> <span class="s1">&#39;AWS::Serverless-2016-10-31&#39;</span>
 <span class="n">Resources</span><span class="p">:</span>
 
 <span class="n">ProcessorFn</span><span class="p">:</span>
-    <span class="c1"># This resource creates a Lambda function.</span>
-    <span class="n">Type</span><span class="p">:</span> <span class="s1">&#39;AWS::Serverless::Function&#39;</span>
+  <span class="c1"># This resource creates a Lambda function.</span>
+  <span class="n">Type</span><span class="p">:</span> <span class="s1">&#39;AWS::Serverless::Function&#39;</span>
 
-    <span class="n">Properties</span><span class="p">:</span>
-
-    <span class="c1"># The location of the Lambda function code.</span>
-    <span class="n">CodeUri</span><span class="p">:</span> <span class="o">./</span><span class="n">dist</span><span class="o">/</span><span class="n">processor</span><span class="o">.</span><span class="n">zip</span>
+  <span class="n">Properties</span><span class="p">:</span>
+      <span class="c1"># The location of the Lambda function code.</span>
+      <span class="n">CodeUri</span><span class="p">:</span> <span class="o">./</span><span class="n">dist</span><span class="o">/</span><span class="n">processor</span><span class="o">.</span><span class="n">zip</span>
 </pre></div>
 </div>
-<p>Juniper, will build the zip file that you need to provide in order to update or create your
-lambda function. It’s your responsibility to use that file however you see fit.
-You can use it in conjunction with your SAM template; as seen above, or you can
-also use it to update a lambda function directly using the cli:</p>
+<p>Juniper is responsible for building the artifact for your lambda function based on
+the parameters you specify in the manifest file. You can use the generated file
+however you wish to. If you choose to use SAM to define your resources, a basic
+development/deployment workflow would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">juni</span> <span class="n">build</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sam</span> <span class="n">build</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sam</span> <span class="n">deploy</span>
+</pre></div>
+</div>
+<p>Using juni with sam is highly recommended. Keep in mind that you can use the
+generated artifact to manually update a lambda function from the AWS console.
+Or you can also use the AWS cli to update a lambda function:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aws</span> <span class="k">lambda</span> <span class="n">update</span><span class="o">-</span><span class="n">function</span><span class="o">-</span><span class="n">code</span> <span class="o">--</span><span class="n">function</span><span class="o">-</span><span class="n">name</span> <span class="n">ProcessorFn</span> <span class="o">--</span><span class="nb">zip</span><span class="o">-</span><span class="n">file</span> <span class="o">./</span><span class="n">dist</span><span class="o">/</span><span class="n">processor</span><span class="o">.</span><span class="n">zip</span>
 </pre></div>
 </div>
@@ -120,8 +115,8 @@ capable of fulfilling all of these business needs:</p>
 <ul class="simple">
 <li>Minimal manifest file to define packaging</li>
 <li>Using docker containers as a way to install dependencies and generate the artifacts</li>
-<li>Ability to tailor the requirements.txt per lambda</li>
-<li>Create an individual zip artifact for multiple lambda functions</li>
+<li>Specify dependencies per lambda (one requirements.txt file per function)</li>
+<li>Create a zip artifact per lambda</li>
 <li>Ability to include shared dependencies (python modules relative to the function
 being packaged)</li>
 </ul>
@@ -154,13 +149,18 @@ offer a more comprehensive set of features one of which is packaging.</p>
 <li class="toctree-l2"><a class="reference internal" href="concepts.html#juni-build">3.3. juni build</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="concepts.html#yet-another-tool-yat">4. Yet Another Tool (YAT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html#lambda-build-tool">4. Lambda Build Tool</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts.html#microservices">5. Microservices</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts.html#tool-survey">6. Tool Survey</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="concepts.html#serverless-application-model-sam">6.1. Serverless Application Model (SAM)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concepts.html#chalice">6.2. Chalice</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concepts.html#serverless-framework">6.3. Serverless Framework</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concepts.html#zappa">6.4. Zappa</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">7. Features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="features.html#custom-docker-image">7.1. Custom Docker Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html#recommended-docker-images">7.2. Recommended docker images</a></li>
 </ul>
 </li>
 </ul>
@@ -188,9 +188,10 @@ offer a more comprehensive set of features one of which is packaging.</p>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">1. Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">2. Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts.html">3. Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="concepts.html#yet-another-tool-yat">4. Yet Another Tool (YAT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html#lambda-build-tool">4. Lambda Build Tool</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts.html#microservices">5. Microservices</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts.html#tool-survey">6. Tool Survey</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">7. Features</a></li>
 </ul>
 
 <div class="relations">
