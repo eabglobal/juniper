@@ -1,0 +1,5 @@
+functions:
+  initialise_tasks:
+    requirements: ./requirements.txt
+    include:
+      - ./src
