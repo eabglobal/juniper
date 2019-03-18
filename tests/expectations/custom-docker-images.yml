@@ -9,7 +9,7 @@ services:
     volumes:
       - ./dist:/var/task/dist
       - ./.juni/bin:/var/task/bin
-      - ./src/edge/:/var/task/common/
+      - ./src/edge:/var/task/common/edge
       - ./src/edge/requirements.txt:/var/task/common/requirements.txt
     command: sh /var/task/bin/package.sh edge
 

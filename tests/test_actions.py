@@ -24,25 +24,6 @@ from juniper.io import reader, get_artifact_path
 logger = MagicMock()
 
 
-def test_build_compose_sections():
-    """
-    Using the processor-test as a sample definition of the lambda functions to
-    be packaged. Make sure that the resources portion of the file is correctly
-    generated.
-
-    The sections portion of the file, takes into account the volume mappings
-    as well as well as the command to invoke when docker-compose is invoked.
-    """
-
-    manifest = reader('./tests/manifests/processor-test.yml')
-    result = actions._get_compose_template(manifest)
-
-    # The fully converted docker-compose.yml file as created by the action.
-    expected = read_file('./tests/expectations/processor-sections.yml')
-
-    assert yaml.load(result) == yaml.load(expected)
-
-
 def test_build_compose_writes_compose_definition_to_tmp_file(mocker):
     """
     The docker-compose file created, is written to a tmp file. Make sure that
@@ -140,6 +121,17 @@ def test_build_compose_section_custom_output():
         for volume in yaml_result['services']['test_func-lambda']['volumes']
         if custom_output_dir in volume
     ])
+
+
+def test_get_volumes_fixes_trailing_slash():
+
+    sls_function = {'include': ['./src/function1/']}
+    manifest = {'functions': {'function1': sls_function}}
+
+    volumes = actions._get_volumes(manifest, sls_function)
+
+    expected_mapping = './src/function1:/var/task/common/function1'
+    assert expected_mapping in volumes
 
 
 def read_file(file_name):

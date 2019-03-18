@@ -10,7 +10,7 @@ services:
       - ./dist:/var/task/dist
       - ./.juni/bin:/var/task/bin
       - ./src/eablib/eab:/var/task/common/eab
-      - ./src/processor/:/var/task/common/
+      - ./src/processor:/var/task/common/processor
       - ./src/processor/requirements.txt:/var/task/common/requirements.txt
     command: sh /var/task/bin/package.sh processor
 
