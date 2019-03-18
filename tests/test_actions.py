@@ -124,14 +124,36 @@ def test_build_compose_section_custom_output():
 
 
 def test_get_volumes_fixes_trailing_slash():
+    """
+    If the include entry contains a trailing slash, the mapped version should NOT have it.
+    """
 
     sls_function = {'include': ['./src/function1/']}
-    manifest = {'functions': {'function1': sls_function}}
+    manifest = {'functions': {'router': sls_function}}
 
     volumes = actions._get_volumes(manifest, sls_function)
 
     expected_mapping = './src/function1:/var/task/common/function1'
     assert expected_mapping in volumes
+
+
+def test_get_volumes_with_mixed_entries():
+
+    sls_function = {
+        'include': [
+            './src/common/',
+            './src/benchmark',
+            './src/trail',
+        ]
+    }
+    manifest = {'functions': {'router': sls_function}}
+
+    volumes = actions._get_volumes(manifest, sls_function)
+
+    tmpl = './src/{name}:/var/task/common/{name}'
+    assert tmpl.format(name='common') in volumes
+    assert tmpl.format(name='benchmark') in volumes
+    assert tmpl.format(name='trail') in volumes
 
 
 def read_file(file_name):
