@@ -29,11 +29,13 @@ functions, ex in `manifest.yml`:
 .. code-block:: yaml
 
     functions:
-    router:                                         # Name of the lambda function (result in router.zip artifact)
-        requirements: ./src/router/requirements.txt.  # Path to reqs file
+      # Name of the lambda function (result in router.zip artifact)
+      router:
+        requirements: ./src/router/requirements.txt.
+        # Include these packages in the artifact.
         include:
-        - ./src/commonlib/mylib                     # Path for inclusion in code
-        - ./src/router_function/router.             # Path for inclusion in code
+        - ./src/commonlib/mylib
+        - ./src/router_function/router.
 
 
 Build it!
@@ -43,6 +45,32 @@ Build it!
     > juni build
 
 Your .zip is now in the `dist/` directory.  🎉
+
+With Docker
+***********
+By default juniper uses docker containers to package your lambda functions. Behind
+the scenes, juniper creates a docker-compose file from your manifest and from that
+file it spawns a set of containers to create the zip files.
+
+Since the AWS Lambda service supports multiple python runtimes, it makes sense for
+juniper to give you the ability to specify a docker image. With the following
+manifest file, you can package the router lambda using a python3.7 image.
+
+.. code-block:: yaml
+
+    functions:
+      router:
+        # Use this docker image
+        image: lambci/lambda:build-python3.7
+        requirements: ./src/router/requirements.txt.
+        include:
+        - ./src/commonlib/mylib
+        - ./src/router_function/router.
+
+Keep in mind that not every single docker image works, for more information on
+the type of images supported read `juniper and docker`_
+
+.. _`juniper and docker`: https://eabglobal.github.io/juniper/features.html
 
 Features
 ********
@@ -55,6 +83,7 @@ This list defines the entire scope of Juniper. Nothing more, nothing else.
 * Create an individual zip artifact for multiple lambda functions
 * Ability to include shared dependencies (python modules relative to the function
   being packaged)
+* Specify docker image to package lamdba functions using different python runtimes.
 
 Contributing
 ************
