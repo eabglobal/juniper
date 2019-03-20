@@ -89,10 +89,20 @@ def _get_compose_template(manifest):
 
 
 def _get_volumes(manifest, sls_function):
+    """
+    Get the docker compose volume mapping from the includes block of a serverless
+    function definition. Each entry will be mapped to its own entry in the docker
+    container.
+
+    :param manifest: The entire juniper manifest.
+    :param sls_function: The serverless function definition.
+    """
 
     def get_vol(include):
-        name = include[include.rindex('/') + 1:]
-        return f'{include}:/var/task/common/{name}'
+
+        norm_include = include.rstrip('/')
+        name = norm_include[norm_include.rindex('/') + 1:]
+        return f'{norm_include}:/var/task/common/{name}'
 
     output_dir = manifest.get('package', {}).get('output', DEFAULT_OUT_DIR)
     volumes = [
