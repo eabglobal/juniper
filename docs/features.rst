@@ -1,12 +1,12 @@
 Features
 ========
 By default juniper builds a docker-compose file from the manifest definition. This
-file will then be used to build the .zip artifacts. When using the vanilla version
+file will then be used to build the zip artifacts. When using the vanilla version
 of the `juni build` command, you need to be aware of the following defaults:
 
 * Docker will always be used as the default packaging medium
 * DEFAULT_DOCKER_IMAGE = 'lambci/lambda:build-python3.6'
-* The output directory is *./dist*
+* The output directory is ./dist
 * The output directory will be recreated on every build every single time
 
 Custom Docker Image

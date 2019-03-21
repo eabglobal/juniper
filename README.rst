@@ -31,12 +31,21 @@ functions, ex in `manifest.yml`:
     functions:
       # Name of the lambda function (result in router.zip artifact)
       router:
-        requirements: ./src/router/requirements.txt.
+        requirements: ./src/requirements.txt.
         # Include these packages in the artifact.
         include:
-        - ./src/commonlib/mylib
-        - ./src/router_function/router.
+        - ./src/lambda_function.py
 
+The folder structure this manifest refers to looks like:
+
+```
+~/ tree
+.
+├── manifest.yml
+├── src
+│   ├── requirements.txt
+│   ├── lambda_function.py
+```
 
 Build it!
 
@@ -44,10 +53,10 @@ Build it!
 
     > juni build
 
-Your .zip is now in the `dist/` directory.  🎉
+Your .zip is now in the `./dist` directory.  🎉
 
-With Docker
-***********
+Python3.7 and Beyond
+********************
 By default juniper uses docker containers to package your lambda functions. Behind
 the scenes, juniper creates a docker-compose file from your manifest and from that
 file it spawns a set of containers to create the zip files.
