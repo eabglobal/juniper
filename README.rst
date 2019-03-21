@@ -6,12 +6,11 @@ Juniper: Package lambda functions
 Juniper is a packaging tool to stream and standardize the creation of a zip
 artifact for a set of AWS Lambda functions.
 
-Packaging of python lambda functions is a problem a web developer faces when
-building web APIs using AWS services. The main issue is that the dependencies
-of the function must be included along with the business logic of the function.
+Juniper is used to generate a set of .zip files for python based lambda functions.
+The zip artifacts generated includes the source code of the dependencies as defined
+by a requirements.txt file as well as any shared libraries the function depends on.
 
-Juniper is used to generate a set of .zip files contaning dependencies and
-shared libraries. A developer can use these artifacts to deploy a lambda function
+A developer can use the generated artifacts to deploy a lambda function
 either manually, through the cli or using a cloudformation/sam template.
 
 Quickstart
@@ -23,16 +22,17 @@ With Python==3.6 and Docker installed, install juniper:
 
     > pip install juniper
 
-To use juniper, you need to start by creating a manifest file. This file has all
-the information juniper needs to build a zip artifact.
+To use juniper, you need to create a manifest file. This file is the blueprint that
+juniper uses to build a zip artifact.
 
 .. code-block:: yaml
 
     functions:
       # Name the zip file you want juni to create
       router:
+        # The dependencies of the router function.
         requirements: ./src/requirements.txt.
-        # Include these packages in the artifact.
+        # Include this file in the generated zip artifact.
         include:
         - ./src/lambda_function.py
 
@@ -53,6 +53,11 @@ Build it!
     > juni build
 
 Juniper created the following artifact `./dist/router.zip`  🎉
+
+For a more comprehensive example, please take a look at our `tutorial`.
+
+.. _`tutorial`: https://eabglobal.github.io/juniper/tutorial.html
+
 
 Python3.7 and Beyond
 ********************
