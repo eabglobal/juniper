@@ -38,14 +38,13 @@ functions, ex in `manifest.yml`:
 
 The folder structure this manifest refers to looks like:
 
-```
-~/ tree
-.
-├── manifest.yml
-├── src
-│   ├── requirements.txt
-│   ├── lambda_function.py
-```
+::
+
+    .
+    ├── manifest.yml
+    ├── src
+    │   ├── requirements.txt
+    │   ├── lambda_function.py
 
 Build it!
 
