@@ -3,16 +3,16 @@ Juniper: Package lambda functions
 
 |circle| |pypi version| |apache license|
 
-Juniper is a packaging tool with a with a single purpose in mind: stream and standardize
-the creation of a zip artifact for a set of AWS Lambda functions.
+Juniper is a packaging tool to stream and standardize the creation of a zip
+artifact for a set of AWS Lambda functions.
 
 Packaging of python lambda functions is a problem a web developer faces when
 building web APIs using AWS services. The main issue is that the dependencies
 of the function must be included along with the business logic of the function.
 
-This tool does **not** deploy or update a lambda function in AWS. This
-tool is used to generate a set of .zip files contaning dependencies and
-shared libraries, which you can use to deploy a lambda function.
+Juniper is used to generate a set of .zip files contaning dependencies and
+shared libraries. A developer can use these artifacts to deploy a lambda function
+either manually, through the cli or using a cloudformation/sam template.
 
 Quickstart
 **********
@@ -23,13 +23,13 @@ With Python==3.6 and Docker installed, install juniper:
 
     > pip install juniper
 
-Go to the code you are packaging and define a configuration for your
-functions, ex in `manifest.yml`:
+To use juniper, you need to start by creating a manifest file. This file has all
+the information juniper needs to build a zip artifact.
 
 .. code-block:: yaml
 
     functions:
-      # Name of the lambda function (result in router.zip artifact)
+      # Name the zip file you want juni to create
       router:
         requirements: ./src/requirements.txt.
         # Include these packages in the artifact.
@@ -52,13 +52,13 @@ Build it!
 
     > juni build
 
-Your .zip is now in the `./dist` directory.  🎉
+Juniper created the following artifact `./dist/router.zip`  🎉
 
 Python3.7 and Beyond
 ********************
 By default juniper uses docker containers to package your lambda functions. Behind
-the scenes, juniper creates a docker-compose file from your manifest and from that
-file it spawns a set of containers to create the zip files.
+the scenes, juniper creates a docker-compose file from your manifest. This file is
+used by the `build` command to spawn a build container per function definition.
 
 Since the AWS Lambda service supports multiple python runtimes, it makes sense for
 juniper to give you the ability to specify a docker image. With the following
