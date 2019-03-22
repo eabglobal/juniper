@@ -3,10 +3,28 @@
 Juniper Changelog
 ===============
 
+Version 0.2.6
+-------------
+
+Released on March 22nd 2019, codename Izzi.6
+
+- Setting specific versions of install dependencies.
+
+
+Version 0.2.5
+-------------
+
+Released on March 22nd 2019, codename Izzi.5
+
+- Updating documentation based on feedback.
+- Fixing docker mapping issue when includes ended in slash (/issues/24)
+- Fixing a bug when packaging includes './' (/issues/30)
+
+
 Version 0.2.4
 -------------
 
-Released on March 17th 2019, codename Izzi.3
+Released on March 17th 2019, codename Izzi.4
 
 - Mayor refactoring of docker-compose building process. Using jinja2 (/issues/21)
 - Ability to specify a new docker image globaly and per function (/issue/21)
