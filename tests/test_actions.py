@@ -180,8 +180,6 @@ def test_get_volumes_with_files():
     assert './src/lambda_function.py:/var/task/common/lambda_function.py' in volumes
 
 
-
-
 def read_file(file_name):
     with open(file_name, 'r') as f:
         return f.read()
