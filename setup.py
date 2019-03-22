@@ -33,7 +33,11 @@ setup(
     python_requires='>=3.6',
     test_suite="tests",
     install_requires=[
-        'click', 'click-log', 'PyYAML', 'Jinja2', 'docker-compose'
+        'click>=5.1',
+        'click-log',
+        'PyYAML >= 3.10, < 4.3',
+        'Jinja2>=2.10',
+        'docker-compose>=1.20'
     ],
     setup_requires=["pytest-runner"],
     tests_require=["pytest"],

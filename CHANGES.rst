@@ -3,6 +3,14 @@
 Juniper Changelog
 ===============
 
+Version 0.2.6
+-------------
+
+Released on March 22nd 2019, codename Izzi.6
+
+- Setting specific versions of install dependencies.
+
+
 Version 0.2.5
 -------------
 
