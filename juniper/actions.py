@@ -100,6 +100,9 @@ def _get_volumes(manifest, sls_function):
 
     def get_vol(include):
 
+        if include == './':
+            return './:/var/task/common/'
+
         norm_include = include.rstrip('/')
         name = norm_include[norm_include.rindex('/') + 1:]
         return f'{norm_include}:/var/task/common/{name}'

@@ -156,6 +156,32 @@ def test_get_volumes_with_mixed_entries():
     assert tmpl.format(name='trail') in volumes
 
 
+def test_get_volumes_current_path():
+
+    sls_function = {
+        'include': ['./']
+    }
+    manifest = {'functions': {'router': sls_function}}
+
+    volumes = actions._get_volumes(manifest, sls_function)
+
+    assert './:/var/task/common/' in volumes
+
+
+def test_get_volumes_with_files():
+
+    sls_function = {
+        'include': ['./src/lambda_function.py']
+    }
+    manifest = {'functions': {'router': sls_function}}
+
+    volumes = actions._get_volumes(manifest, sls_function)
+
+    assert './src/lambda_function.py:/var/task/common/lambda_function.py' in volumes
+
+
+
+
 def read_file(file_name):
     with open(file_name, 'r') as f:
         return f.read()
