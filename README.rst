@@ -74,6 +74,7 @@ manifest file, you can package the router lambda using a python3.7 image.
         # Use this docker image
         image: lambci/lambda:build-python3.7
         requirements: ./src/router/requirements.txt.
+        # Include these local modules in the artifact
         include:
         - ./src/commonlib/mylib
         - ./src/router_function/router
