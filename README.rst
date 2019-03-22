@@ -6,12 +6,10 @@ Juniper: Package lambda functions
 Juniper is a packaging tool to stream and standardize the creation of a zip
 artifact for a set of AWS Lambda functions.
 
-Juniper is used to generate a set of .zip files for python based lambda functions.
 The zip artifacts generated include the source code of the dependencies defined
-in a given requirements.txt file as well as any shared libraries the function depends on.
-
-A developer can use the generated artifacts to deploy a lambda function
-either manually, through the cli or using a cloudformation/sam template.
+in a given requirements.txt file as well as any shared libraries the function
+depends on. With the generated artifact, a developer can deploy a lambda function
+either manually, through the awscli or using a cloudformation/sam template.
 
 Quickstart
 **********
