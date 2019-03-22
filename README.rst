@@ -3,16 +3,13 @@ Juniper: Package lambda functions
 
 |circle| |pypi version| |apache license|
 
-Juniper is a packaging tool with a with a single purpose in mind: stream and standardize
-the creation of a zip artifact for a set of AWS Lambda functions.
+Juniper is a packaging tool to stream and standardize the creation of a zip
+artifact for a set of AWS Lambda functions.
 
-Packaging of python lambda functions is a problem a web developer faces when
-building web APIs using AWS services. The main issue is that the dependencies
-of the function must be included along with the business logic of the function.
-
-This tool does **not** deploy or update a lambda function in AWS. This
-tool is used to generate a set of .zip files contaning dependencies and
-shared libraries, which you can use to deploy a lambda function.
+The zip artifacts generated include the source code of the dependencies defined
+in a given requirements.txt file as well as any shared libraries the function
+depends on. With the generated artifact, a developer can deploy a lambda function
+either manually, through the awscli or using a cloudformation/sam template.
 
 Quickstart
 **********
@@ -23,18 +20,29 @@ With Python==3.6 and Docker installed, install juniper:
 
     > pip install juniper
 
-Go to the code you are packaging and define a configuration for your
-functions, ex in `manifest.yml`:
+In order to package your lambda functions with juniper, you need to create a
+manifest file.
 
 .. code-block:: yaml
 
     functions:
-    router:                                         # Name of the lambda function (result in router.zip artifact)
-        requirements: ./src/router/requirements.txt.  # Path to reqs file
+      # Name the zip file you want juni to create
+      router:
+        # The dependencies of the router function.
+        requirements: ./src/requirements.txt.
+        # Include this file in the generated zip artifact.
         include:
-        - ./src/commonlib/mylib                     # Path for inclusion in code
-        - ./src/router_function/router.             # Path for inclusion in code
+        - ./src/lambda_function.py
 
+The folder structure this manifest refers to looks like:
+
+::
+
+    .
+    ├── manifest.yml
+    ├── src
+    │   ├── requirements.txt
+    │   ├── lambda_function.py
 
 Build it!
 
@@ -42,7 +50,38 @@ Build it!
 
     > juni build
 
-Your .zip is now in the `dist/` directory.  🎉
+Juniper creates the following artifact `./dist/router.zip`  🎉
+
+For a more comprehensive example, please take a look at our `tutorial`.
+
+.. _`tutorial`: https://eabglobal.github.io/juniper/tutorial.html
+
+
+Python3.7 and Beyond
+********************
+By default juniper uses docker containers to package your lambda functions. Behind
+the scenes, juniper creates a docker-compose file from your manifest. This file is
+used by the `build` command to spawn a build container per function definition.
+
+Since the AWS Lambda service supports multiple python runtimes, it makes sense for
+juniper to give you the ability to specify a docker image. With the following
+manifest file, you can package the router lambda using a python3.7 image.
+
+.. code-block:: yaml
+
+    functions:
+      router:
+        # Use this docker image
+        image: lambci/lambda:build-python3.7
+        requirements: ./src/router/requirements.txt.
+        include:
+        - ./src/commonlib/mylib
+        - ./src/router_function/router.
+
+Keep in mind that not every single docker image works, for more information on
+the type of images supported read `juniper and docker`_
+
+.. _`juniper and docker`: https://eabglobal.github.io/juniper/features.html
 
 Features
 ********
@@ -55,6 +94,7 @@ This list defines the entire scope of Juniper. Nothing more, nothing else.
 * Create an individual zip artifact for multiple lambda functions
 * Ability to include shared dependencies (python modules relative to the function
   being packaged)
+* Specify docker image to package lamdba functions using different python runtimes.
 
 Contributing
 ************

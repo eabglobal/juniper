@@ -8,7 +8,7 @@ packaging your lambda functions with juniper.
 
 Dependencies
 ************
-Juniper supports Python 3.4 and newer only. We recommend using the latest version of Python 3.
+Juniper supports Python 3.6 and newer only. We recommend using the latest version of Python 3.
 
 `Docker`_ used as the dependable medium to generate the zip files of your lambda functions.
 
@@ -32,7 +32,7 @@ commands:
 
 After activating your virtual environment, install Juniper.
 
-    >>> pip install git+https://github.com/eabglobal/juniper.git
+    >>> pip install juniper
 
 That's it, with juniper installed, you're ready to start packaging your python
 lambda functions.
