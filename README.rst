@@ -76,7 +76,7 @@ manifest file, you can package the router lambda using a python3.7 image.
         requirements: ./src/router/requirements.txt.
         include:
         - ./src/commonlib/mylib
-        - ./src/router_function/router.
+        - ./src/router_function/router
 
 Keep in mind that not every single docker image works, for more information on
 the type of images supported read `juniper and docker`_.
