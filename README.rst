@@ -52,7 +52,7 @@ Build it!
 
 Juniper creates the following artifact `./dist/router.zip`  🎉
 
-For a more comprehensive example, please take a look at our `tutorial`.
+For a more comprehensive example, please take a look at our `tutorial`_.
 
 .. _`tutorial`: https://eabglobal.github.io/juniper/tutorial.html
 
@@ -79,7 +79,7 @@ manifest file, you can package the router lambda using a python3.7 image.
         - ./src/router_function/router.
 
 Keep in mind that not every single docker image works, for more information on
-the type of images supported read `juniper and docker`_
+the type of images supported read `juniper and docker`_.
 
 .. _`juniper and docker`: https://eabglobal.github.io/juniper/features.html
 
