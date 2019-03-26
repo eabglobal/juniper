@@ -1,5 +1,6 @@
 import click
 import click_log
+import pathlib
 import shutil
 import logging
 
@@ -45,6 +46,8 @@ def build(manifest, debug):
         logger.setLevel(logging.DEBUG)
 
     try:
+        if manifest == 'manifest.yml' and not pathlib.Path('manifest.yml').is_file():
+            manifest = 'manifest.yaml'
         manifest_definition = reader(manifest)
         validate_manifest_definition(manifest_definition)
     except FileNotFoundError as fnf:
