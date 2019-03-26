@@ -24,7 +24,7 @@ import pkg_resources
 def reader(file_name):
 
     with open(file_name, 'r') as stream:
-        return yaml.load(stream)
+        return yaml.safe_load(stream)
 
 
 def write_tmp_file(content):

@@ -35,7 +35,7 @@ def test_build_compose_sections_custom_docker_images():
     result = actions._get_compose_template(docker_ctx)
 
     expected = read_file('./tests/expectations/custom-docker-images.yml')
-    assert yaml.load(result) == yaml.load(expected)
+    assert yaml.safe_load(result) == yaml.safe_load(expected)
 
 
 def test_get_docker_image_default():

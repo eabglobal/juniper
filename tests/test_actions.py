@@ -40,7 +40,7 @@ def test_build_compose_writes_compose_definition_to_tmp_file(mocker):
     expected = read_file('./tests/expectations/processor-compose.yml')
 
     assert tmp_filename == actual_filename
-    assert yaml.load(mock_writer.call_args[0][0]) == yaml.load(expected)
+    assert yaml.safe_load(mock_writer.call_args[0][0]) == yaml.safe_load(expected)
 
 
 def test_build_artifacts_invokes_docker_commands(mocker):
@@ -114,7 +114,7 @@ def test_build_compose_section_custom_output():
     }
 
     result = actions._get_compose_template(manifest)
-    yaml_result = yaml.load(result)
+    yaml_result = yaml.safe_load(result)
 
     assert len([
         volume.strip()
