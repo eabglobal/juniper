@@ -14,8 +14,6 @@
     limitations under the License.
 """
 
-import yaml
-
 from unittest.mock import MagicMock
 from juniper import cli
 
