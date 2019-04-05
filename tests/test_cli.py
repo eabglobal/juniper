@@ -42,9 +42,6 @@ def test_clean_skip_false(mocker):
 
 
 def test_clean_skip_true(mocker):
-    """
-    If the skip clean flag is set to true, do nothing.
-    """
 
     mock_mkdirs = mocker.patch('os.makedirs')
     mock_rmtree = mocker.patch('shutil.rmtree')
