@@ -55,6 +55,11 @@ def build(manifest, debug, skip_clean):
     except FileNotFoundError as fnf:
         logger.error(str(fnf))
     else:
+        old_output = manifest_definition.get('package', {}).get('output')
+        if old_output:
+            logger.error("The package section in the manifest is deprecated. Please use the global section")
+            return
+
         # Set the value of output_dir in the manifest either from the custom value
         # provided or from the default.
         output_dir = manifest_definition.get('global', {}).get('output', DEFAULT_OUT_DIR)

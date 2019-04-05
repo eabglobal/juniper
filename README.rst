@@ -84,6 +84,28 @@ the type of images supported read `juniper and docker`_.
 
 .. _`juniper and docker`: https://eabglobal.github.io/juniper/features.html
 
+
+Configuration
+*************
+To update the default configuration of juniper, can use the the global section
+of the manifest. A sample configuration looks like:
+
+.. code-block:: yaml
+
+    global:
+      image: lambci/lambda:build-python3.7
+      output: ./build
+
+    functions:
+      router:
+        requirements: ./src/router/requirements.txt.
+        include:
+        - ./src/router_function/router/lambda_function.py
+
+With this manifest, juniper will package every single lambda function using the
+docker image specified in the global section. The zip artifacts will be stored in
+the folder defined in the output section.
+
 Features
 ********
 
