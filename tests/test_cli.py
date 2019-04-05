@@ -52,4 +52,4 @@ def test_clean_skip_true(mocker):
     cli._clean(logger, True, manifest)
 
     mock_rmtree.assert_not_called()
-    mock_mkdirs.assert_called_with(output_dir_name, exists_ok=True)
+    mock_mkdirs.assert_called_with(output_dir_name, exist_ok=True)
