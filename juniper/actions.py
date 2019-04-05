@@ -107,7 +107,7 @@ def _get_volumes(manifest, sls_function):
         name = norm_include[norm_include.rindex('/') + 1:]
         return f'{norm_include}:/var/task/common/{name}'
 
-    output_dir = manifest.get('package', {}).get('output', DEFAULT_OUT_DIR)
+    output_dir = manifest.get('output_dir', DEFAULT_OUT_DIR)
     volumes = [
         f'{output_dir}:/var/task/dist',
         './.juni/bin:/var/task/bin',

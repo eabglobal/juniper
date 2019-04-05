@@ -1,9 +1,9 @@
 
-package:
+global:
   output: ./build
 
 functions:
   sample:
     requirements: ./requirements.txt
     include:
-      - ./
+      - ./lambda_function.py

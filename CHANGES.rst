@@ -3,6 +3,20 @@
 Juniper Changelog
 ===============
 
+Version 0.3.0
+-------------
+
+Released on April 5th 2019, codename Fondo I
+
+- Deprecating the package section as a way to override output directory. Using
+  the globals section instead.
+- Adding a new cli flag `skip-clean` as a way to control weather or not to "clean"
+  the output directory before the packaging process starts.
+- Explicitly building a new output directory. Before, we relied on the internal
+  volume mapping of the docker container as the entity that would create the output
+  directory. Now, juniper will delete and create the directory.
+
+
 Version 0.2.6
 -------------
 

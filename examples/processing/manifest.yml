@@ -13,6 +13,7 @@ functions:
       - ./map_lambda/mapper
 
   reduce_step:
+    image: lambci/lambda:build-python3.7
     requirements: ./reduce_lambda/requirements.txt
     include:
-      - ./reduce_lambda/reducer
+      - ./reduce_lambda/reducer/lambda_function.py
