@@ -109,7 +109,7 @@ def test_build_compose_section_custom_output():
 
     custom_output_dir = './build_not_dist'
     manifest = {
-        'package': {'output': custom_output_dir},
+        'output_dir': custom_output_dir,
         'functions': {'test_func': {}}
     }
 

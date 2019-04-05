@@ -1,3 +1,4 @@
+import os
 import click
 import click_log
 import pathlib
@@ -39,8 +40,9 @@ def main():
                     """)
 @click.option('--manifest', '-m', default='manifest.yml', help='The configuration file to use.')
 @click.option('--debug', '-d', is_flag=True, help='Run the build in debug mode.')
+@click.option('--skip-clean', '-s', is_flag=True, help='Does recreate the output directory.')
 @click_log.simple_verbosity_option(logger)
-def build(manifest, debug):
+def build(manifest, debug, skip_clean):
 
     if debug:
         logger.setLevel(logging.DEBUG)
@@ -53,12 +55,42 @@ def build(manifest, debug):
     except FileNotFoundError as fnf:
         logger.error(str(fnf))
     else:
-        # Make sure to start the building process with a clean slate. This will
-        # ensures that the output folder is not included in the packaging.
-        output_dir = manifest_definition.get('package', {}).get('output', DEFAULT_OUT_DIR)
-        shutil.rmtree(output_dir, ignore_errors=True)
+        # Set the value of output_dir in the manifest either from the custom value
+        # provided or from the default.
+        output_dir = manifest_definition.get('global', {}).get('output', DEFAULT_OUT_DIR)
+        manifest_definition['output_dir'] = output_dir
 
+        # Get the local env ready before building the artifacts.
+        _clean(logger, skip_clean, manifest_definition)
         build_artifacts(logger, manifest_definition)
+
+
+def _clean(logger, skip, manifest):
+    """
+    Clean the working environment before building a new set of artifacts. The clean
+    operation will completely rm -f the output directory and then it will create
+    a brand new directory.
+
+    :param logger: The logger instance used by juniper.
+    :param skip: A flag that indicates weather or not the clean process should
+                 be executed
+    :param manifest: The manifest that contains all the build parameters.
+    """
+
+    output_dir = manifest['output_dir']
+
+    if skip:
+        logger.debug('Skipping the cleaning process.')
+
+        # The very first time the build command is executed, if the output
+        # directory does not exist, we need to create it. This does not override
+        # an existing directory.
+        os.makedirs(output_dir, exist_ok=True)
+        return
+
+    logger.debug(f'Executing: rm -rf {output_dir} && mkdir {output_dir}')
+    shutil.rmtree(output_dir, ignore_errors=True)
+    os.makedirs(output_dir)
 
 
 if __name__ == '__main__':
