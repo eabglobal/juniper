@@ -102,9 +102,9 @@ of the manifest. A sample configuration looks like:
         include:
         - ./src/router_function/router/lambda_function.py
 
-With this manifest, juniper will package every single lambda function using the
-docker image specified in the global section. The zip artifacts will be stored in
-the folder defined in the output section.
+Setting a docker image at a global level tells juniper to package every
+lambda function using such image. In this example, the zip artifacts will be stored in
+the ./build folder instead of the ./dist; which is the default.
 
 Features
 ********
