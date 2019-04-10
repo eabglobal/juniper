@@ -1,0 +1,10 @@
+functions:
+  fondoevents:
+    include:
+    - ./fondo/get.py
+
+layers:
+  core:
+    requirements: ./requirements/core_layer.txt
+  postgres:
+    requirements: ./requirements/pg_layer.txt

@@ -42,6 +42,7 @@ def build_artifacts(logger, manifest):
         # will be promtly cleaned up after the artifacts are built.
         os.makedirs('./.juni/bin', exist_ok=True)
         shutil.copy(get_artifact_path('package.sh'), './.juni/bin/')
+        shutil.copy(get_artifact_path('buildlayer.sh'), './.juni/bin/')
 
         # Use docker as a way to pip install dependencies, and copy the business logic
         # specified in the function definitions.
@@ -84,8 +85,16 @@ def _get_compose_template(manifest):
         }
         for name, sls_function in manifest.get('functions', {}).items()
     ]
+    layers = [
+        {
+            'name': name,
+            'image': _get_docker_image(manifest, sls_function),
+            'volumes': _get_volumes(manifest, sls_function)
+        }
+        for name, sls_function in manifest.get('layers', {}).items()
+    ]
 
-    return template.render(functions=functions)
+    return template.render(functions=functions, layers=layers)
 
 
 def _get_volumes(manifest, sls_function):
