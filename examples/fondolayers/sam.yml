@@ -16,7 +16,7 @@ Resources:
       Runtime: python3.6
 
       # This is the Lambda function's handler.
-      Handler: lambda_handler.app
+      Handler: fondo/get.app
 
       # The location of the Lambda function code.
       CodeUri: ./dist/fondoevents.zip
@@ -40,14 +40,14 @@ Resources:
   CoreLayer:
     Type: 'AWS::Serverless::LayerVersion'
     Properties:
-      ContentUri: ./dist/core_layer
+      ContentUri: ./dist/core.zip
       CompatibleRuntimes: # optional
         - python3.6
 
   PgLayer:
     Type: 'AWS::Serverless::LayerVersion'
     Properties:
-      ContentUri: ./dist/postgres_layer
+      ContentUri: ./dist/postgres.zip
       CompatibleRuntimes: # optional
         - python3.6
 

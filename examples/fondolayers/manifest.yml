@@ -1,7 +1,7 @@
 functions:
   fondoevents:
     include:
-    - ./fondo/get.py
+    - ./fondo
 
 layers:
   core:

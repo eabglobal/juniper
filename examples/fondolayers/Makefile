@@ -1,6 +1,6 @@
 
 s3_bucket=sam-artifacts-dev
-stack_name ?= minik-auth
+stack_name ?= juni-fondo
 sam_template_base=sam
 sam_template=$(sam_template_base).yml
 sam_output=$(sam_template_base)-new.yml
@@ -16,7 +16,7 @@ package:
 	    --output-template-file ./dist/$(sam_output) \
 	    --profile $(profile)
 
-deploy:
+deploy: build package
 	sam deploy \
 	    --template-file ./dist/$(sam_output) \
 	    --stack-name $(stack_name) \

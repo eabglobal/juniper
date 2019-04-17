@@ -12,6 +12,7 @@ services:
       {% endfor %}
     command: sh /var/task/bin/package.sh {{lambda_fn.name}}
 {% endfor %}
+
 {% for layer in layers %}
   {{layer.name}}-layer:
     image: {{layer.image}}
@@ -21,5 +22,5 @@ services:
       {% for volume in layer.volumes -%}
         - {{volume}}
       {% endfor %}
-    command: sh /var/task/bin/buildlayer.sh {{layer.name}}
+    command: sh /var/task/bin/package.sh {{layer.name}}
 {% endfor %}
