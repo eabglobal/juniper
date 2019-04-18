@@ -73,7 +73,7 @@ manifest file, you can package the router lambda using a python3.7 image.
       router:
         # Use this docker image
         image: lambci/lambda:build-python3.7
-        requirements: ./src/router/requirements.txt.
+        requirements: ./src/router/requirements.txt
         # Include these local modules in the artifact
         include:
         - ./src/commonlib/mylib
@@ -84,6 +84,48 @@ the type of images supported read `juniper and docker`_.
 
 .. _`juniper and docker`: https://eabglobal.github.io/juniper/features.html
 
+
+Lambda Layers
+*************
+AWS Lambda layers is a recent service that gives a developer the ability to
+pre-package a set of dependencies. A lambda function can be built on top of multiple
+layers, either packaged by the developer, by AWS or by a third party.
+
+To build a layer, the juniper manifest uses a new block:
+
+.. code-block:: yaml
+
+  layers:
+    base:
+      requirements: ./src/requirements/base.txt
+    pg:
+      requirements: ./src/requirements/postgres.txt
+
+Running `juni build` will create two layer artifacts. One for the base and another
+one for pg. These artifacts will be packaged along the lambda definitions and
+the zip files will be stored in the artifacts directory. By default is dist.
+
+Just like in the lambda case, the generated zip files will include the dependencies
+defined in the requirements file.
+
+The layer section also supports the definition of a custom docker image. In that
+case, a layer can be built using python3.7 and another one can be built using the
+default python interpreter; python3.6.
+
+.. code-block:: yaml
+
+  layers:
+    base:
+      image: lambci/lambda:build-python3.7
+      requirements: ./src/requirements/base.txt
+
+With the artifact you can use the `layers aws cli`_ to upload it to AWS. If you
+are using a SAM template make sure you use the `AWS::Serverless::LayerVersion`.
+
+To see an example on how to package lambda functions as well as layers, juni includes
+a layers example in the codebase called fondolayers.
+
+_`layers aws cli`: https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html#configuration-layers-manage
 
 Configuration
 *************

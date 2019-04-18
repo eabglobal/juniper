@@ -9,7 +9,7 @@ Resources:
       EndpointConfiguration: REGIONAL
       StageName: Prod
 
-  EventsFunction:
+  APIHandlerFunction:
     Type: AWS::Serverless::Function
     Properties:
       # This function uses the python 3.6 runtime.

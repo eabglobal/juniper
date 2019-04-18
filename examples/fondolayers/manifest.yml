@@ -5,6 +5,7 @@ functions:
 
 layers:
   core:
+    image: lambci/lambda:build-python3.7
     requirements: ./requirements/core_layer.txt
   postgres:
     requirements: ./requirements/pg_layer.txt
