@@ -42,7 +42,7 @@ def build_artifacts(logger, manifest):
         # will be promtly cleaned up after the artifacts are built.
         os.makedirs('./.juni/bin', exist_ok=True)
         shutil.copy(get_artifact_path('package.sh'), './.juni/bin/')
-        shutil.copy(get_artifact_path('buildlayer.sh'), './.juni/bin/')
+        shutil.copy(get_artifact_path('build_layer.sh'), './.juni/bin/')
 
         # Use docker as a way to pip install dependencies, and copy the business logic
         # specified in the function definitions.
@@ -75,26 +75,22 @@ def _get_compose_template(manifest):
     folder.
     """
     artifact = get_artifact('compose-template.yml')
-    template = Template(artifact)
 
-    functions = [
-        {
-            'name': name,
-            'image': _get_docker_image(manifest, sls_function),
-            'volumes': _get_volumes(manifest, sls_function)
-        }
-        for name, sls_function in manifest.get('functions', {}).items()
-    ]
-    layers = [
-        {
-            'name': name,
-            'image': _get_docker_image(manifest, sls_function),
-            'volumes': _get_volumes(manifest, sls_function)
-        }
-        for name, sls_function in manifest.get('layers', {}).items()
-    ]
+    def build_section(label):
+        return [
+            {
+                'name': name,
+                'image': _get_docker_image(manifest, sls_section),
+                'volumes': _get_volumes(manifest, sls_section)
+            }
+            for name, sls_section in manifest.get(label, {}).items()
+        ]
 
-    return template.render(functions=functions, layers=layers)
+    # Load the jinja template and build the sls functions and layers.
+    return Template(artifact).render(
+        functions=build_section('functions'),
+        layers=build_section('layers')
+    )
 
 
 def _get_volumes(manifest, sls_function):

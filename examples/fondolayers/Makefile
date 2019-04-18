@@ -16,7 +16,7 @@ package:
 	    --output-template-file ./dist/$(sam_output) \
 	    --profile $(profile)
 
-deploy: build package
+deploy: package
 	sam deploy \
 	    --template-file ./dist/$(sam_output) \
 	    --stack-name $(stack_name) \
