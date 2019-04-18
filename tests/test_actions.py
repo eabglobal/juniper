@@ -186,8 +186,7 @@ def test_get_volumes_with_files():
 
 def test_build_compose_section_supports_layers():
     """
-    Make sure that a manifest that contains layer definition, includes the layer
-    section in the docker-compose file.
+    Include the definition of the lambda layers in the docker compose section.
     """
 
     custom_output_dir = './build_not_dist'
@@ -213,9 +212,8 @@ def test_build_compose_section_supports_layers():
 
 def test_build_compose_supports_layers(mocker):
     """
-    The docker-compose file created, is written to a tmp file. Make sure that
-    the file is writen and validate that the contents of the file match the
-    expected result.
+    Validate that given a manifest that has both functions and layers builds the
+    correct docker-compose template.
     """
 
     tmp_filename = '/var/folders/xw/yk2rrhks1w72y0zr_7t7b851qlt8b3/T/tmp52bd77s3'
