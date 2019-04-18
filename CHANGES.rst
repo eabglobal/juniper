@@ -3,6 +3,14 @@
 Juniper Changelog
 ===============
 
+Version 0.4.0
+-------------
+
+Released on April 18th 2019, codename Fondo 4
+
+- New feature to support layers (/issues/38)
+
+
 Version 0.3.0
 -------------
 

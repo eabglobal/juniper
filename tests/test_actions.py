@@ -211,7 +211,7 @@ def test_build_compose_section_supports_layers():
     assert 'build_layer.sh second' in second_layer['command']
 
 
-def test_build_compose_writes_compose_definition_to_tmp_file(mocker):
+def test_build_compose_supports_layers(mocker):
     """
     The docker-compose file created, is written to a tmp file. Make sure that
     the file is writen and validate that the contents of the file match the
