@@ -1,0 +1,2 @@
+requests==2.20.1
+minik==0.3.1

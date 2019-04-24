@@ -73,7 +73,7 @@ manifest file, you can package the router lambda using a python3.7 image.
       router:
         # Use this docker image
         image: lambci/lambda:build-python3.7
-        requirements: ./src/router/requirements.txt.
+        requirements: ./src/router/requirements.txt
         # Include these local modules in the artifact
         include:
         - ./src/commonlib/mylib
@@ -84,6 +84,49 @@ the type of images supported read `juniper and docker`_.
 
 .. _`juniper and docker`: https://eabglobal.github.io/juniper/features.html
 
+
+Lambda Layers
+*************
+AWS Lambda layers is a recent service that gives a developer the ability to
+pre-package a set of dependencies. A lambda function can be built on top of multiple
+layers, either packaged by the developer, by AWS or by a third party.
+
+To build a layer, the juniper manifest uses a new block:
+
+.. code-block:: yaml
+
+  layers:
+    base:
+      requirements: ./src/requirements/base.txt
+    pg:
+      requirements: ./src/requirements/postgres.txt
+
+With this manifest, running *juni build* creates two layer artifacts. One with the
+name base and another one named pg. These artifacts are packaged along the
+lambda definitions and the zip files are stored in the artifacts directory.
+
+The generated zip artifacts include the dependencies defined in the requirements file.
+
+The layer section also supports the definition of a custom docker image. With this
+feature, a layer can be built using python3.7 and another one can be built using the
+default python interpreter; python3.6.
+
+.. code-block:: yaml
+
+  layers:
+    base:
+      image: lambci/lambda:build-python3.7
+      requirements: ./src/requirements/base.txt
+
+Juniper builds the artifact for you, you can either use the `layers aws cli`_ to
+upload it to AWS or you can use a SAM template definition. When declaring your
+layer in the SAM template, make sure you use the `AWS::Serverless::LayerVersion`
+resource.
+
+To see an example on how to package lambda functions as well as layers, juniper includes
+a layers example in the codebase called fondolayers.
+
+_`layers aws cli`: https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html#configuration-layers-manage
 
 Configuration
 *************

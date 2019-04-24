@@ -17,7 +17,7 @@
 import yaml
 
 from juniper import actions
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, call
 from juniper.io import reader, get_artifact_path
 
 
@@ -96,7 +96,11 @@ def test_build_artifacts_copies_scriopts(mocker):
 
     # Validate that this three step process is correctly executed.
     mock_os.makedirs.assert_called_with('./.juni/bin', exist_ok=True)
-    mock_shutil.copy.assert_called_with(get_artifact_path('package.sh'), './.juni/bin/')
+
+    mock_shutil.copy.assert_has_calls([
+        call(get_artifact_path('package.sh'), './.juni/bin/'),
+        call(get_artifact_path('build_layer.sh'), './.juni/bin/'),
+    ])
     mock_shutil.rmtree.assert_called_with('./.juni', ignore_errors=True)
     mock_builder.assert_called_once()
 
@@ -178,6 +182,50 @@ def test_get_volumes_with_files():
     volumes = actions._get_volumes(manifest, sls_function)
 
     assert './src/lambda_function.py:/var/task/common/lambda_function.py' in volumes
+
+
+def test_build_compose_section_supports_layers():
+    """
+    Include the definition of the lambda layers in the docker compose section.
+    """
+
+    custom_output_dir = './build_not_dist'
+    manifest = {
+        'output_dir': custom_output_dir,
+        'layers': {
+            'first': {'requirements': 'requirements/first.txt'},
+            'second': {'requirements': 'requirements/second.txt'},
+        }
+    }
+
+    result = actions._get_compose_template(manifest)
+    yaml_result = yaml.safe_load(result)
+
+    first_layer = yaml_result['services']['first-layer']
+    assert any('requirements/first.txt' in volume for volume in first_layer['volumes'])
+    assert 'build_layer.sh first' in first_layer['command']
+
+    second_layer = yaml_result['services']['second-layer']
+    assert any('requirements/second.txt' in volume for volume in second_layer['volumes'])
+    assert 'build_layer.sh second' in second_layer['command']
+
+
+def test_build_compose_supports_layers(mocker):
+    """
+    Validate that given a manifest that has both functions and layers builds the
+    correct docker-compose template.
+    """
+
+    tmp_filename = '/var/folders/xw/yk2rrhks1w72y0zr_7t7b851qlt8b3/T/tmp52bd77s3'
+    mock_writer = mocker.patch('juniper.actions.write_tmp_file', return_value=tmp_filename)
+
+    processor_ctx = reader('./tests/manifests/layers.yml')
+    actual_filename = actions.build_compose(logger, processor_ctx)
+
+    expected = read_file('./tests/expectations/layers-compose.yml')
+
+    assert tmp_filename == actual_filename
+    assert yaml.safe_load(mock_writer.call_args[0][0]) == yaml.safe_load(expected)
 
 
 def read_file(file_name):

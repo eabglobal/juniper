@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: API Gateway with Lambda Token Authorizer
+Resources:
+
+  EventsAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      EndpointConfiguration: REGIONAL
+      StageName: Prod
+
+  APIHandlerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      # This function uses the python 3.6 runtime.
+      Runtime: python3.6
+
+      # This is the Lambda function's handler.
+      Handler: fondo/get.app
+
+      # The location of the Lambda function code.
+      CodeUri: ./dist/fondoevents.zip
+      Layers:
+        - !Ref CoreLayer
+        - !Ref PgLayer
+      Events:
+        PostEvents:
+          Type: Api
+          Properties:
+            RestApiId: !Ref EventsAPI
+            Path: /events
+            Method: post
+        GetEvents:
+          Type: Api
+          Properties:
+            RestApiId: !Ref EventsAPI
+            Path: /events/{zip_code}
+            Method: get
+
+  CoreLayer:
+    Type: 'AWS::Serverless::LayerVersion'
+    Properties:
+      ContentUri: ./dist/core.zip
+      CompatibleRuntimes: # optional
+        - python3.6
+
+  PgLayer:
+    Type: 'AWS::Serverless::LayerVersion'
+    Properties:
+      ContentUri: ./dist/postgres.zip
+      CompatibleRuntimes: # optional
+        - python3.6
+
+Outputs:
+  ApiURL:
+    Description: "API URL"
+    Value: !Sub 'https://${EventsAPI}.execute-api.${AWS::Region}.amazonaws.com/Prod/'

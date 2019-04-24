@@ -1,0 +1,33 @@
+version: '3.6'
+
+services:
+
+  fondoevents-lambda:
+    image: lambci/lambda:build-python3.6
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - ./dist:/var/task/dist
+      - ./.juni/bin:/var/task/bin
+      - ./fondo:/var/task/common/fondo
+    command: sh /var/task/bin/package.sh fondoevents
+
+  core-layer:
+    image: lambci/lambda:build-python3.6
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - ./dist:/var/task/dist
+      - ./.juni/bin:/var/task/bin
+      - ./requirements/core_layer.txt:/var/task/common/requirements.txt
+    command: sh /var/task/bin/build_layer.sh core
+
+  postgres-layer:
+    image: lambci/lambda:build-python3.6
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - ./dist:/var/task/dist
+      - ./.juni/bin:/var/task/bin
+      - ./requirements/pg_layer.txt:/var/task/common/requirements.txt
+    command: sh /var/task/bin/build_layer.sh postgres
