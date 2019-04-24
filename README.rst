@@ -101,9 +101,9 @@ To build a layer, the juniper manifest uses a new block:
     pg:
       requirements: ./src/requirements/postgres.txt
 
-With this manifest, running `juni build` will create two layer artifacts. One with the
-name base and another one named pg. These artifacts will be packaged along the
-lambda definitions and the zip files will be stored in the artifacts directory.
+With this manifest, running *juni build* creates two layer artifacts. One with the
+name base and another one named pg. These artifacts are packaged along the
+lambda definitions and the zip files are stored in the artifacts directory.
 
 The generated zip artifacts include the dependencies defined in the requirements file.
 
