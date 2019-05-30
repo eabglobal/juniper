@@ -7,6 +7,9 @@ mkdir lambda
 requirements="common/requirements.txt"
 zip_path="$(which zip)"
 
+chmod +x /var/task/bin/bootstrap.sh
+sh /var/task/bin/bootstrap.sh
+
 if [ ! $zip_path ]; then
     echo "Unable To Package - This docker image does not have the zip command."
     echo "Try using a docker image from lambci/lambda:build-python<py_version>"
