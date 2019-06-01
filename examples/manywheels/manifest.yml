@@ -1,13 +1,12 @@
 
-global:
-  output: ./build
-
 functions:
   sample:
-    image: python3.8
-    bootstrap: ./bootstrap.sh
-    requirements: ./requirements.txt
+    # bootstrap: ./bootstrap.sh
+    requirements: ./requirements/base.txt
     include:
       - ./lambda_function.py
-    precompiled:
-      - xmlsec
+
+layers:
+  xmlsec:
+    bootstrap: ./bootstrap.sh
+    requirements: ./requirements/xmlsec_layer.txt
