@@ -125,10 +125,6 @@ def _get_volumes(manifest, sls_function):
     if reqs_path:
         volumes.append(f'{reqs_path}:/var/task/common/requirements.txt')
 
-    boot_path = sls_function.get('bootstrap')
-    if boot_path:
-        volumes.append(f'{boot_path}:/var/task/bin/bootstrap.sh')
-
     return volumes
 
 

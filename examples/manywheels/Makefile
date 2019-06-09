@@ -6,6 +6,7 @@ sam_output=$(sam_template_base)-new.yml
 
 
 build:
+	docker build -t juniper/xmlsec -f docker/Dockerfile.xmlsec .
 	juni build
 
 package:

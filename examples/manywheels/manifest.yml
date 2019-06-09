@@ -1,12 +1,12 @@
 
 functions:
   sample:
-    # bootstrap: ./bootstrap.sh
     requirements: ./requirements/base.txt
     include:
       - ./lambda_function.py
 
 layers:
+
   xmlsec:
-    bootstrap: ./bootstrap.sh
+    image: juniper/xmlsec
     requirements: ./requirements/xmlsec_layer.txt
