@@ -149,6 +149,32 @@ Setting a docker image at a global level tells juniper to package every
 lambda function using such image. In this example, the zip artifacts will be stored in
 the ./build folder instead of the ./dist; which is the default.
 
+Include Binaries
+****************
+Using the lambci build images to create the zip artifacts for a given set of lambda
+functions is sufficient for most use cases. However, there are times when the base container
+does not have all the build libraries necessary to create the zip artifact. In this cases
+running `juni build` fails while trying to pip install the dependencies of the function.
+In addition, once the libraries are installed in the container some packages require a set of
+binaries to work properly at run time.
+
+The recommended procedure to install OS libraries and include missing dependencies
+is to use a dockerfile to build a local docker image. The strategy is illustrated as follows:
+
+* Create a dockerfile using one of the lambci images as a starting point
+* Build a local docker image from the docker file
+* Use the local image in the juniper manifest
+
+At this point, the developer can push the docker image to the docker hub and use
+the hosted version instead of the local one. This strategy separates the build of
+a custom image from the build of the artifacts.
+
+If you need binaries in the final artifact, place the target files in the **/var/task/lambda_lib/**
+directory. It is important that you put the files there given that juniper is in
+charge of placing these binaries in the correct place depending on the type of
+resource (lambda/layer).
+
+
 Features
 ********
 
