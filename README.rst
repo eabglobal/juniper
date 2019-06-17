@@ -189,7 +189,7 @@ charge of placing these binaries in the correct place depending on the type of
 resource (lambda/layer).
 
 A concrete example of the configuration is outlined in the `advanced`_ section
-of our documentaiton.
+of our documentation.
 
 .. _`advanced`: https://eabglobal.github.io/juniper/advanced.html
 
