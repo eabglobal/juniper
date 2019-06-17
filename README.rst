@@ -141,7 +141,7 @@ of the manifest. A sample configuration looks like:
 
     functions:
       router:
-        requirements: ./src/router/requirements.txt.
+        requirements: ./src/router/requirements.txt
         include:
         - ./src/router_function/router/lambda_function.py
 
@@ -165,6 +165,20 @@ is to use a dockerfile to build a local docker image. The strategy is illustrate
 * Build a local docker image from the docker file
 * Use the local image in the juniper manifest
 
+With this startegy, the juniper manifest will look like this:
+
+.. code-block:: yaml
+
+    functions:
+      router:
+        image: custom/withmissingdependencies
+        requirements: ./src/router/requirements.txt
+        include:
+        - ./src/router_function/router/lambda_function.py
+
+The only difference is that the image specified for the router function is a custom
+docker image.
+
 At this point, the developer can push the docker image to the docker hub and use
 the hosted version instead of the local one. This strategy separates the build of
 a custom image from the build of the artifacts.
@@ -174,6 +188,10 @@ directory. It is important that you put the files there given that juniper is in
 charge of placing these binaries in the correct place depending on the type of
 resource (lambda/layer).
 
+A concrete example of the configuration is outlined in the `advanced`_ section
+of our documentaiton.
+
+.. _`advanced`: https://eabglobal.github.io/juniper/advanced.html
 
 Features
 ********

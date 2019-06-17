@@ -1,8 +1,6 @@
 Layers and binaries
 ===================
 
-.. image:: https://farm5.staticflickr.com/4259/35163667010_8bfcaef274_k_d.jpg
-
 In this section we are going to discuss how to use aws lambda layers and juniper
 to package a lambda function that requires additional OS packages to be installed
 in the build container.
