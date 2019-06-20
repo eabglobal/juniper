@@ -139,3 +139,4 @@ Contents:
     tutorial.rst
     concepts.rst
     features.rst
+    advanced.rst

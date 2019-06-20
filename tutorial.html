@@ -100,9 +100,10 @@ to the example, however, the folder structure has a set of placeholders for them
       <span class="o">-</span> <span class="o">./</span><span class="n">map_lambda</span><span class="o">/</span><span class="n">mapper</span>
 
   <span class="n">reduce_step</span><span class="p">:</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">lambci</span><span class="o">/</span><span class="k">lambda</span><span class="p">:</span><span class="n">build</span><span class="o">-</span><span class="n">python3</span><span class="o">.</span><span class="mi">7</span>
     <span class="n">requirements</span><span class="p">:</span> <span class="o">./</span><span class="n">reduce_lambda</span><span class="o">/</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
     <span class="n">include</span><span class="p">:</span>
-      <span class="o">-</span> <span class="o">./</span><span class="n">reduce_lambda</span><span class="o">/</span><span class="n">reducer</span>
+      <span class="o">-</span> <span class="o">./</span><span class="n">reduce_lambda</span><span class="o">/</span><span class="n">reducer</span><span class="o">/</span><span class="n">lambda_function</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 <p>Note that in the definition of the <cite>split_step</cite> the includes section makes reference
@@ -129,7 +130,7 @@ folder must be included in the .zip artifact for the split function.</p>
 <span class="go">processing_map_step-lambda_1 exited with code 0</span>
 </pre></div>
 </div>
-<p>Withoout any arguments, juni will by default look for a file named <cite>manifest.yml</cite>.
+<p>Without any arguments, juni will by default look for a file named <cite>manifest.yml</cite>.
 From that file, juni will create the artifacts in a <cite>./dist</cite> folder. The output
 of the above command creates the following artifacts:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="n">dist</span>
@@ -187,6 +188,7 @@ manifest file.</p>
 <li class="toctree-l1"><a class="reference internal" href="concepts.html#microservices">5. Microservices</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts.html#tool-survey">6. Tool Survey</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">7. Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">8. Layers and binaries</a></li>
 </ul>
 
 <div class="relations">
