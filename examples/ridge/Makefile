@@ -1,5 +1,5 @@
 s3_bucket=temp-awseabsgddev
-stack_name ?= juni-wheels
+stack_name ?= juni-ridge
 sam_template_base=sam
 sam_template=$(sam_template_base).yml
 sam_output=$(sam_template_base)-new.yml
