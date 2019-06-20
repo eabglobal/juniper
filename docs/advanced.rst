@@ -94,7 +94,7 @@ the docker file. Juniper uses this image by default.
 
 The second part of the file copies two binaries that **must** be included in the
 zip artifact of the lambda function for it to correctly function at run time. If
-you omit the copying of the .so files to the lambda_lib directory, you function
+you fail to copy the .so files to the lambda_lib directory, you function
 will correctly generate a zip artifact, however, the function will **NOT** work
 when you run it.
 
