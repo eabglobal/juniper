@@ -6,7 +6,7 @@ to package a lambda function that requires additional OS packages to be installe
 in the build container.
 
 For most use cases, the lambci container used by juniper has the dev system libraries
-necesary to pip install a set of dependencies. However, when this is not the case,
+necessary to pip install a set of dependencies. However, when this is not the case,
 you need to build a docker image with the missing dependencies that juniper can
 use for build purposes.
 
@@ -15,7 +15,9 @@ use for build purposes.
 
 TL;DR
 *****
-Look at the setup of juniper's examples/ridge. The main takeaways are:
+If you are trying to build a lambda artifact, and one of the packages in your requirements
+file fails due to a missing OS library. Follow the example provided in the juniper codebase
+under "examples/ridge".
 
 * Use a dockerfile to install missing OS libraries
 * Use the `lambci build`_ images as the base image of the dockerfile
@@ -24,16 +26,16 @@ Look at the setup of juniper's examples/ridge. The main takeaways are:
 * Build new docker image locally (see the ridge/Makefile) build command
 * Use the locally built image in the juniper manifest (ridge/manifest.yml)
 
-.. _`lambci build`: http://lambci.org/
+.. _`lambci build`: https://github.com/lambci/docker-lambda
 
 Sample Project
 **************
-Ridge is a simple example included in the juniper codebase used to show the recommended
-configuration to install and build an advanced python package.
+Ridge is a simple example included in the juniper codebase to showcase the recommended
+configuration to install and build a python package that depends on additional OS libraries.
 
 The ridge project will be used to illustrate three things:
 
-* How to use docker to build a image with missing dependencies
+* How to use docker to build an image with missing dependencies
 * How to use aws lambda layers
 * How to include a set of binaries in zip artifact of the lambda function
 
@@ -92,7 +94,7 @@ the docker file. Juniper uses this image by default.
 
 The second part of the file copies two binaries that **must** be included in the
 zip artifact of the lambda function for it to correctly function at run time. If
-you ommit the copying of the *.so files to the lambda_lib directory, you function
+you fail to copy the .so files to the lambda_lib directory, you function
 will correctly generate a zip artifact, however, the function will **NOT** work
 when you run it.
 
@@ -101,7 +103,7 @@ different needs, you need to know and understand the needs of the library you ar
 trying to install and ultimate include in the artifact of the lambda function.
 
 This `curated list`_ of pre-compiled python packages includes the set of "Shared Object"
-(.so) files for most use cases. Use this list to identify the set of files that you need.
+(.so) files for a given library. Use this list to identify the set of files that you need.
 Once you know what files your library depends on, copy the two or three files your package
 needs from the /usr/lib64 folder in your container over to the lambda_lib directory.
 
@@ -115,7 +117,7 @@ is that the binaries go in different places depending on the type of resource
 being built (lambda function/lambda layer).
 
 In the dockerfile, once you have identified the .so files that you need to include
-in your lambda artifact, cp those files over to the `/var/task/lambda_lib/` directory.
+in your artifact, copy those files over to the `/var/task/lambda_lib/` directory.
 When building a lambda function, these files will be included at the top level of the
 zip file. When building a lambda layer, these files need to be placed under a `lib`
 directory. Juniper will take care of that for you, as long as you put the files in the
@@ -156,3 +158,5 @@ in the make file.
 
     >>> make build
     >>> make deploy
+
+.. image:: ../assets/ridge_build.png

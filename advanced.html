@@ -38,15 +38,17 @@
 to package a lambda function that requires additional OS packages to be installed
 in the build container.</p>
 <p>For most use cases, the lambci container used by juniper has the dev system libraries
-necesary to pip install a set of dependencies. However, when this is not the case,
+necessary to pip install a set of dependencies. However, when this is not the case,
 you need to build a docker image with the missing dependencies that juniper can
 use for build purposes.</p>
 <div class="section" id="tl-dr">
 <h2>8.1. TL;DR<a class="headerlink" href="#tl-dr" title="Permalink to this headline">¶</a></h2>
-<p>Look at the setup of juniper’s examples/ridge. The main takeaways are:</p>
+<p>If you are trying to build a lambda artifact, and one of the packages in your requirements
+file fails due to a missing OS library. Follow the example provided in the juniper codebase
+under “examples/ridge”.</p>
 <ul class="simple">
 <li>Use a dockerfile to install missing OS libraries</li>
-<li>Use the <a class="reference external" href="http://lambci.org/">lambci build</a> images as the base image of the dockerfile</li>
+<li>Use the <a class="reference external" href="https://github.com/lambci/docker-lambda">lambci build</a> images as the base image of the dockerfile</li>
 <li>If binaries need to be included in the final artifact, copy them explicitly
 to the <strong>/var/task/lambda_lib/</strong> folder. Juniper will know what to do with those</li>
 <li>Build new docker image locally (see the ridge/Makefile) build command</li>
@@ -55,11 +57,11 @@ to the <strong>/var/task/lambda_lib/</strong> folder. Juniper will know what to 
 </div>
 <div class="section" id="sample-project">
 <h2>8.2. Sample Project<a class="headerlink" href="#sample-project" title="Permalink to this headline">¶</a></h2>
-<p>Ridge is a simple example included in the juniper codebase used to show the recommended
-configuration to install and build an advanced python package.</p>
+<p>Ridge is a simple example included in the juniper codebase to showcase the recommended
+configuration to install and build a python package that depends on additional OS libraries.</p>
 <p>The ridge project will be used to illustrate three things:</p>
 <ul class="simple">
-<li>How to use docker to build a image with missing dependencies</li>
+<li>How to use docker to build an image with missing dependencies</li>
 <li>How to use aws lambda layers</li>
 <li>How to include a set of binaries in zip artifact of the lambda function</li>
 </ul>
@@ -110,14 +112,14 @@ recommend you use the <strong>lambci/lambda:build-python3.6</strong> as the star
 the docker file. Juniper uses this image by default.</p>
 <p>The second part of the file copies two binaries that <strong>must</strong> be included in the
 zip artifact of the lambda function for it to correctly function at run time. If
-you ommit the copying of the <em>.so files to the lambda_lib directory, you function
-will correctly generate a zip artifact, however, the function will **NOT*</em> work
+you fail to copy the .so files to the lambda_lib directory, you function
+will correctly generate a zip artifact, however, the function will <strong>NOT</strong> work
 when you run it.</p>
 <p>These two files are required by the xmlsec library only! Different dependencies have
 different needs, you need to know and understand the needs of the library you are
 trying to install and ultimate include in the artifact of the lambda function.</p>
 <p>This <a class="reference external" href="https://github.com/Miserlou/lambda-packages/tree/master/lambda_packages">curated list</a> of pre-compiled python packages includes the set of “Shared Object”
-(.so) files for most use cases. Use this list to identify the set of files that you need.
+(.so) files for a given library. Use this list to identify the set of files that you need.
 Once you know what files your library depends on, copy the two or three files your package
 needs from the /usr/lib64 folder in your container over to the lambda_lib directory.</p>
 </div>
@@ -128,7 +130,7 @@ be included in the final artifact. The main reason to use this shared folder
 is that the binaries go in different places depending on the type of resource
 being built (lambda function/lambda layer).</p>
 <p>In the dockerfile, once you have identified the .so files that you need to include
-in your lambda artifact, cp those files over to the <cite>/var/task/lambda_lib/</cite> directory.
+in your artifact, copy those files over to the <cite>/var/task/lambda_lib/</cite> directory.
 When building a lambda function, these files will be included at the top level of the
 zip file. When building a lambda layer, these files need to be placed under a <cite>lib</cite>
 directory. Juniper will take care of that for you, as long as you put the files in the
@@ -165,6 +167,7 @@ in the make file.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">make</span> <span class="n">deploy</span>
 </pre></div>
 </div>
+<img alt="_images/ridge_build.png" src="_images/ridge_build.png" />
 </div>
 </div>
 
