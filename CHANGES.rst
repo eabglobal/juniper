@@ -3,6 +3,14 @@
 Juniper Changelog
 ===============
 
+Version 0.5.0
+-------------
+
+Released on June 24th 2019
+
+- New feature to external libraries (/issues/39)
+
+
 Version 0.4.0
 -------------
 
