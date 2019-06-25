@@ -86,7 +86,7 @@ processing_split_step-lambda_1 exited with code 0
 map_step-lambda_1     | Finished packaging
 processing_map_step-lambda_1 exited with code 0
 
-Withoout any arguments, juni will by default look for a file named `manifest.yml`.
+Without any arguments, juni will by default look for a file named `manifest.yml`.
 From that file, juni will create the artifacts in a `./dist` folder. The output
 of the above command creates the following artifacts:
 

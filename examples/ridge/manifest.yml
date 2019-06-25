@@ -1,0 +1,12 @@
+
+functions:
+  sample:
+    requirements: ./requirements/base.txt
+    include:
+      - ./lambda_function.py
+
+layers:
+
+  xmlsec:
+    image: juniper/xmlsec
+    requirements: ./requirements/xmlsec_layer.txt

@@ -1,0 +1,7 @@
+FROM lambci/lambda:build-python3.6
+
+RUN yum install libxml2-devel xmlsec1-devel xmlsec1-openssl-devel libtool-ltdl-devel -y
+
+RUN mkdir -p /var/task/lambda_lib/
+RUN cp /usr/lib64/libxmlsec1-openssl.so /var/task/lambda_lib/
+RUN cp /usr/lib64/libxmlsec1.so.1 /var/task/lambda_lib/

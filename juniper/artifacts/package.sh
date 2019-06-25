@@ -2,10 +2,14 @@
 
 echo "Starting to package $1"
 
-mkdir lambda
+mkdir -p lambda
+mkdir -p lambda_lib
 # Requirements file specified in the manifest will ALWAYS be in this path!
 requirements="common/requirements.txt"
 zip_path="$(which zip)"
+
+# chmod +x /var/task/bin/bootstrap.sh
+# sh /var/task/bin/bootstrap.sh
 
 if [ ! $zip_path ]; then
     echo "Unable To Package - This docker image does not have the zip command."
@@ -21,6 +25,10 @@ else
 fi
 
 cp -r common/* lambda/
+
+if [ "$(ls -A lambda_lib)" ]; then
+    cp -r lambda_lib/* lambda/
+fi
 
 # Exclude non essential files and folders from the deployment package.
 find lambda -type f -name "requirements.txt"   -delete
