@@ -193,7 +193,6 @@ of our documentation.
 
 .. _`advanced`: https://eabglobal.github.io/juniper/advanced.html
 
-
 PIP Configuration
 *****************
 To set any pip configuration parameters, create a pip.conf file and add the path
