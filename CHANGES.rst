@@ -3,6 +3,16 @@
 Juniper Changelog
 ===============
 
+Version 0.5.1
+-------------
+
+Released on June 28th 2019
+
+- Ability to configure pip using a pip.conf file (/issues/40)
+- Updated the README documentation to keep it up to date with latest
+  feature enhancements
+
+
 Version 0.5.0
 -------------
 

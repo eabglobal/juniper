@@ -36,7 +36,7 @@ def build_artifacts(logger, manifest):
     """
 
     compose_fn = build_compose(logger, manifest)
-    logger.debug(f'docker-compose.yml - {compose_fn}')
+    logger.debug(f'docker-compose -f {compose_fn} --project-directory . run sample-lambda bash')
     try:
         # Must copy the bin directory to the client's folder structure. This directory
         # will be promtly cleaned up after the artifacts are built.
@@ -124,6 +124,10 @@ def _get_volumes(manifest, sls_function):
     reqs_path = sls_function.get('requirements')
     if reqs_path:
         volumes.append(f'{reqs_path}:/var/task/common/requirements.txt')
+
+    conf_path = manifest.get('global', {}).get('pipconf')
+    if conf_path:
+        volumes.append(f'{conf_path}:/etc/pip.conf')
 
     return volumes
 

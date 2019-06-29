@@ -1,6 +1,6 @@
-
 global:
   output: ./build
+  pipconf: ./pip.conf
 
 functions:
   sample:

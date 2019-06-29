@@ -56,7 +56,6 @@ For a more comprehensive example, please take a look at our `tutorial`_.
 
 .. _`tutorial`: https://eabglobal.github.io/juniper/tutorial.html
 
-
 Python3.7 and Beyond
 ********************
 By default juniper uses docker containers to package your lambda functions. Behind
@@ -84,7 +83,6 @@ the type of images supported read `juniper and docker`_.
 
 .. _`juniper and docker`: https://eabglobal.github.io/juniper/features.html
 
-
 Lambda Layers
 *************
 AWS Lambda layers is a recent service that gives a developer the ability to
@@ -101,13 +99,14 @@ To build a layer, the juniper manifest uses a new block:
     pg:
       requirements: ./src/requirements/postgres.txt
 
-With this manifest, running *juni build* creates two layer artifacts. One with the
-name base and another one named pg. These artifacts are packaged along the
-lambda definitions and the zip files are stored in the artifacts directory.
+With this manifest, running **juni build** creates two layer artifacts: one with the
+name base and another one named pg. Lambda layers are packaged along the lambda
+functions defined in the manifest and the zip files are stored in the artifacts directory.
 
-The generated zip artifacts include the dependencies defined in the requirements file.
+The generated artifact includes the dependencies defined in the requirements file
+of the lambda layer.
 
-The layer section also supports the definition of a custom docker image. With this
+Each individual section supports the definition of a custom docker image. With this
 feature, a layer can be built using python3.7 and another one can be built using the
 default python interpreter; python3.6.
 
@@ -118,15 +117,16 @@ default python interpreter; python3.6.
       image: lambci/lambda:build-python3.7
       requirements: ./src/requirements/base.txt
 
+
 Juniper builds the artifact for you, you can either use the `layers aws cli`_ to
-upload it to AWS or you can use a SAM template definition. When declaring your
-layer in the SAM template, make sure you use the `AWS::Serverless::LayerVersion`
-resource.
+upload it to AWS or you can use a SAM template definition. While using a SAM template,
+make sure you use the `AWS::Serverless::LayerVersion` resource.
 
-To see an example on how to package lambda functions as well as layers, juniper includes
-a layers example in the codebase called fondolayers.
+To see an example on how to package lambda functions with layers, juniper includes
+an example in the codebase called `ridge`_.
 
-_`layers aws cli`: https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html#configuration-layers-manage
+.. _`layers aws cli`: https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html#configuration-layers-manage
+.. _`ridge`: https://github.com/eabglobal/juniper/tree/master/examples/ridge
 
 Configuration
 *************
@@ -146,17 +146,17 @@ of the manifest. A sample configuration looks like:
         - ./src/router_function/router/lambda_function.py
 
 Setting a docker image at a global level tells juniper to package every
-lambda function using such image. In this example, the zip artifacts will be stored in
+lambda function using that image. In this example, the zip artifacts will be stored in
 the ./build folder instead of the ./dist; which is the default.
 
 Include Binaries
 ****************
 Using the lambci build images to create the zip artifacts for a given set of lambda
 functions is sufficient for most use cases. However, there are times when the base container
-does not have all the build libraries necessary to create the zip artifact. In this cases
+does not have all the build libraries necessary to install a python package. In this cases
 running `juni build` fails while trying to pip install the dependencies of the function.
 In addition, once the libraries are installed in the container some packages require a set of
-binaries to work properly at run time.
+binaries to work properly at runtime.
 
 The recommended procedure to install OS libraries and include missing dependencies
 is to use a dockerfile to build a local docker image. The strategy is illustrated as follows:
@@ -171,13 +171,13 @@ With this startegy, the juniper manifest will look like this:
 
     functions:
       router:
-        image: custom/withmissingdependencies
+        image: custom/local_docker_image
         requirements: ./src/router/requirements.txt
         include:
         - ./src/router_function/router/lambda_function.py
 
-The only difference is that the image specified for the router function is a custom
-docker image.
+In this case, a developer needs to build the docker image before executing the
+juni build command.
 
 At this point, the developer can push the docker image to the docker hub and use
 the hosted version instead of the local one. This strategy separates the build of
@@ -193,6 +193,34 @@ of our documentation.
 
 .. _`advanced`: https://eabglobal.github.io/juniper/advanced.html
 
+PIP Configuration
+*****************
+To set any pip configuration parameters, create a pip.conf file and add the path
+to the manifest. The **pipconf** setting is only available at a global level and
+it will apply to the packaging of all the functions defined in the manifest.
+
+.. code-block:: yaml
+
+  global:
+    pipconf: ./pip.conf
+
+  functions:
+    sample:
+      requirements: ./requirements.txt
+      include:
+        - ./lambda_function.py
+
+A sample pip.conf file can be seen bellow, to see the entire list of parameters
+visit the official `pip documentation`_.
+
+.. code-block:: yaml
+
+  [global]
+  timeout = 5
+  index-url = https://download.zope.org/ppix
+
+.. _`pip documentation`: https://pip.pypa.io/en/stable/user_guide/#config-file
+
 Features
 ********
 
@@ -204,7 +232,9 @@ This list defines the entire scope of Juniper. Nothing more, nothing else.
 * Create an individual zip artifact for multiple lambda functions
 * Ability to include shared dependencies (python modules relative to the function
   being packaged)
-* Specify docker image to package lamdba functions using different python runtimes.
+* Specify docker image to package lamdba functions using different python runtimes
+* Define pip command line arguments using a pip.conf file
+* Packaging of lambda layers
 
 Contributing
 ************

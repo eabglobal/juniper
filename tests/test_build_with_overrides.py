@@ -80,6 +80,15 @@ def test_get_docker_image_function_precedence():
     assert image == 'python:3.8-alpine'
 
 
+def test_volumes_includes_pipconf():
+
+    sls_function = {'image': 'python:3.8-alpine'}
+    manifest = {'global': {'pipconf': './path/pip.conf'}}
+
+    volumes = actions._get_volumes(manifest, sls_function)
+    assert './path/pip.conf:/etc/pip.conf' in volumes
+
+
 def read_file(file_name):
     with open(file_name, 'r') as f:
         return f.read()
