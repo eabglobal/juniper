@@ -193,6 +193,35 @@ of our documentation.
 
 .. _`advanced`: https://eabglobal.github.io/juniper/advanced.html
 
+
+PIP Configuration
+*****************
+To set any pip configuration parameters, create a pip.conf file and add the path
+to the manifest. This setting is only available at a global level and it will apply
+to the packaging of all the functions defined in the manifest.
+
+.. code-block:: yaml
+
+  global:
+    pipconf: ./pip.conf
+
+  functions:
+    sample:
+      requirements: ./requirements.txt
+      include:
+        - ./lambda_function.py
+
+A sample pip.conf file can be seen bellow, to see the entire list of parameters
+view the official `pip documentation`_.
+
+.. code-block:: yaml
+
+  [global]
+  timeout = 5
+  index-url = https://download.zope.org/ppix
+
+.. _`pip documentation`: https://pip.pypa.io/en/stable/user_guide/#config-file
+
 Features
 ********
 
@@ -204,7 +233,10 @@ This list defines the entire scope of Juniper. Nothing more, nothing else.
 * Create an individual zip artifact for multiple lambda functions
 * Ability to include shared dependencies (python modules relative to the function
   being packaged)
-* Specify docker image to package lamdba functions using different python runtimes.
+* Specify docker image to package lamdba functions using different python runtimes
+* Support of pip.conf file to configure additional parameters while installing
+  depenencies
+* Packaging of lambda layers
 
 Contributing
 ************
