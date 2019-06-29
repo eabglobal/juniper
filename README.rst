@@ -233,8 +233,7 @@ This list defines the entire scope of Juniper. Nothing more, nothing else.
 * Ability to include shared dependencies (python modules relative to the function
   being packaged)
 * Specify docker image to package lamdba functions using different python runtimes
-* Support of pip.conf file to configure additional parameters while installing
-  depenencies
+* Define pip command line arguments using a pip.conf file
 * Packaging of lambda layers
 
 Contributing
