@@ -56,7 +56,6 @@ For a more comprehensive example, please take a look at our `tutorial`_.
 
 .. _`tutorial`: https://eabglobal.github.io/juniper/tutorial.html
 
-
 Python3.7 and Beyond
 ********************
 By default juniper uses docker containers to package your lambda functions. Behind
@@ -84,7 +83,6 @@ the type of images supported read `juniper and docker`_.
 
 .. _`juniper and docker`: https://eabglobal.github.io/juniper/features.html
 
-
 Lambda Layers
 *************
 AWS Lambda layers is a recent service that gives a developer the ability to
@@ -101,13 +99,14 @@ To build a layer, the juniper manifest uses a new block:
     pg:
       requirements: ./src/requirements/postgres.txt
 
-With this manifest, running *juni build* creates two layer artifacts. One with the
-name base and another one named pg. These artifacts are packaged along the
-lambda definitions and the zip files are stored in the artifacts directory.
+With this manifest, running **juni build** creates two layer artifacts: one with the
+name base and another one named pg. Lambda layers are packaged along the lambda
+functions defined in the manifest and the zip files are stored in the artifacts directory.
 
-The generated zip artifacts include the dependencies defined in the requirements file.
+The generated artifact includes the dependencies defined in the requirements file
+of the lambda layer.
 
-The layer section also supports the definition of a custom docker image. With this
+Each individual section supports the definition of a custom docker image. With this
 feature, a layer can be built using python3.7 and another one can be built using the
 default python interpreter; python3.6.
 
@@ -119,14 +118,14 @@ default python interpreter; python3.6.
       requirements: ./src/requirements/base.txt
 
 Juniper builds the artifact for you, you can either use the `layers aws cli`_ to
-upload it to AWS or you can use a SAM template definition. When declaring your
-layer in the SAM template, make sure you use the `AWS::Serverless::LayerVersion`
-resource.
+upload it to AWS or you can use a SAM template definition. While using a SAM template,
+make sure you use the `AWS::Serverless::LayerVersion` resource.
 
-To see an example on how to package lambda functions as well as layers, juniper includes
-a layers example in the codebase called fondolayers.
+To see an example on how to package lambda functions with layers, juniper includes
+an example in the codebase called `ridge`_.
 
 _`layers aws cli`: https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html#configuration-layers-manage
+_`ridge`: https://github.com/eabglobal/juniper/tree/master/examples/ridge
 
 Configuration
 *************
@@ -211,7 +210,7 @@ it will apply to the packaging of all the functions defined in the manifest.
         - ./lambda_function.py
 
 A sample pip.conf file can be seen bellow, to see the entire list of parameters
-view the official `pip documentation`_.
+visit the official `pip documentation`_.
 
 .. code-block:: yaml
 
