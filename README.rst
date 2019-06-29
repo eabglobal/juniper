@@ -197,8 +197,8 @@ of our documentation.
 PIP Configuration
 *****************
 To set any pip configuration parameters, create a pip.conf file and add the path
-to the manifest. This setting is only available at a global level and it will apply
-to the packaging of all the functions defined in the manifest.
+to the manifest. The **pipconf** setting is only available at a global level and
+it will apply to the packaging of all the functions defined in the manifest.
 
 .. code-block:: yaml
 
