@@ -125,8 +125,8 @@ make sure you use the `AWS::Serverless::LayerVersion` resource.
 To see an example on how to package lambda functions with layers, juniper includes
 an example in the codebase called `ridge`_.
 
-_`layers aws cli`: https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html#configuration-layers-manage
-_`ridge`: https://github.com/eabglobal/juniper/tree/master/examples/ridge
+.. _`layers aws cli`: https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html#configuration-layers-manage
+.. _`ridge`: https://github.com/eabglobal/juniper/tree/master/examples/ridge
 
 Configuration
 *************
