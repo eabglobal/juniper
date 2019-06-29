@@ -117,6 +117,7 @@ default python interpreter; python3.6.
       image: lambci/lambda:build-python3.7
       requirements: ./src/requirements/base.txt
 
+
 Juniper builds the artifact for you, you can either use the `layers aws cli`_ to
 upload it to AWS or you can use a SAM template definition. While using a SAM template,
 make sure you use the `AWS::Serverless::LayerVersion` resource.
@@ -145,17 +146,17 @@ of the manifest. A sample configuration looks like:
         - ./src/router_function/router/lambda_function.py
 
 Setting a docker image at a global level tells juniper to package every
-lambda function using such image. In this example, the zip artifacts will be stored in
+lambda function using that image. In this example, the zip artifacts will be stored in
 the ./build folder instead of the ./dist; which is the default.
 
 Include Binaries
 ****************
 Using the lambci build images to create the zip artifacts for a given set of lambda
 functions is sufficient for most use cases. However, there are times when the base container
-does not have all the build libraries necessary to create the zip artifact. In this cases
+does not have all the build libraries necessary to install a python package. In this cases
 running `juni build` fails while trying to pip install the dependencies of the function.
 In addition, once the libraries are installed in the container some packages require a set of
-binaries to work properly at run time.
+binaries to work properly at runtime.
 
 The recommended procedure to install OS libraries and include missing dependencies
 is to use a dockerfile to build a local docker image. The strategy is illustrated as follows:
@@ -170,13 +171,13 @@ With this startegy, the juniper manifest will look like this:
 
     functions:
       router:
-        image: custom/withmissingdependencies
+        image: custom/local_docker_image
         requirements: ./src/router/requirements.txt
         include:
         - ./src/router_function/router/lambda_function.py
 
-The only difference is that the image specified for the router function is a custom
-docker image.
+In this case, a developer needs to build the docker image before executing the
+juni build command.
 
 At this point, the developer can push the docker image to the docker hub and use
 the hosted version instead of the local one. This strategy separates the build of
