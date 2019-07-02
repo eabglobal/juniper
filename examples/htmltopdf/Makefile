@@ -1,12 +1,12 @@
 s3_bucket=temp-awsdev
-stack_name ?= juni-ridge
+stack_name ?= juni-html2pdf
 sam_template_base=sam
 sam_template=$(sam_template_base).yml
 sam_output=$(sam_template_base)-new.yml
 
 
 build:
-	docker build -t juniper/xmlsec -f docker/Dockerfile.xmlsec .
+	docker build -t juniper/html2pdf -f docker/Dockerfile .
 	juni build
 
 package:

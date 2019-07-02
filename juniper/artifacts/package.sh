@@ -2,8 +2,7 @@
 
 echo "Starting to package $1"
 
-mkdir -p lambda
-mkdir -p lambda_lib
+mkdir -p lambda lambda_lib lambda_bin
 # Requirements file specified in the manifest will ALWAYS be in this path!
 requirements="common/requirements.txt"
 zip_path="$(which zip)"
@@ -28,6 +27,10 @@ cp -r common/* lambda/
 
 if [ "$(ls -A lambda_lib)" ]; then
     cp -r lambda_lib/* lambda/
+fi
+
+if [ "$(ls -A lambda_bin)" ]; then
+    cp -r lambda_bin/* lambda/
 fi
 
 # Exclude non essential files and folders from the deployment package.
