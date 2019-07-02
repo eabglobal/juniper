@@ -3,6 +3,14 @@
 Juniper Changelog
 ===============
 
+Version 0.5.2
+-------------
+
+Released on July 2 2019
+
+- Support adding binaries to the `bin` folder of a lambda layer (issues/43)
+
+
 Version 0.5.1
 -------------
 
