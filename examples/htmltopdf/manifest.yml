@@ -1,0 +1,12 @@
+
+functions:
+  sample:
+    requirements: ./requirements/base.txt
+    include:
+      - ./lambda_function.py
+
+layers:
+
+  htmlpdf:
+    image: juniper/html2pdf
+    requirements: ./requirements/layer.txt

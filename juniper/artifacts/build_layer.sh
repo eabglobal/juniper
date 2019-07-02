@@ -2,8 +2,8 @@
 
 echo "Starting to build $1 layer"
 
-mkdir -p lambda_lib
-mkdir -p layer/python layer/lib
+mkdir -p lambda_lib lambda_bin
+mkdir -p layer/python layer/lib layer/bin
 
 # Requirements file specified in the manifest will ALWAYS be in this path!
 requirements="common/requirements.txt"
@@ -16,10 +16,14 @@ fi
 pip install -q -t layer/python -r ${requirements}
 cp -r common/* layer/python/
 
+# All – bin (PATH), lib (LD_LIBRARY_PATH)
+# https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html#configuration-layers-path
 if [ "$(ls -A lambda_lib)" ]; then
-    # All – bin (PATH), lib (LD_LIBRARY_PATH)
-    # https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html#configuration-layers-path
     cp -r lambda_lib/* layer/lib/
+fi
+
+if [ "$(ls -A lambda_bin)" ]; then
+    cp -r lambda_bin/* layer/bin/
 fi
 
 # Exclude non essential files and folders from the deployment package.
