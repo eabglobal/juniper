@@ -183,14 +183,13 @@ At this point, the developer can push the docker image to the docker hub and use
 the hosted version instead of the local one. This strategy separates the build of
 a custom image from the build of the artifacts.
 
-If you need binaries in the final artifact, you can place these binaries either in
+If you need binaries in the final artifact, you can place these files either in
 **/var/task/lambda_lib/** or the **/var/task/lambda_bin/** depending on your use case.
 Files added to the bin folder are included in the PATH, files added to the lib,
 are included in the LD_LIBRARY_PATH. For more information view `aws layer config`_.
 
-It is important that you put the files there given that juniper is in
-charge of placing these binaries in the correct place depending on the type of
-resource (lambda/layer).
+Juniper is in charge of putting the files in the lambda_bin and lambda_lib in
+the right place when building an artifact.
 
 A concrete example of the configuration is outlined in the `advanced`_ section
 of our documentation.
