@@ -61,3 +61,16 @@ def all_keys(manifest_definition, key):
 
     result = [function[key] for function in manifest_definition['functions'].values()]
     return result if isinstance(result[0], str) else chain.from_iterable(result)
+
+
+def filter_manifest_definition(manifest_definition, name_filter):
+    """
+    Filters the manifest to only include the specified function.
+    :param manifest_definition: Dictionary of the manifest
+    :param name_filter: A function name specified in the manifest
+    :return: Filtered manifest definition
+    """
+    manifest_definition['functions'] = {key: value for (key, value)
+                                        in manifest_definition['functions'].items()
+                                        if key == name_filter}
+    return manifest_definition

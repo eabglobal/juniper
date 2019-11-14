@@ -8,7 +8,7 @@ import logging
 from juniper.io import reader
 from juniper.constants import DEFAULT_OUT_DIR
 from juniper.actions import build_artifacts
-from juniper.manifest import validate_manifest_definition
+from juniper.manifest import validate_manifest_definition, filter_manifest_definition
 
 
 logger = logging.getLogger(__name__)
@@ -41,8 +41,9 @@ def main():
 @click.option('--manifest', '-m', default='manifest.yml', help='The configuration file to use.')
 @click.option('--debug', '-d', is_flag=True, help='Run the build in debug mode.')
 @click.option('--skip-clean', '-s', is_flag=True, help='Does not recreate the output directory.')
+@click.option('--function-name', '-f', help='Build one specific Lambda function defined in the manifest.')
 @click_log.simple_verbosity_option(logger)
-def build(manifest, debug, skip_clean):
+def build(manifest, debug, skip_clean, function_name):
 
     if debug:
         logger.setLevel(logging.DEBUG)
@@ -64,6 +65,10 @@ def build(manifest, debug, skip_clean):
         # provided or from the default.
         output_dir = manifest_definition.get('global', {}).get('output', DEFAULT_OUT_DIR)
         manifest_definition['output_dir'] = output_dir
+
+        # Filter the manifest if only one specific function should be built.
+        if function_name:
+            manifest_definition = filter_manifest_definition(manifest_definition, function_name)
 
         # Get the local env ready before building the artifacts.
         _clean(logger, skip_clean, manifest_definition)

@@ -16,7 +16,7 @@
 
 import pytest
 
-from juniper.manifest import validate_manifest_definition
+from juniper.manifest import validate_manifest_definition, filter_manifest_definition
 
 
 def test_source_in_manifest_does_not_exist_notifies_dev():
@@ -78,3 +78,16 @@ def test_include_section_is_required():
         validate_manifest_definition(manifest_definition)
 
     assert len(str(e))
+
+
+def test_filter_manifest_definition():
+
+    manifest_definition = {'package': {'output': './build'},
+                           'functions': {'sample': {'includes': ['./']},
+                                         'another': {'requirements': './requirements/dev.txt',
+                                                     'include': ['./']}}}
+    expected_manifest_definition = {'package': {'output': './build'},
+                                    'functions': {'sample': {'includes': ['./']}}}
+
+    actual_manifest_definition = filter_manifest_definition(manifest_definition, 'sample')
+    assert actual_manifest_definition == expected_manifest_definition
