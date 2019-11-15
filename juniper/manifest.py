@@ -73,5 +73,5 @@ def filter_manifest_definition(manifest_definition, name_filter):
     """
     manifest_definition['functions'] = {key: value for (key, value)
                                         in manifest_definition['functions'].items()
-                                        if key.lower().startswith(name_filter)}
+                                        if name_filter in key.lower()}
     return manifest_definition

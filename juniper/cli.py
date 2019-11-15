@@ -66,7 +66,7 @@ def build(manifest, debug, skip_clean, function_name):
         output_dir = manifest_definition.get('global', {}).get('output', DEFAULT_OUT_DIR)
         manifest_definition['output_dir'] = output_dir
 
-        # Filter the manifest if only one specific function should be built.
+        # Filter the manifest if specific functions should be built.
         if function_name:
             manifest_definition = filter_manifest_definition(manifest_definition, function_name)
 

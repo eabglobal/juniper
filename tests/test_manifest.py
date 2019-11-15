@@ -83,13 +83,28 @@ def test_include_section_is_required():
 def test_filter_manifest_definition():
 
     manifest_definition = {'package': {'output': './build'},
+                           'functions': {'sample': {'includes': ['./']},
+                                         'another': {'requirements': './requirements/dev.txt',
+                                                     'include': ['./']}}}
+    expected_manifest_definition = {'package': {'output': './build'},
+                                    'functions': {'sample': {'includes': ['./']}}}
+
+    actual_manifest_definition = filter_manifest_definition(manifest_definition, 'sample')
+    assert actual_manifest_definition == expected_manifest_definition
+
+
+def test_partial_filter_manifest_definition():
+
+    manifest_definition = {'package': {'output': './build'},
                            'functions': {'sample-1': {'includes': ['./']},
                                          'sample-2': {'includes': ['./']},
+                                         'another-sample': {'includes': ['./']},
                                          'another': {'requirements': './requirements/dev.txt',
                                                      'include': ['./']}}}
     expected_manifest_definition = {'package': {'output': './build'},
                                     'functions': {'sample-1': {'includes': ['./']},
-                                                  'sample-2': {'includes': ['./']}}}
+                                                  'sample-2': {'includes': ['./']},
+                                                  'another-sample': {'includes': ['./']}}}
 
     actual_manifest_definition = filter_manifest_definition(manifest_definition, 'sample')
     assert actual_manifest_definition == expected_manifest_definition
