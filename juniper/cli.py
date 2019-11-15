@@ -41,7 +41,7 @@ def main():
 @click.option('--manifest', '-m', default='manifest.yml', help='The configuration file to use.')
 @click.option('--debug', '-d', is_flag=True, help='Run the build in debug mode.')
 @click.option('--skip-clean', '-s', is_flag=True, help='Does not recreate the output directory.')
-@click.option('--function-name', '-f', help='Build one specific Lambda function defined in the manifest.')
+@click.option('--function-name', '-f', help='Build Lambda functions matching the specified name.')
 @click_log.simple_verbosity_option(logger)
 def build(manifest, debug, skip_clean, function_name):
 

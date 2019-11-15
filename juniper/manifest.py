@@ -65,12 +65,13 @@ def all_keys(manifest_definition, key):
 
 def filter_manifest_definition(manifest_definition, name_filter):
     """
-    Filters the manifest to only include the specified function.
+    Filters the manifest to only include functions that partially match
+    the specified filter.
     :param manifest_definition: Dictionary of the manifest
     :param name_filter: A function name specified in the manifest
     :return: Filtered manifest definition
     """
     manifest_definition['functions'] = {key: value for (key, value)
                                         in manifest_definition['functions'].items()
-                                        if key == name_filter}
+                                        if key.lower().startswith(name_filter)}
     return manifest_definition
