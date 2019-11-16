@@ -3,6 +3,15 @@
 Juniper Changelog
 ===============
 
+Version 0.5.3
+-------------
+
+Released on Nov 15 2019
+
+- Support partial builds. Ability to build a subset of the functions defined in the manifest
+  thanks to @parhumeab for the contribution. (pr/43)
+
+
 Version 0.5.2
 -------------
 
