@@ -54,6 +54,24 @@ Juniper creates the following artifact `./dist/router.zip`  🎉
 
 For a more comprehensive example, please take a look at our `tutorial`_.
 
+The juni build command will generate the lambda artifact for all the functions and
+layers defined in the manifest file. However, during the development process, it may be
+desired to only build the lambda functions that a developer is actively working on.
+
+To build only a subset of the resources defined in the manifest use the following
+command:
+
+.. code-block:: text
+
+    > juni build --skip-clean -f <target_fn_name>
+
+This command will build all the functions that partially match the given target_fn_name.
+When using a naming convention a developer has the ability to build a subset of
+the lambdas defined in the manifest.
+
+The skip-clean flag will prevent the previously built artifacts from being deleted
+before the build is executed.
+
 .. _`tutorial`: https://eabglobal.github.io/juniper/tutorial.html
 
 Python3.7 and Beyond
