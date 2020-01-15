@@ -29,7 +29,7 @@ manifest file.
       # Name the zip file you want juni to create
       router:
         # The dependencies of the router function.
-        requirements: ./src/requirements.txt.
+        requirements: ./src/requirements.txt
         # Include this file in the generated zip artifact.
         include:
         - ./src/lambda_function.py
