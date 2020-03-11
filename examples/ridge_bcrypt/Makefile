@@ -1,4 +1,4 @@
-s3_bucket=temp-awsdev
+s3_bucket=temp-$(profile)
 stack_name ?= juni-ridge
 sam_template_base=sam
 sam_template=$(sam_template_base).yml

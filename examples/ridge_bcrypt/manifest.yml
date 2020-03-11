@@ -8,5 +8,4 @@ functions:
 layers:
 
   bcrypt:
-    image: juniper/bcrypt
     requirements: ./requirements/bcrypt_layer.txt
