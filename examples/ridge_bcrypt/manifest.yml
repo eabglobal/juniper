@@ -1,0 +1,12 @@
+
+functions:
+  sample:
+    requirements: ./requirements/base.txt
+    include:
+      - ./lambda_function.py
+
+layers:
+
+  bcrypt:
+    image: juniper/bcrypt
+    requirements: ./requirements/bcrypt_layer.txt

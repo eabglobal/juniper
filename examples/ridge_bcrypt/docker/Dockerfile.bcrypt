@@ -1,0 +1,5 @@
+FROM lambci/lambda:build-python3.6
+
+RUN yum install gcc libffi-devel python-devel -y
+
+RUN mkdir -p /var/task/lambda_lib/
