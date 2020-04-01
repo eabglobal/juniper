@@ -1,0 +1,13 @@
+
+functions:
+  sample:
+    image: lambci/lambda:build-python3.7
+    requirements: ./requirements/base.txt
+    include:
+      - ./lambda_function.py
+
+layers:
+
+  core:
+    image: juniper/pyodbc
+    requirements: ./requirements/core_layer.txt

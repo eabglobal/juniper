@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: API Gateway with Lambda Token Authorizer
+
+Resources:
+
+  APIHandlerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.6
+      Handler: lambda_function.lambda_handler
+      CodeUri: ./dist/sample.zip
+      Layers:
+        - !Ref OdbcLayer
+        - !Ref CoreLayer
+
+  OdbcLayer:
+    Type: 'AWS::Serverless::LayerVersion'
+    Properties:
+      ContentUri: ./external/pyodbclayer.zip
+      CompatibleRuntimes: # optional
+        - python3.6
+
+  CoreLayer:
+    Type: 'AWS::Serverless::LayerVersion'
+    Properties:
+      ContentUri: ./dist/core.zip
+      CompatibleRuntimes: # optional
+        - python3.6

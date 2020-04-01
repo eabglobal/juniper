@@ -1,0 +1,3 @@
+FROM lambci/lambda:build-python3.6
+
+RUN yum install libtool-ltdl-devel libiodbc unixODBC unixODBC-devel -y
