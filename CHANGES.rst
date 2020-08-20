@@ -3,6 +3,16 @@
 Juniper Changelog
 ===============
 
+Version 0.5.4
+-------------
+
+Released on Aug 20 2020
+
+- Updated the juniper dependencies to prevent constant failures when installing awscli.
+  Before this change, juniper had a top fix version for docker-compose as well as PyYAML
+  these limits have been updated (pdiazvargas).
+
+
 Version 0.5.3
 -------------
 

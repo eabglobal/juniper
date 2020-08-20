@@ -34,9 +34,6 @@ gh-pages:
 	git add -A
 	git commit -m "Generated gh-pages" && git push origin gh-pages; git checkout master
 
-# release:
-# 	python scripts/make-release.py
-
 release:
 	rm -rf ./dist
 	python3 setup.py sdist bdist_wheel
@@ -48,7 +45,6 @@ test-release:
 	python3 setup.py sdist bdist_wheel
 	twine check dist/*
 	python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-
 
 clean-pyc:
 	find . -name '*.pyc' -exec rm -f {} +
