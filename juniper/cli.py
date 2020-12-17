@@ -25,13 +25,6 @@ def main():
     pass
 
 
-# @main.command(help="""""")
-# @click_log.simple_verbosity_option(logger)
-# def package():
-#     # TODO: Implement me
-#     pass
-
-
 @main.command(help="""Packages a set of lambda functions defined in a given manifest file.
                       The manifest must defined these parameters:
                       1 - The name of each function to package

@@ -35,9 +35,9 @@ setup(
     install_requires=[
         'click>=5.1',
         'click-log',
-        'PyYAML >= 3.10, < 4.3',
+        'PyYAML >= 4.3, <= 5.3',
         'Jinja2>=2.10',
-        'docker-compose>=1.20, < 1.24'
+        'docker-compose>1.24'
     ],
     setup_requires=["pytest-runner"],
     tests_require=["pytest"],
