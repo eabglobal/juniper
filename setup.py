@@ -37,7 +37,8 @@ setup(
         'click-log',
         'PyYAML >= 4.3, <= 5.3',
         'Jinja2>=2.10',
-        'docker-compose>1.24'
+        'docker[ssh] >= 5',
+        'docker-compose >= 1.29'
     ],
     setup_requires=["pytest-runner"],
     tests_require=["pytest"],
