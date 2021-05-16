@@ -36,13 +36,15 @@ gh-pages:
 
 release:
 	rm -rf ./dist
-	python3 setup.py sdist bdist_wheel
+	python3 -m pip install --upgrade build
+	python3 -m build
 	twine check dist/*
 	twine upload dist/*
 
 test-release:
 	rm -rf ./dist
-	python3 setup.py sdist bdist_wheel
+	python3 -m pip install --upgrade build
+	python3 -m build
 	twine check dist/*
 	python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
