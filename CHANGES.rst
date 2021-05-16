@@ -3,6 +3,14 @@
 Juniper Changelog
 ===============
 
+Version 0.5.5
+-------------
+
+Released on May 16 2021
+
+- Updating the dependencies of juniper (thanks to andreburto).
+
+
 Version 0.5.4
 -------------
 
