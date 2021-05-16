@@ -35,7 +35,7 @@ setup(
     install_requires=[
         'click>=5.1',
         'click-log',
-        'PyYAML >= 4.3, <= 5.3',
+        'PyYAML >= 4.3, < 5.5',
         'Jinja2>=2.10',
         'docker[ssh] >= 5',
         'docker-compose >= 1.29'
