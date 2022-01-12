@@ -36,7 +36,7 @@ def build_artifacts(logger, manifest):
     """
 
     compose_fn = build_compose(logger, manifest)
-    logger.debug(f'docker-compose -f {compose_fn} --project-directory . run sample-lambda bash')
+    logger.debug(f'docker compose -f {compose_fn} --project-directory . run sample-lambda bash')
     try:
         # Must copy the bin directory to the client's folder structure. This directory
         # will be promtly cleaned up after the artifacts are built.
@@ -46,15 +46,15 @@ def build_artifacts(logger, manifest):
 
         # Use docker as a way to pip install dependencies, and copy the business logic
         # specified in the function definitions.
-        subprocess.run(["docker-compose", "-f", compose_fn, '--project-directory', '.', 'down'])
-        subprocess.run(["docker-compose", "-f", compose_fn, '--project-directory', '.', 'up'])
+        subprocess.run(["docker", "compose", "-f", compose_fn, '--project-directory', '.', 'down'])
+        subprocess.run(["docker", "compose", "-f", compose_fn, '--project-directory', '.', 'up'])
     finally:
         shutil.rmtree('./.juni', ignore_errors=True)
 
 
 def build_compose(logger, manifest):
     """
-    Builds a docker-compose file with the lambda functions defined in the manifest.
+    Builds a docker compose file with the lambda functions defined in the manifest.
     The definition of the lambda functions includes the name of the function as
     well as the set of dependencies to include in the packaging.
 
@@ -63,14 +63,14 @@ def build_compose(logger, manifest):
     """
 
     compose = _get_compose_template(manifest)
-    # Returns the name of the temp file that has the docker-compose definition.
+    # Returns the name of the temp file that has the docker compose definition.
     return write_tmp_file(compose)
 
 
 def _get_compose_template(manifest):
     """
     Build the service entry for each one of the functions in the given context.
-    Each docker-compose entry will depend on the same image and it's just a static
+    Each docker compose entry will depend on the same image and it's just a static
     definition that gets built from a template. The template is in the artifacts
     folder.
     """
