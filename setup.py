@@ -13,16 +13,14 @@ with io.open('juniper/__init__.py', 'rt', encoding='utf8') as f:
     version = re.search(r'__version__ = \'(.*?)\'', f.read()).group(1)
 
 setup(
-    name="juniper",
+    name="juniper-aidentified",
     version=version,
-    author='EAB Tech',
-    author_email='eabtech@eab.com',
-    description="Tool to streamline the build of python lambda functions.",
+    author='Aidentified LLC',
+    author_email='dgilman@aidentified.com',
+    description="Tool to streamline the build of python lambda functions. (fork of juniper)",
     long_description=readme,
     project_urls=OrderedDict((
-        ('Documentation', 'https://eabglobal.github.io/juniper/'),
-        ('Code', 'https://github.com/eabglobal/juniper'),
-        ('Issue tracker', 'https://github.com/eabglobal/juniper/issues'),
+        ('Code', 'https://github.com/dgilmanAIDENTIFIED/juniper'),
     )),
     license='Apache Software License',
     packages=find_packages(),
