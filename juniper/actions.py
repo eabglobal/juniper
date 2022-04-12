@@ -46,8 +46,9 @@ def build_artifacts(logger, manifest):
 
         # Use docker as a way to pip install dependencies, and copy the business logic
         # specified in the function definitions.
-        subprocess.run(["docker", "compose", "-f", compose_fn, '--project-directory', '.', 'down'])
+        subprocess.run(["docker", "compose", "-f", compose_fn, '--project-directory', '.', 'down', '--remove-orphans'])
         subprocess.run(["docker", "compose", "-f", compose_fn, '--project-directory', '.', 'up'])
+        subprocess.run(["docker", "compose", "-f", compose_fn, '--project-directory', '.', 'down'])
     finally:
         shutil.rmtree('./.juni', ignore_errors=True)
 
