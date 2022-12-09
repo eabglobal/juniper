@@ -26,7 +26,7 @@ pytest==7.2.0
 pytest-mock==3.6.1
 pytest-runner==6.0.0
 PyYAML==6.0
-readme-renderer==32.0
+readme-renderer==37.3
 requests==2.27.1
 requests-toolbelt==0.9.1
 rfc3986==2.0.0
@@ -35,7 +35,7 @@ six==1.16.0
 toml==0.10.2
 tomli==2.0.0
 tqdm==4.62.3
-twine==4.0.0
+twine==4.0.2
 urllib3==1.26.8
 webencodings==0.5.1
 zipp==3.7.0
