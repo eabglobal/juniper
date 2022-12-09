@@ -61,8 +61,9 @@ def test_build_artifacts_invokes_docker_commands(mocker):
     mock_subprocess_run = mocker.patch('juniper.actions.subprocess.run')
 
     compose_cmd_calls = [
+        mocker.call(["docker", "compose", "-f", tmp_filename, '--project-directory', '.', 'down', "--remove-orphans"]),
+        mocker.call(["docker", "compose", "-f", tmp_filename, '--project-directory', '.', 'up']),
         mocker.call(["docker", "compose", "-f", tmp_filename, '--project-directory', '.', 'down']),
-        mocker.call(["docker", "compose", "-f", tmp_filename, '--project-directory', '.', 'up'])
     ]
 
     processor_ctx = reader('./tests/manifests/processor-test.yml')
