@@ -18,6 +18,7 @@ import os
 import shutil
 import subprocess
 from jinja2 import Template
+import functools
 
 from juniper.constants import DEFAULT_OUT_DIR, DEFAULT_DOCKER_IMAGE
 from juniper.io import (get_artifact, write_tmp_file, get_artifact_path)
@@ -82,6 +83,7 @@ def _get_compose_template(manifest):
             {
                 'name': name,
                 'image': _get_docker_image(manifest, sls_section),
+                'platform': _get_platform(manifest, sls_section),
                 'volumes': _get_volumes(manifest, sls_section)
             }
             for name, sls_section in manifest.get(label, {}).items()
@@ -133,21 +135,27 @@ def _get_volumes(manifest, sls_function):
     return volumes
 
 
-def _get_docker_image(manifest, sls_function):
+def _get_attr(key, default, manifest, sls_function):
     """
-    Get the docker image that will be used to package a given function. Precedence
-    is as follows: function level override, global image override, default.
+    Get an attribute from the manifest, looking under the function first,
+    then global:, and finally using a default.
 
-    :params manfiest: The juniper manifest file.
+
+    :params key: The key to retrieve
+    :params default: The value to return if your key is not defined anywhere
+    :params manifest: The juniper manifest file.
     :params sls_function: The serverless function definition.
     """
+    function_value = sls_function.get(key)
+    if function_value:
+        return function_value
 
-    function_image = sls_function.get('image')
-    if function_image:
-        return function_image
+    global_value = manifest.get('global', {}).get(key)
+    if global_value:
+        return global_value
 
-    global_image = manifest.get('global', {}).get('image')
-    if global_image:
-        return global_image
+    return default
 
-    return DEFAULT_DOCKER_IMAGE
+
+_get_docker_image = functools.partial(_get_attr, "image", DEFAULT_DOCKER_IMAGE)
+_get_platform = functools.partial(_get_attr, "platform", None)

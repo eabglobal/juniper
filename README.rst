@@ -257,6 +257,7 @@ This list defines the entire scope of Juniper. Nothing more, nothing else.
 * Specify docker image to package lamdba functions using different python runtimes
 * Define pip command line arguments using a pip.conf file
 * Packaging of lambda layers
+* Support for building arm64 layers and lambdas (Graviton2) via specifying the platform
 
 Contributing
 ************

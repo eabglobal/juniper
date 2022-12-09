@@ -11,6 +11,9 @@ services:
         - {{volume}}
       {% endfor %}
     command: sh /var/task/bin/package.sh {{lambda_fn.name}}
+{%- if lambda_fn.platform %}
+    platform: {{ lambda_fn.platform }}
+{%- endif %}
 {% endfor %}
 {% for layer in layers %}
   {{layer.name}}-layer:
@@ -22,4 +25,7 @@ services:
         - {{volume}}
       {% endfor %}
     command: sh /var/task/bin/build_layer.sh {{layer.name}}
+{%- if layer.platform %}
+    platform: {{ layer.platform }}
+{%- endif %}
 {% endfor %}

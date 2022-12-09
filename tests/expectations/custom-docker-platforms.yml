@@ -1,0 +1,47 @@
+version: '3.6'
+
+services:
+
+  default-platform-lambda:
+    image: python:3.8
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+    platform: linux/amd64
+    volumes:
+      - ./dist:/var/task/dist
+      - ./.juni/bin:/var/task/bin
+      - ./src/edge:/var/task/common/edge
+    command: sh /var/task/bin/package.sh default-platform
+
+  override-platform-lambda:
+    image: python:3.6-alpine
+    platform: linux/arm64
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - ./dist:/var/task/dist
+      - ./.juni/bin:/var/task/bin
+      - ./src/worker/sequential_worker:/var/task/common/sequential_worker
+    command: sh /var/task/bin/package.sh override-platform
+
+  default-platform-layer-layer:
+    image: python:3.6-alpine
+    platform: linux/amd64
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - ./dist:/var/task/dist
+      - ./.juni/bin:/var/task/bin
+      - ./requirements/default.txt:/var/task/common/requirements.txt
+    command: sh /var/task/bin/build_layer.sh default-platform-layer
+
+  override-platform-layer-layer:
+    image: python:3.6-alpine
+    platform: linux/arm64
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - ./dist:/var/task/dist
+      - ./.juni/bin:/var/task/bin
+      - ./requirements/override.txt:/var/task/common/requirements.txt
+    command: sh /var/task/bin/build_layer.sh override-platform-layer

@@ -89,6 +89,14 @@ def test_volumes_includes_pipconf():
     assert './path/pip.conf:/etc/pip.conf' in volumes
 
 
+def test_platform_default_override():
+    docker_ctx = reader('./tests/manifests/custom-docker-platforms.yml')
+    result = actions._get_compose_template(docker_ctx)
+
+    expected = read_file('./tests/expectations/custom-docker-platforms.yml')
+    assert yaml.safe_load(result) == yaml.safe_load(expected)
+
+
 def read_file(file_name):
     with open(file_name, 'r') as f:
         return f.read()
