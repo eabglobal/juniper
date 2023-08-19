@@ -17,8 +17,8 @@
 import yaml
 
 from juniper import actions
-from unittest.mock import MagicMock, call
-from juniper.io import reader, get_artifact_path
+from unittest.mock import MagicMock
+from juniper.io import reader
 
 
 logger = MagicMock()
@@ -98,10 +98,14 @@ def test_build_artifacts_copies_scriopts(mocker):
     # Validate that this three step process is correctly executed.
     mock_os.makedirs.assert_called_with('./.juni/bin', exist_ok=True)
 
-    mock_shutil.copy.assert_has_calls([
-        call(get_artifact_path('package.sh'), './.juni/bin/'),
-        call(get_artifact_path('build_layer.sh'), './.juni/bin/'),
-    ])
+    assert len(mock_shutil.copy.call_args_list) == 2
+    assert len(mock_shutil.copy.call_args_list[0][0]) == 2
+
+    assert mock_shutil.copy.call_args_list[0][0][0].name == "package.sh"
+    assert mock_shutil.copy.call_args_list[0][0][1] == "./.juni/bin/"
+
+    assert mock_shutil.copy.call_args_list[1][0][0].name == "build_layer.sh"
+    assert mock_shutil.copy.call_args_list[1][0][1] == "./.juni/bin/"
     mock_shutil.rmtree.assert_called_with('./.juni', ignore_errors=True)
     mock_builder.assert_called_once()
 

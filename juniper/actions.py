@@ -42,8 +42,10 @@ def build_artifacts(logger, manifest):
         # Must copy the bin directory to the client's folder structure. This directory
         # will be promtly cleaned up after the artifacts are built.
         os.makedirs('./.juni/bin', exist_ok=True)
-        shutil.copy(get_artifact_path('package.sh'), './.juni/bin/')
-        shutil.copy(get_artifact_path('build_layer.sh'), './.juni/bin/')
+        with get_artifact_path('package.sh') as path:
+            shutil.copy(path, './.juni/bin/')
+        with get_artifact_path('build_layer.sh') as path:
+            shutil.copy(path, './.juni/bin/')
 
         # Use docker as a way to pip install dependencies, and copy the business logic
         # specified in the function definitions.
