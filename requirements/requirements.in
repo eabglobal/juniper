@@ -1,0 +1,4 @@
+click>=8.0
+click-log
+PyYAML>=6.0
+Jinja2>=3.0

@@ -6,6 +6,10 @@ install-dev:
 	pip install -q -e .[venv3]
 	pip install -r requirements/dev.txt
 
+deps:
+	pip-compile -U --allow-unsafe -o requirements/dev.txt requirements/requirements-dev.in requirements/requirements.in
+	pip-compile -U --allow-unsafe -o requirements/requirements.txt requirements/requirements.in
+
 test: clean-pyc
 	python -m pytest --cov .
 
@@ -36,14 +40,12 @@ gh-pages:
 
 release:
 	rm -rf ./dist
-	python3 -m pip install --upgrade build
 	python3 -m build
 	twine check dist/*
 	twine upload dist/*
 
 test-release:
 	rm -rf ./dist
-	python3 -m pip install --upgrade build
 	python3 -m build
 	twine check dist/*
 	python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
