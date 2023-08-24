@@ -22,6 +22,7 @@ setup(
     author_email='dgilman@aidentified.com',
     description="Tool to streamline the build of python lambda functions. (fork of juniper)",
     long_description=readme,
+    long_description_content_type="text/x-rst",
     project_urls=OrderedDict((
         ('Code', 'https://github.com/dgilmanAIDENTIFIED/juniper'),
     )),
