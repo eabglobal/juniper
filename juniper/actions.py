@@ -18,6 +18,7 @@ import os
 import shutil
 import subprocess
 from jinja2 import Template
+import functools
 
 from juniper.constants import DEFAULT_OUT_DIR, DEFAULT_DOCKER_IMAGE
 from juniper.io import (get_artifact, write_tmp_file, get_artifact_path)
@@ -36,25 +37,28 @@ def build_artifacts(logger, manifest):
     """
 
     compose_fn = build_compose(logger, manifest)
-    logger.debug(f'docker-compose -f {compose_fn} --project-directory . run sample-lambda bash')
+    logger.debug(f'docker compose -f {compose_fn} --project-directory . run sample-lambda bash')
     try:
         # Must copy the bin directory to the client's folder structure. This directory
         # will be promtly cleaned up after the artifacts are built.
         os.makedirs('./.juni/bin', exist_ok=True)
-        shutil.copy(get_artifact_path('package.sh'), './.juni/bin/')
-        shutil.copy(get_artifact_path('build_layer.sh'), './.juni/bin/')
+        with get_artifact_path('package.sh') as path:
+            shutil.copy(path, './.juni/bin/')
+        with get_artifact_path('build_layer.sh') as path:
+            shutil.copy(path, './.juni/bin/')
 
         # Use docker as a way to pip install dependencies, and copy the business logic
         # specified in the function definitions.
-        subprocess.run(["docker-compose", "-f", compose_fn, '--project-directory', '.', 'down'])
-        subprocess.run(["docker-compose", "-f", compose_fn, '--project-directory', '.', 'up'])
+        subprocess.run(["docker", "compose", "-f", compose_fn, '--project-directory', '.', 'down', '--remove-orphans'])
+        subprocess.run(["docker", "compose", "-f", compose_fn, '--project-directory', '.', 'up'])
+        subprocess.run(["docker", "compose", "-f", compose_fn, '--project-directory', '.', 'down'])
     finally:
         shutil.rmtree('./.juni', ignore_errors=True)
 
 
 def build_compose(logger, manifest):
     """
-    Builds a docker-compose file with the lambda functions defined in the manifest.
+    Builds a docker compose file with the lambda functions defined in the manifest.
     The definition of the lambda functions includes the name of the function as
     well as the set of dependencies to include in the packaging.
 
@@ -63,14 +67,14 @@ def build_compose(logger, manifest):
     """
 
     compose = _get_compose_template(manifest)
-    # Returns the name of the temp file that has the docker-compose definition.
+    # Returns the name of the temp file that has the docker compose definition.
     return write_tmp_file(compose)
 
 
 def _get_compose_template(manifest):
     """
     Build the service entry for each one of the functions in the given context.
-    Each docker-compose entry will depend on the same image and it's just a static
+    Each docker compose entry will depend on the same image and it's just a static
     definition that gets built from a template. The template is in the artifacts
     folder.
     """
@@ -81,6 +85,7 @@ def _get_compose_template(manifest):
             {
                 'name': name,
                 'image': _get_docker_image(manifest, sls_section),
+                'platform': _get_platform(manifest, sls_section),
                 'volumes': _get_volumes(manifest, sls_section)
             }
             for name, sls_section in manifest.get(label, {}).items()
@@ -132,21 +137,27 @@ def _get_volumes(manifest, sls_function):
     return volumes
 
 
-def _get_docker_image(manifest, sls_function):
+def _get_attr(key, default, manifest, sls_function):
     """
-    Get the docker image that will be used to package a given function. Precedence
-    is as follows: function level override, global image override, default.
+    Get an attribute from the manifest, looking under the function first,
+    then global:, and finally using a default.
 
-    :params manfiest: The juniper manifest file.
+
+    :params key: The key to retrieve
+    :params default: The value to return if your key is not defined anywhere
+    :params manifest: The juniper manifest file.
     :params sls_function: The serverless function definition.
     """
+    function_value = sls_function.get(key)
+    if function_value:
+        return function_value
 
-    function_image = sls_function.get('image')
-    if function_image:
-        return function_image
+    global_value = manifest.get('global', {}).get(key)
+    if global_value:
+        return global_value
 
-    global_image = manifest.get('global', {}).get('image')
-    if global_image:
-        return global_image
+    return default
 
-    return DEFAULT_DOCKER_IMAGE
+
+_get_docker_image = functools.partial(_get_attr, "image", DEFAULT_DOCKER_IMAGE)
+_get_platform = functools.partial(_get_attr, "platform", None)

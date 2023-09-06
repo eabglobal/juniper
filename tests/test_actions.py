@@ -17,8 +17,8 @@
 import yaml
 
 from juniper import actions
-from unittest.mock import MagicMock, call
-from juniper.io import reader, get_artifact_path
+from unittest.mock import MagicMock
+from juniper.io import reader
 
 
 logger = MagicMock()
@@ -26,7 +26,7 @@ logger = MagicMock()
 
 def test_build_compose_writes_compose_definition_to_tmp_file(mocker):
     """
-    The docker-compose file created, is written to a tmp file. Make sure that
+    The docker compose file created, is written to a tmp file. Make sure that
     the file is writen and validate that the contents of the file match the
     expected result.
     """
@@ -45,9 +45,9 @@ def test_build_compose_writes_compose_definition_to_tmp_file(mocker):
 
 def test_build_artifacts_invokes_docker_commands(mocker):
     """
-    Validate that the docker-compose commands are executed with the valid paramters.
-    Since the docker-compose file was dynamically generated, we must pass the full
-    path of that file to docker-compose command. Also, set the context of the execution
+    Validate that the docker compose commands are executed with the valid paramters.
+    Since the docker compose file was dynamically generated, we must pass the full
+    path of that file to docker compose command. Also, set the context of the execution
     to the current path.
     """
 
@@ -55,14 +55,15 @@ def test_build_artifacts_invokes_docker_commands(mocker):
     mock_builder = mocker.patch('juniper.actions.build_compose', return_value=tmp_filename)
 
     # Mocking the dependencies of this action. These three high level packages are
-    # needed to invoke docker-compose in the right context!
+    # needed to invoke docker compose in the right context!
     mocker.patch('juniper.actions.os')
     mocker.patch('juniper.actions.shutil')
     mock_subprocess_run = mocker.patch('juniper.actions.subprocess.run')
 
     compose_cmd_calls = [
-        mocker.call(["docker-compose", "-f", tmp_filename, '--project-directory', '.', 'down']),
-        mocker.call(["docker-compose", "-f", tmp_filename, '--project-directory', '.', 'up'])
+        mocker.call(["docker", "compose", "-f", tmp_filename, '--project-directory', '.', 'down', "--remove-orphans"]),
+        mocker.call(["docker", "compose", "-f", tmp_filename, '--project-directory', '.', 'up']),
+        mocker.call(["docker", "compose", "-f", tmp_filename, '--project-directory', '.', 'down']),
     ]
 
     processor_ctx = reader('./tests/manifests/processor-test.yml')
@@ -74,7 +75,7 @@ def test_build_artifacts_invokes_docker_commands(mocker):
 
 def test_build_artifacts_copies_scriopts(mocker):
     """
-    Since the docker-compose command will be executed from within the context
+    Since the docker compose command will be executed from within the context
     of where the lambda functions live. We need to make sure that the `package.sh`
     lives in the right context.
 
@@ -86,7 +87,7 @@ def test_build_artifacts_copies_scriopts(mocker):
     mock_builder = mocker.patch('juniper.actions.build_compose', return_value=tmp_filename)
 
     # Mocking the dependencies of this action. These three high level packages are
-    # needed to invoke docker-compose in the right context!
+    # needed to invoke docker compose in the right context!
     mock_os = mocker.patch('juniper.actions.os')
     mock_shutil = mocker.patch('juniper.actions.shutil')
     mocker.patch('juniper.actions.subprocess.run')
@@ -97,10 +98,14 @@ def test_build_artifacts_copies_scriopts(mocker):
     # Validate that this three step process is correctly executed.
     mock_os.makedirs.assert_called_with('./.juni/bin', exist_ok=True)
 
-    mock_shutil.copy.assert_has_calls([
-        call(get_artifact_path('package.sh'), './.juni/bin/'),
-        call(get_artifact_path('build_layer.sh'), './.juni/bin/'),
-    ])
+    assert len(mock_shutil.copy.call_args_list) == 2
+    assert len(mock_shutil.copy.call_args_list[0][0]) == 2
+
+    assert mock_shutil.copy.call_args_list[0][0][0].name == "package.sh"
+    assert mock_shutil.copy.call_args_list[0][0][1] == "./.juni/bin/"
+
+    assert mock_shutil.copy.call_args_list[1][0][0].name == "build_layer.sh"
+    assert mock_shutil.copy.call_args_list[1][0][1] == "./.juni/bin/"
     mock_shutil.rmtree.assert_called_with('./.juni', ignore_errors=True)
     mock_builder.assert_called_once()
 
@@ -213,7 +218,7 @@ def test_build_compose_section_supports_layers():
 def test_build_compose_supports_layers(mocker):
     """
     Validate that given a manifest that has both functions and layers builds the
-    correct docker-compose template.
+    correct docker compose template.
     """
 
     tmp_filename = '/var/folders/xw/yk2rrhks1w72y0zr_7t7b851qlt8b3/T/tmp52bd77s3'

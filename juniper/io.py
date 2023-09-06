@@ -18,7 +18,9 @@
 import os
 import yaml
 import tempfile
-import pkg_resources
+import importlib.resources
+import contextlib
+import pathlib
 
 
 def reader(file_name):
@@ -39,12 +41,14 @@ def write_tmp_file(content):
 def get_artifact(template_name):
 
     fn_template_path = get_artifact_path(template_name)
-    with open(fn_template_path, 'r') as f:
-        return f.read()
+    with fn_template_path as path:
+        with path.open("r") as fd:
+            return fd.read()
 
 
-def get_artifact_path(artifact_name):
+def get_artifact_path(artifact_name) -> contextlib.AbstractContextManager[pathlib.Path]:
     """
     Reads an artifact out of the rio-tools project.
     """
-    return pkg_resources.resource_filename(__name__, os.path.join('artifacts', artifact_name))
+    files = importlib.resources.files("juniper")
+    return importlib.resources.as_file(files.joinpath(os.path.join('artifacts', artifact_name)))

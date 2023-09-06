@@ -1,0 +1,24 @@
+global:
+  image: python:3.6-alpine
+  include:
+    - ./src/libs/
+    - ./src/common/
+  platform: linux/amd64
+
+functions:
+  default-platform:
+    image: python:3.8
+    include:
+      - ./src/edge/
+
+  override-platform:
+    include:
+      - ./src/worker/sequential_worker
+    platform: linux/arm64
+
+layers:
+  default-platform-layer:
+    requirements: ./requirements/default.txt
+  override-platform-layer:
+    requirements: ./requirements/override.txt
+    platform: linux/arm64

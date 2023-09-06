@@ -1,1 +1,1 @@
-include Makefile CHANGES.rst LICENSE AUTHORS juniper/artifacts/*
+include Makefile CHANGES.rst LICENSE AUTHORS juniper/artifacts/* requirements/*

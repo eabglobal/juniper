@@ -1,0 +1,5 @@
+pytest==7.4.0
+pip-tools
+pytest-mock
+twine
+build
